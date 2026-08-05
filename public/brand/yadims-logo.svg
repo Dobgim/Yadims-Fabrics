@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="YADIMS Fabrics &amp; Seams — The Art Of Fine Fabrics">
+  <!-- Double ring: heavy house green outside, fine gold hairline inside -->
+  <circle cx="200" cy="200" r="188" fill="none" stroke="#0E6B43" stroke-width="13"/>
+  <circle cx="200" cy="200" r="172" fill="none" stroke="#D4AF37" stroke-width="2.5"/>
+
+  <g fill="none" stroke="#0E6B43" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Loose thread, looping in from the left -->
+    <path d="M96 152 C118 126 146 168 172 138 C190 118 168 100 148 112 C128 124 142 152 172 150
+             C216 148 240 116 286 112"
+          stroke-width="6"/>
+    <!-- Thread carrying on past the needle -->
+    <path d="M280 112 C300 108 318 110 332 118" stroke-width="6"/>
+  </g>
+
+  <!-- Needle: long taper with an open eye -->
+  <g fill="none" stroke="#0E6B43" stroke-linecap="round">
+    <path d="M232 96 L232 250" stroke-width="7"/>
+    <ellipse cx="232" cy="126" rx="9" ry="24" stroke-width="5.5"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="200" y="252" text-anchor="middle" fill="#0E6B43"
+        font-family="Georgia, 'Times New Roman', serif" font-size="76" font-weight="700"
+        letter-spacing="2">YADIMS</text>
+
+  <text x="200" y="288" text-anchor="middle" fill="#0E6B43"
+        font-family="Georgia, 'Times New Roman', serif" font-size="27" font-weight="600"
+        letter-spacing="3.5">FABRICS &amp; SEAMS</text>
+
+  <text x="200" y="326" text-anchor="middle" fill="#2E9265"
+        font-family="Georgia, 'Times New Roman', serif" font-size="22" font-style="italic"
+        letter-spacing="1.5">The Art Of Fine Fabrics</text>
+</svg>

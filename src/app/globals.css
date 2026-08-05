@@ -1,0 +1,292 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Warm, paper-like canvas - never a clinical white */
+    --background: 40 33% 99%;
+    --foreground: 150 32% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 150 32% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 32% 8%;
+
+    /* Primary Green #0E6B43 */
+    --primary: 155 77% 24%;
+    --primary-foreground: 40 33% 99%;
+
+    --secondary: 150 20% 96%;
+    --secondary-foreground: 155 60% 16%;
+
+    --muted: 150 16% 95%;
+    --muted-foreground: 150 8% 42%;
+
+    /* Gold #D4AF37 */
+    --accent: 46 65% 52%;
+    --accent-foreground: 150 40% 10%;
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 12% 90%;
+    --input: 150 12% 88%;
+    --ring: 155 77% 24%;
+
+    --radius: 0.875rem;
+  }
+
+  .dark {
+    --background: 155 38% 5%;
+    --foreground: 40 20% 95%;
+
+    --card: 155 32% 8%;
+    --card-foreground: 40 20% 95%;
+    --popover: 155 32% 8%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 152 45% 46%;
+    --primary-foreground: 155 45% 6%;
+
+    --secondary: 155 24% 13%;
+    --secondary-foreground: 40 20% 95%;
+
+    --muted: 155 22% 13%;
+    --muted-foreground: 150 10% 66%;
+
+    --accent: 46 60% 58%;
+    --accent-foreground: 155 45% 6%;
+
+    --destructive: 0 62% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 155 20% 17%;
+    --input: 155 20% 20%;
+    --ring: 152 45% 46%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+
+    /*
+     * Slide-in reveals start offset to one side, which would otherwise push
+     * the page wider than the viewport and produce a horizontal scrollbar
+     * before the element animates into place.
+     *
+     * `clip` rather than `hidden`: `overflow-x: hidden` on body silently
+     * breaks `position: sticky` descendants (the nav, the filter rail, the
+     * cart summary), whereas `clip` does not establish a scroll container.
+     */
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* On-brand focus ring, keyboard users only */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  ::selection {
+    @apply bg-brand-500 text-white;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Uppercase micro-label used above section headings */
+  .eyebrow {
+    @apply text-eyebrow font-medium uppercase text-brand-500;
+  }
+
+  /* Frosted surface for the sticky nav and overlay cards */
+  .glass {
+    @apply border border-white/40 bg-white/70 backdrop-blur-xl backdrop-saturate-150;
+  }
+  .dark .glass {
+    @apply border-white/10 bg-brand-900/60;
+  }
+
+  /* Thin gold rule used as a section divider, fading to the right */
+  .rule-gold {
+    @apply h-px w-16 bg-gradient-to-r from-gold-400 to-transparent;
+  }
+
+  /* Symmetric variant for centred headings — fades away on both sides */
+  .rule-gold-center {
+    @apply h-px w-20 bg-gradient-to-r from-transparent via-gold-400 to-transparent;
+  }
+
+  /* Underline that draws in from the left on hover */
+  .link-underline {
+    @apply relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0
+           after:bg-current after:transition-[width] after:duration-500 after:ease-luxe
+           hover:after:w-full;
+  }
+
+  .shimmer {
+    @apply relative overflow-hidden bg-muted;
+  }
+  .shimmer::after {
+    @apply absolute inset-0 -translate-x-full bg-gradient-to-r
+           from-transparent via-white/60 to-transparent;
+    content: "";
+    animation: shimmer 1.8s infinite;
+  }
+
+  /* Long-form article body used by the journal */
+  .prose-luxe {
+    @apply text-[1.0625rem] leading-[1.85] text-muted-foreground;
+  }
+  .prose-luxe h2 {
+    @apply mb-4 mt-12 font-display text-2xl text-foreground md:text-3xl;
+  }
+  .prose-luxe h3 {
+    @apply mb-3 mt-9 font-display text-xl text-foreground;
+  }
+  .prose-luxe p {
+    @apply mb-5;
+  }
+  .prose-luxe ul {
+    @apply mb-6 space-y-2 pl-5;
+  }
+  .prose-luxe li {
+    @apply relative list-none pl-5 before:absolute before:left-0 before:top-[0.7em]
+           before:h-1 before:w-1 before:rounded-full before:bg-gold-400;
+  }
+  .prose-luxe strong {
+    @apply font-semibold text-foreground;
+  }
+}
+
+@layer components {
+  /*
+   * Hero entrance animations.
+   *
+   * Deliberately CSS rather than JavaScript. A JS-driven entrance renders its
+   * `initial` state (opacity: 0) into the server HTML, so if a script fails to
+   * load the hero stays invisible for ever. These run off the stylesheet, so
+   * the most important content on the site cannot be hidden by a bad chunk,
+   * a slow network or a blocked script.
+   */
+  .hero-rise {
+    animation: hero-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-line {
+    animation: hero-line 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-rule {
+    animation: hero-rule 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes hero-line {
+    from {
+      opacity: 0;
+      transform: translateY(46px);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes hero-rule {
+    from {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    to {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes thread-drift {
+    0% {
+      transform: translateX(-40%);
+      opacity: 0;
+    }
+    15%,
+    85% {
+      opacity: 0.85;
+    }
+    100% {
+      transform: translateX(140%);
+      opacity: 0;
+    }
+  }
+
+  .thread-drift {
+    animation: thread-drift linear infinite;
+  }
+}
+
+@layer utilities {
+  .section {
+    @apply py-20 md:py-28 lg:py-36;
+  }
+
+  /* Hides the scrollbar while keeping the element scrollable (filter rails) */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mask-fade-r {
+    mask-image: linear-gradient(to right, black 82%, transparent 100%);
+  }
+}

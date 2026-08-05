@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-label="Draped fabric">
+  <defs>
+    <!-- Deep base, lit from the upper left as cloth would be -->
+    <linearGradient id="base" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0%"   stop-color="#0F7549"/>
+      <stop offset="38%"  stop-color="#0A5433"/>
+      <stop offset="72%"  stop-color="#063A22"/>
+      <stop offset="100%" stop-color="#031C11"/>
+    </linearGradient>
+
+    <!-- Sheen running along the crest of a fold -->
+    <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0.35">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="45%"  stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="55%"  stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="shadowFold" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%"   stop-color="#000000" stop-opacity="0"/>
+      <stop offset="50%"  stop-color="#000000" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="goldThread" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#D4AF37" stop-opacity="0"/>
+      <stop offset="35%"  stop-color="#E9D48C" stop-opacity="0.55"/>
+      <stop offset="65%"  stop-color="#D4AF37" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Plain-weave texture: warp and weft at one-pixel scale -->
+    <pattern id="weave" width="6" height="6" patternUnits="userSpaceOnUse">
+      <rect width="6" height="6" fill="none"/>
+      <path d="M0 0 H6" stroke="#ffffff" stroke-width="1" opacity="0.05"/>
+      <path d="M0 3 H6" stroke="#000000" stroke-width="1" opacity="0.05"/>
+      <path d="M0 0 V6" stroke="#ffffff" stroke-width="1" opacity="0.035"/>
+      <path d="M3 0 V6" stroke="#000000" stroke-width="1" opacity="0.035"/>
+    </pattern>
+
+    <radialGradient id="vignette" cx="0.5" cy="0.42" r="0.78">
+      <stop offset="55%"  stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.55"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#base)"/>
+
+  <!-- Folds: alternating shadow and sheen, sweeping across the frame -->
+  <g>
+    <path d="M-100 210 C 260 130, 520 300, 860 216 C 1160 142, 1420 262, 1720 196 L1720 316
+             C 1420 382, 1160 262, 860 336 C 520 420, 260 250, -100 330 Z"
+          fill="url(#shadowFold)"/>
+    <path d="M-100 250 C 260 170, 520 340, 860 256 C 1160 182, 1420 302, 1720 236 L1720 274
+             C 1420 340, 1160 220, 860 294 C 520 378, 260 208, -100 288 Z"
+          fill="url(#sheen)"/>
+
+    <path d="M-100 500 C 300 400, 600 610, 960 505 C 1260 418, 1460 545, 1720 470 L1720 600
+             C 1460 675, 1260 548, 960 635 C 600 740, 300 530, -100 630 Z"
+          fill="url(#shadowFold)"/>
+    <path d="M-100 545 C 300 445, 600 655, 960 550 C 1260 463, 1460 590, 1720 515 L1720 556
+             C 1460 631, 1260 504, 960 591 C 600 696, 300 486, -100 586 Z"
+          fill="url(#sheen)"/>
+
+    <path d="M-100 790 C 280 700, 620 900, 980 800 C 1280 717, 1480 830, 1720 762 L1720 900
+             C 1480 968, 1280 855, 980 938 C 620 1038, 280 838, -100 928 Z"
+          fill="url(#shadowFold)"/>
+    <path d="M-100 830 C 280 740, 620 940, 980 840 C 1280 757, 1480 870, 1720 802 L1720 842
+             C 1480 910, 1280 797, 980 880 C 620 980, 280 780, -100 870 Z"
+          fill="url(#sheen)"/>
+  </g>
+
+  <!-- Metallic threads caught in the weave -->
+  <g fill="none" stroke="url(#goldThread)" stroke-linecap="round">
+    <path d="M-60 268 C 300 190, 560 358, 900 274 C 1200 200, 1440 320, 1700 254" stroke-width="1.6"/>
+    <path d="M-60 300 C 300 222, 560 390, 900 306 C 1200 232, 1440 352, 1700 286" stroke-width="0.9" opacity="0.6"/>
+    <path d="M-60 560 C 340 460, 640 670, 1000 565 C 1300 478, 1500 605, 1760 530" stroke-width="1.6"/>
+    <path d="M-60 850 C 320 760, 660 960, 1020 860 C 1320 777, 1520 890, 1760 822" stroke-width="1.4" opacity="0.8"/>
+  </g>
+
+  <rect width="1600" height="1000" fill="url(#weave)"/>
+  <rect width="1600" height="1000" fill="url(#vignette)"/>
+</svg>

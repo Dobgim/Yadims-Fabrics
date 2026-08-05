@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-label="Folded cloth">
+  <defs>
+    <linearGradient id="pbase" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0%"   stop-color="#0F7549"/>
+      <stop offset="45%"  stop-color="#0A5433"/>
+      <stop offset="100%" stop-color="#052E1B"/>
+    </linearGradient>
+    <linearGradient id="psheen" x1="0" y1="0" x2="1" y2="0.2">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%"  stop-color="#ffffff" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="pweave" width="6" height="6" patternUnits="userSpaceOnUse">
+      <path d="M0 0 H6" stroke="#ffffff" stroke-width="1" opacity="0.05"/>
+      <path d="M0 3 H6" stroke="#000000" stroke-width="1" opacity="0.05"/>
+      <path d="M0 0 V6" stroke="#ffffff" stroke-width="1" opacity="0.03"/>
+    </pattern>
+    <radialGradient id="pvig" cx="0.5" cy="0.4" r="0.8">
+      <stop offset="50%"  stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.5"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="1000" fill="url(#pbase)"/>
+
+  <!-- Stacked folds, as cloth sits on a shelf -->
+  <g>
+    <path d="M-40 250 C 160 200, 320 300, 500 246 C 640 204, 740 254, 860 224 L860 306
+             C 740 336, 640 286, 500 328 C 320 382, 160 282, -40 332 Z" fill="#000000" opacity="0.2"/>
+    <path d="M-40 272 C 160 222, 320 322, 500 268 C 640 226, 740 276, 860 246 L860 268
+             C 740 298, 640 248, 500 290 C 320 344, 160 244, -40 294 Z" fill="url(#psheen)"/>
+
+    <path d="M-40 500 C 180 442, 360 556, 540 496 C 680 450, 760 500, 880 468 L880 560
+             C 760 592, 680 542, 540 588 C 360 648, 180 534, -40 592 Z" fill="#000000" opacity="0.2"/>
+    <path d="M-40 524 C 180 466, 360 580, 540 520 C 680 474, 760 524, 880 492 L880 516
+             C 760 548, 680 498, 540 544 C 360 604, 180 490, -40 548 Z" fill="url(#psheen)"/>
+
+    <path d="M-40 756 C 160 700, 340 812, 520 754 C 660 710, 750 758, 870 728 L870 830
+             C 750 860, 660 812, 520 856 C 340 914, 160 802, -40 858 Z" fill="#000000" opacity="0.2"/>
+    <path d="M-40 780 C 160 724, 340 836, 520 778 C 660 734, 750 782, 870 752 L870 776
+             C 750 806, 660 758, 520 802 C 340 860, 160 748, -40 804 Z" fill="url(#psheen)"/>
+  </g>
+
+  <!-- Gold threads -->
+  <g fill="none" stroke="#D4AF37" stroke-linecap="round" opacity="0.35">
+    <path d="M-20 296 C 180 246, 340 344, 520 292 C 660 250, 760 300, 880 270" stroke-width="1.4"/>
+    <path d="M-20 548 C 200 490, 380 604, 560 544 C 700 498, 780 548, 900 516" stroke-width="1.2"/>
+  </g>
+
+  <rect width="800" height="1000" fill="url(#pweave)"/>
+  <rect width="800" height="1000" fill="url(#pvig)"/>
+</svg>
