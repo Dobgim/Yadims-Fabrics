@@ -3,7 +3,7 @@
 import * as React from "react";
 import { SafeImage as Image } from "@/components/shared/safe-image";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, Loader2, Lock, ShoppingBag } from "lucide-react";
 import { toast } from "sonner";
@@ -49,8 +49,15 @@ export function CheckoutForm({ defaults }: CheckoutFormProps) {
     },
   });
 
-  const city = form.watch("city");
-  const deliveryMethod = form.watch("deliveryMethod");
+  /*
+   * `useWatch` rather than `form.watch()`: watch() returns a fresh function
+   * each render and cannot be memoized, so the React Compiler skips compiling
+   * the whole component. useWatch subscribes per field and is compiler-safe.
+   */
+  const control = form.control;
+  const city = useWatch({ control, name: "city" });
+  const deliveryMethod = useWatch({ control, name: "deliveryMethod" });
+  const paymentMethod = useWatch({ control, name: "paymentMethod" });
   const currency = lines[0]?.currency ?? "XAF";
 
   const shipping = calculateShipping(subtotal, city ?? "", deliveryMethod);
@@ -206,7 +213,7 @@ export function CheckoutForm({ defaults }: CheckoutFormProps) {
           <Legend step="03" title="Payment" />
 
           <RadioGroup
-            value={form.watch("paymentMethod")}
+            value={paymentMethod}
             onValueChange={(value) =>
               form.setValue("paymentMethod", value as CheckoutInput["paymentMethod"])
             }
@@ -219,7 +226,7 @@ export function CheckoutForm({ defaults }: CheckoutFormProps) {
                 value={method.value}
                 title={method.label}
                 hint={method.hint}
-                selected={form.watch("paymentMethod") === method.value}
+                selected={paymentMethod === method.value}
               />
             ))}
           </RadioGroup>

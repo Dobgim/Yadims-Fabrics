@@ -34,8 +34,15 @@ export function ShopToolbar({ total, view, onViewChange, children }: ShopToolbar
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [term, setTerm] = React.useState(searchParams.get("q") ?? "");
-  React.useEffect(() => setTerm(searchParams.get("q") ?? ""), [searchParams]);
+  const urlTerm = searchParams.get("q") ?? "";
+  const [term, setTerm] = React.useState(urlTerm);
+  const [prevUrlTerm, setPrevUrlTerm] = React.useState(urlTerm);
+
+  // Keep the box in step with browser navigation, without a second render.
+  if (urlTerm !== prevUrlTerm) {
+    setPrevUrlTerm(urlTerm);
+    setTerm(urlTerm);
+  }
 
   const push = (mutate: (params: URLSearchParams) => void) => {
     const params = new URLSearchParams(searchParams.toString());

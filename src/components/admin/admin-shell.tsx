@@ -107,7 +107,12 @@ export function AdminTopbar({ name, email, role, initials, avatarUrl }: AdminTop
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  React.useEffect(() => setMobileOpen(false), [pathname]);
+  // Close the drawer on navigation, adjusted during render.
+  const [prevPath, setPrevPath] = React.useState(pathname);
+  if (pathname !== prevPath) {
+    setPrevPath(pathname);
+    setMobileOpen(false);
+  }
 
   const current = adminNav.find((item) =>
     item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href),

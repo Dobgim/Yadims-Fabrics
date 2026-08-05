@@ -25,9 +25,16 @@ export function SafeImage({
   ...props
 }: ImageProps & { fallback?: string }) {
   const [resolved, setResolved] = React.useState(src);
+  const [prevSrc, setPrevSrc] = React.useState(src);
 
   // A changed `src` (carousel, gallery filter) must clear a previous failure.
-  React.useEffect(() => setResolved(src), [src]);
+  // Adjusted during render rather than in an effect: React re-runs this
+  // component immediately without painting the stale image first, and it
+  // avoids the cascading re-render an effect would cause.
+  if (src !== prevSrc) {
+    setPrevSrc(src);
+    setResolved(src);
+  }
 
   const raw =
     resolved === fallback ||

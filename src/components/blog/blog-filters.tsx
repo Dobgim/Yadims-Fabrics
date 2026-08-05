@@ -16,9 +16,16 @@ export function BlogFilters({ categories }: BlogFiltersProps) {
   const searchParams = useSearchParams();
 
   const activeCategory = searchParams.get("category") ?? "All";
-  const [term, setTerm] = React.useState(searchParams.get("q") ?? "");
+  const urlTerm = searchParams.get("q") ?? "";
+  const [term, setTerm] = React.useState(urlTerm);
+  const [prevUrlTerm, setPrevUrlTerm] = React.useState(urlTerm);
 
-  React.useEffect(() => setTerm(searchParams.get("q") ?? ""), [searchParams]);
+  // Keep the box in step with browser navigation. Adjusted during render
+  // rather than in an effect, which would cause a second render pass.
+  if (urlTerm !== prevUrlTerm) {
+    setPrevUrlTerm(urlTerm);
+    setTerm(urlTerm);
+  }
 
   const push = (mutate: (params: URLSearchParams) => void) => {
     const params = new URLSearchParams(searchParams.toString());

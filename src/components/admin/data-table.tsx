@@ -82,8 +82,14 @@ export function DataTable<T>({
   const current = Math.min(page, pageCount);
   const visible = sorted.slice((current - 1) * pageSize, current * pageSize);
 
-  // Any change to the result set sends you back to the first page.
-  React.useEffect(() => setPage(1), [term, sort]);
+  // Any change to the result set sends you back to the first page. Adjusted
+  // during render so page 2 of the old result set is never briefly shown.
+  const resultKey = `${term}|${sort?.key ?? ""}|${sort?.dir ?? ""}`;
+  const [prevResultKey, setPrevResultKey] = React.useState(resultKey);
+  if (resultKey !== prevResultKey) {
+    setPrevResultKey(resultKey);
+    setPage(1);
+  }
 
   const toggleSort = (key: string) =>
     setSort((prev) =>

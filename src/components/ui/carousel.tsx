@@ -79,6 +79,11 @@ const Carousel = React.forwardRef<
       if (api && setApi) setApi(api);
     }, [api, setApi]);
 
+    // Subscribing to the Embla instance is exactly what effects are for: an
+    // external system whose state React cannot derive during render. The
+    // initial `onSelect(api)` seeds the arrow-enabled state from the API and
+    // has no render-time equivalent.
+    /* eslint-disable react-hooks/set-state-in-effect */
     React.useEffect(() => {
       if (!api) return;
       onSelect(api);
@@ -87,6 +92,7 @@ const Carousel = React.forwardRef<
         api.off("reInit", onSelect).off("select", onSelect);
       };
     }, [api, onSelect]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     return (
       <CarouselContext.Provider

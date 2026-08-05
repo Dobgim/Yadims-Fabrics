@@ -24,9 +24,12 @@ export function SearchCommand({ open, onOpenChange }: SearchCommandProps) {
   const router = useRouter();
   const [term, setTerm] = React.useState("");
 
-  React.useEffect(() => {
+  // Clear the query each time the dialog is dismissed, adjusted during render.
+  const [prevOpen, setPrevOpen] = React.useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
     if (!open) setTerm("");
-  }, [open]);
+  }
 
   // Cmd/Ctrl+K anywhere on the site.
   React.useEffect(() => {

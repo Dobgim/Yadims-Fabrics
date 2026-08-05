@@ -30,12 +30,17 @@ export function QuickViewDialog({ product, open, onOpenChange }: QuickViewDialog
   const [color, setColor] = React.useState(product.colors[0] ?? null);
   const [quantity, setQuantity] = React.useState(product.min_order_quantity);
 
-  // Reset the selection each time the dialog is reopened.
-  React.useEffect(() => {
-    if (!open) return;
-    setColor(product.colors[0] ?? null);
-    setQuantity(product.min_order_quantity);
-  }, [open, product]);
+  // Reset the selection each time the dialog is reopened, adjusted during
+  // render so the previous product's colour is never briefly shown.
+  const openKey = open ? product.id : null;
+  const [prevOpenKey, setPrevOpenKey] = React.useState(openKey);
+  if (openKey !== prevOpenKey) {
+    setPrevOpenKey(openKey);
+    if (openKey) {
+      setColor(product.colors[0] ?? null);
+      setQuantity(product.min_order_quantity);
+    }
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

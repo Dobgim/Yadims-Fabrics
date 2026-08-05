@@ -90,11 +90,18 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   // Rehydrate once on mount. Server render always starts from an empty cart,
   // so nothing here can cause a hydration mismatch.
+  //
+  // This is the textbook use of an effect — reading an external system
+  // (localStorage) that does not exist during server render. It cannot be
+  // adjusted during render, so the set-state-in-effect rule is suppressed
+  // deliberately rather than worked around.
+  /* eslint-disable react-hooks/set-state-in-effect */
   React.useEffect(() => {
     dispatch({ type: "hydrate", lines: readJSON<CartLine[]>(CART_KEY, []) });
     setWishlist(readJSON<string[]>(WISHLIST_KEY, []));
     setHydrated(true);
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   React.useEffect(() => {
     if (!hydrated) return;

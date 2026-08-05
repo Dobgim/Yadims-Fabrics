@@ -129,9 +129,14 @@ function FilterPanel({ options }: { options: FilterOptions }) {
   const activeMin = Number(searchParams.get("minPrice") ?? priceRange.min);
   const activeMax = Number(searchParams.get("maxPrice") ?? priceRange.max);
   const [draft, setDraft] = React.useState<[number, number]>([activeMin, activeMax]);
+  const [prevRange, setPrevRange] = React.useState(`${activeMin}-${activeMax}`);
 
-  // Keep the slider in step with browser navigation and "clear all".
-  React.useEffect(() => setDraft([activeMin, activeMax]), [activeMin, activeMax]);
+  // Keep the slider in step with browser navigation and "clear all", adjusted
+  // during render so the thumbs never paint at a stale position first.
+  if (prevRange !== `${activeMin}-${activeMax}`) {
+    setPrevRange(`${activeMin}-${activeMax}`);
+    setDraft([activeMin, activeMax]);
+  }
 
   const selectedCategories = getAll("category");
   const selectedCollections = getAll("collection");

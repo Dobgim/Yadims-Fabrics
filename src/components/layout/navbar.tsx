@@ -26,8 +26,13 @@ export function Navbar() {
 
   useMotionValueEvent(scrollY, "change", (latest) => setScrolled(latest > 24));
 
-  // Close the mobile drawer whenever navigation completes.
-  React.useEffect(() => setMobileOpen(false), [pathname]);
+  // Close the mobile drawer whenever navigation completes. Adjusted during
+  // render so the drawer never paints open over the newly arrived page.
+  const [prevPath, setPrevPath] = React.useState(pathname);
+  if (pathname !== prevPath) {
+    setPrevPath(pathname);
+    setMobileOpen(false);
+  }
 
   return (
     <>

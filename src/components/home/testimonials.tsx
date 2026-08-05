@@ -16,7 +16,9 @@ import {
 import { cn } from "@/lib/utils";
 
 export function Testimonials() {
-  const autoplay = React.useRef(Autoplay({ delay: 6000, stopOnInteraction: true }));
+  // Lazy initialiser, not a ref: the instance is read during render below,
+  // and ref access during render is unsafe under the React Compiler.
+  const [autoplay] = React.useState(() => Autoplay({ delay: 6000, stopOnInteraction: true }));
   const [api, setApi] = React.useState<CarouselApi>();
   const [selected, setSelected] = React.useState(0);
 
@@ -33,7 +35,7 @@ export function Testimonials() {
   return (
     <Carousel
       setApi={setApi}
-      plugins={[autoplay.current]}
+      plugins={[autoplay]}
       opts={{ align: "start", loop: true }}
       aria-label="Customer testimonials"
     >

@@ -36,7 +36,13 @@ export function ProductCarousel({
   autoplay = true,
   delay = 3200,
 }: ProductCarouselProps) {
-  const plugin = React.useRef(
+  /*
+   * Lazy `useState` initialiser rather than `useRef`: the plugin instance is
+   * read during render when passed to <Carousel>, and reading a ref during
+   * render is not safe under the React Compiler. This keeps the same
+   * create-once semantics without that access.
+   */
+  const [plugin] = React.useState(() =>
     Autoplay({
       delay,
       stopOnInteraction: true,
@@ -67,7 +73,7 @@ export function ProductCarousel({
   return (
     <Carousel
       setApi={setApi}
-      plugins={autoplay ? [plugin.current] : []}
+      plugins={autoplay ? [plugin] : []}
       opts={{ align: "start", loop: autoplay, containScroll: "trimSnaps" }}
       aria-label="Featured fabrics"
       aria-roledescription="carousel"
