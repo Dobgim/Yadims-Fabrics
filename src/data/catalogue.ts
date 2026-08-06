@@ -816,7 +816,7 @@ const seeds: ProductSeed[] = [
     gsm: 160,
     colors: ["Indigo", "Ochre", "Emerald", "Crimson"],
     tags: ["ankara", "wax", "traditional", "cotton"],
-    images: [P.wax1, P.wax2],
+    images: [P.wax1, P.wax3],
     short: "Full six-yard piece, true wax, matched dye lots available.",
     description:
       "Genuine double-sided wax with the crackle veining that only comes from a real resist process — the colour reads identically from either face. Sold as a full six-yard piece; tell us your headcount and we will hold matching dye lots for an aso-ebi party.",
@@ -837,7 +837,7 @@ const seeds: ProductSeed[] = [
     width: 115,
     colors: ["Indigo", "Deep Navy", "Slate"],
     tags: ["ankara", "adire", "artisan", "traditional"],
-    images: [P.wax3, P.wax2],
+    images: [P.wax3, P.wax1],
     short: "Artisan indigo resist-dyed by hand, no two lengths alike.",
     description:
       "Stamped and dyed by an artisan cooperative we buy from directly. The irregularities are the point — slight bleeding at a motif edge is evidence of a hand process, not a fault. Expect gentle indigo transfer on first wear.",
@@ -859,7 +859,7 @@ const seeds: ProductSeed[] = [
     gsm: 230,
     colors: ["Gold Multi", "Royal Multi", "Earth Multi"],
     tags: ["ankara", "kente", "ceremony", "traditional"],
-    images: [P.wax2, P.brocadeGold],
+    images: [P.wax1, P.brocadeGold],
     short: "Strip-woven ceremonial cloth in traditional colourways.",
     description:
       "Woven in narrow strips and joined in the traditional manner. Substantial, ceremonial, and intended to be seen — the geometry is best served by simple, uncluttered pattern pieces.",

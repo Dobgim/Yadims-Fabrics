@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 const storePhotos = [
-  { src: S.shop1, caption: "The bolt wall, sorted every Monday" },
+  { src: S.shop2, caption: "The bolt wall, sorted every Monday" },
   { src: S.laceTable, caption: "The lace table" },
   { src: S.shelfSilk, caption: "Silk, folded on the bias" },
   { src: S.cottonRolls, caption: "Cotton rolls in forty shades" },
@@ -32,7 +32,7 @@ export default function AboutPage() {
         title="A family shop that never wanted to be a warehouse"
         description="We opened on a single rule: only sell fabric we would sew with ourselves, and publish the numbers that let you check."
         breadcrumbs={[{ name: "About", href: "/about" }]}
-        image={S.shop1}
+        image={S.shop2}
       />
 
       {/* Story */}

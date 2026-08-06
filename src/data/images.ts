@@ -98,7 +98,6 @@ export const productImages = {
   sequinGold: "/fabrics/p-sequin-gold.jpg",
   sequinDrape: "/fabrics/p-sequin-drape.jpg",
   wax1: "/fabrics/p-wax-1.jpg",
-  wax2: "/fabrics/p-wax-2.jpg",
   wax3: "/fabrics/p-wax-3.jpg",
   velvetEmerald: "/fabrics/p-velvet-emerald.jpg",
   velvetDark: "/fabrics/p-velvet-dark.jpg",
@@ -120,7 +119,6 @@ export const productImages = {
 /* ------------------------------------------------------------------ */
 
 export const sceneImages = {
-  shop1: "/fabrics/g-shop-1.jpg",
   shop2: "/fabrics/g-shop-2.jpg",
   shop3: "/fabrics/g-shop-3.jpg",
   shelfSilk: "/fabrics/g-shelf-silk.jpg",
@@ -128,7 +126,6 @@ export const sceneImages = {
   tailor1: "/fabrics/g-tailor-1.jpg",
   tailor2: "/fabrics/g-tailor-2.jpg",
   cottonRolls: "/fabrics/g-cotton-rolls.jpg",
-  waxModel: "/fabrics/g-wax-model.jpg",
   sequinDetail: "/fabrics/g-sequin-detail.jpg",
 } as const;
 

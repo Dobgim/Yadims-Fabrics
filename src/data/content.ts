@@ -16,12 +16,12 @@ const realSeeds: GallerySeed[] = [
 ];
 
 const stockSeeds: GallerySeed[] = [
-  [S.shop1, "The Bolt Wall", "Floor to ceiling, sorted by weight rather than colour.", "Store", "portrait"],
+  [S.shop2, "The Bolt Wall", "Floor to ceiling, sorted by weight rather than colour.", "Store", "portrait"],
   [S.shelfSilk, "Silk Shelf", "Charmeuse and duchess satin, folded on the bias.", "Fabric Displays", "portrait"],
   [S.laceTable, "The Lace Table", "Where every bridal decision actually gets made.", "Fabric Displays", "landscape"],
   [S.cottonRolls, "Cotton Rolls", "Solid cottons and poplins in forty shades.", "New Stock", "portrait"],
   [P.velvetEmerald, "Velvet Corner", "Silk-blend velvet in the house green.", "Fabric Displays", "square"],
-  [S.waxModel, "Wax, Worn", "A six-yard piece, cut and sewn by a customer.", "Customer Showcase", "portrait"],
+  [P.wax1, "Wax, Worn", "A six-yard piece, cut and sewn by a customer.", "Customer Showcase", "portrait"],
   [S.tailor1, "At the Machine", "The part nobody photographs and everybody feels.", "Events", "landscape"],
   [S.tailor2, "Finishing", "A hem pressed before it leaves the counter.", "Customer Showcase", "portrait"],
   [S.sequinDetail, "Sequin, Under Light", "Matte sequin on a stretch mesh ground.", "New Stock", "square"],
@@ -179,7 +179,7 @@ Get everyone into their outfit once, together. Small differences in interpretati
 ## What we do for you
 
 We hold matched lots, cut to a consistent length, mark each piece with the guest's name where you want that, and will deliver in one consignment across Yaoundé. Ask for the aso-ebi service by name when you call — it costs nothing extra.`,
-    cover_image_url: S.waxModel,
+    cover_image_url: P.wax1,
     category: "Traditional",
     tags: ["aso-ebi", "wax print", "planning"],
     author_name: "Yadims Editorial",
@@ -313,7 +313,7 @@ Establish this before, not after. Our policy is straightforward: report within s
 ## Talk to us directly
 
 Wholesale pricing at YADIMS starts at 50 metres and improves at 200 and 500. Bring the spec sheet and we will quote against it — including the yardage arithmetic, which we would rather do twice than have you do once.`,
-    cover_image_url: S.shop1,
+    cover_image_url: S.shop3,
     category: "Wholesale",
     tags: ["wholesale", "bulk", "trade"],
     author_name: "Yadims Editorial",

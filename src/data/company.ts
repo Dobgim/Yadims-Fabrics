@@ -14,7 +14,7 @@ export const services = [
       "Weight, width and fibre content published for every bolt",
       "Swatch service before you commit",
     ],
-    image: S.shop1,
+    image: S.shop2,
   },
   {
     slug: "wholesale-supply",
@@ -44,7 +44,7 @@ export const services = [
       "One consolidated delivery across Yaoundé",
       "No surcharge for the coordination",
     ],
-    image: S.waxModel,
+    image: S.shelfSilk,
   },
   {
     slug: "fashion-consultation",
@@ -176,9 +176,9 @@ export const storeStats = [
 ] as const;
 
 export const instagramGrid = [
-  S.shop1,
+  S.shop3,
   P.velvetEmerald,
-  S.waxModel,
+  P.wax1,
   P.sequinGold,
   S.laceTable,
   P.silkTeal,

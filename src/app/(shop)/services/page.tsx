@@ -35,7 +35,7 @@ export default function ServicesPage() {
         title="Services"
         description="Six ways we work with customers — from a single yard cut over the counter to a five-hundred-metre uniform contract. All of them start with the same conversation about what the cloth has to do."
         breadcrumbs={[{ name: "Services", href: "/services" }]}
-        image={S.shop1}
+        image={S.shop2}
       />
 
       {/* Overview cards */}

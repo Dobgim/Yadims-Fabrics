@@ -159,7 +159,7 @@ from (values
    'Machine wash cold, inside out, with like colours. Iron while slightly damp.',
    'Printed in Ghana',
    array['Indigo','Ochre','Emerald','Crimson'], array['ankara','wax','traditional'],
-   array['/fabrics/p-wax-1.jpg','/fabrics/p-wax-2.jpg'],
+   array['/fabrics/p-wax-1.jpg','/fabrics/p-wax-3.jpg'],
    86, 'ankara', 'traditional', true, false, 4.8::numeric, 24)
 ) as v(
   name, slug, sku, short_description, description, price, compare_at_price, material,
@@ -172,12 +172,12 @@ on conflict (slug) do nothing;
 -- Gallery
 -- ---------------------------------------------------------------------
 insert into public.gallery_items (title, caption, image_url, category, aspect, position) values
-  ('The Bolt Wall', 'Floor to ceiling, sorted by weight rather than colour.', '/fabrics/g-shop-1.jpg', 'Store', 'portrait', 0),
+  ('The Bolt Wall', 'Floor to ceiling, sorted by weight rather than colour.', '/fabrics/g-shop-2.jpg', 'Store', 'portrait', 0),
   ('Silk Shelf', 'Charmeuse and duchess satin, folded on the bias.', '/fabrics/g-shelf-silk.jpg', 'Fabric Displays', 'portrait', 1),
   ('The Lace Table', 'Where every bridal decision actually gets made.', '/fabrics/g-lace-table.jpg', 'Fabric Displays', 'landscape', 2),
   ('Cotton Rolls', 'Solid cottons and poplins in forty shades.', '/fabrics/g-cotton-rolls.jpg', 'New Stock', 'portrait', 3),
   ('Stone Lace, Under Light', 'Hand-set stones on a fine net ground.', '/fabrics/p-stone-pearl.jpg', 'Fabric Displays', 'square', 4),
-  ('Wax, Worn', 'A six-yard piece, cut and sewn by a customer.', '/fabrics/g-wax-model.jpg', 'Customer Showcase', 'portrait', 5),
+  ('Wax, Worn', 'A six-yard piece, cut and sewn by a customer.', '/fabrics/p-wax-1.jpg', 'Customer Showcase', 'portrait', 5),
   ('At the Machine', 'The part nobody photographs and everybody feels.', '/fabrics/g-tailor-1.jpg', 'Events', 'landscape', 6),
   ('Finishing', 'A hem pressed before it leaves the counter.', '/fabrics/g-tailor-2.jpg', 'Customer Showcase', 'portrait', 7),
   ('Opening Up', 'The shop at eight in the morning.', '/fabrics/g-shop-3.jpg', 'Events', 'landscape', 8)
