@@ -1,4 +1,8 @@
-import { shopPhotos } from "@/data/images";
+import {
+  categoryImages,
+  collectionImages,
+  productImages as P,
+} from "@/data/images";
 import type { CategoryRow, CollectionRow, ProductRow } from "@/types/database";
 
 /**
@@ -10,34 +14,6 @@ import type { CategoryRow, CollectionRow, ProductRow } from "@/types/database";
  * is still uploading real stock.
  */
 
-/**
- * Product imagery.
- *
- * Real shop photography stands in until each line is individually
- * photographed. Stock URLs were removed here deliberately: a stock photo of a
- * t-shirt sitting under "Silk-Blend Velvet" is worse than an honest picture of
- * the shelf the fabric actually came off. Swap a value for a real product shot
- * as soon as one exists — nothing else needs to change.
- */
-const IMAGES = {
-  lace1: shopPhotos.laceShelves,
-  lace2: shopPhotos.mannequin,
-  silk1: shopPhotos.boltWall,
-  silk2: shopPhotos.displayWall,
-  bridal1: shopPhotos.mannequin,
-  bridal2: shopPhotos.laceShelves,
-  ankara1: shopPhotos.boltWall,
-  ankara2: shopPhotos.displayWall,
-  velvet1: shopPhotos.laceShelves,
-  velvet2: shopPhotos.mannequin,
-  linen1: shopPhotos.displayWall,
-  linen2: shopPhotos.boltWall,
-  chiffon1: shopPhotos.boltWall,
-  chiffon2: shopPhotos.displayWall,
-  brocade1: shopPhotos.boltWall,
-  brocade2: shopPhotos.laceShelves,
-} as const;
-
 export const categories: CategoryRow[] = [
   {
     id: "cat-lace",
@@ -45,7 +21,7 @@ export const categories: CategoryRow[] = [
     slug: "lace",
     description:
       "Corded, beaded and chantilly laces chosen for their hand-finished detail and drape.",
-    image_url: IMAGES.lace1,
+    image_url: categoryImages.lace,
     parent_id: null,
     position: 1,
     is_featured: true,
@@ -56,7 +32,7 @@ export const categories: CategoryRow[] = [
     name: "Silk & Satin",
     slug: "silk-satin",
     description: "Mulberry silks, duchess satins and crepe-backed weaves with a liquid fall.",
-    image_url: IMAGES.silk1,
+    image_url: categoryImages["silk-satin"],
     parent_id: null,
     position: 2,
     is_featured: true,
@@ -67,7 +43,7 @@ export const categories: CategoryRow[] = [
     name: "Bridal",
     slug: "bridal",
     description: "Tulle, mikado and beaded appliqué for the gown that only happens once.",
-    image_url: IMAGES.bridal1,
+    image_url: categoryImages.bridal,
     parent_id: null,
     position: 3,
     is_featured: true,
@@ -78,7 +54,7 @@ export const categories: CategoryRow[] = [
     name: "African Prints",
     slug: "african-prints",
     description: "Wax prints, kente-inspired weaves and hand-stamped adire from trusted mills.",
-    image_url: IMAGES.ankara1,
+    image_url: categoryImages["african-prints"],
     parent_id: null,
     position: 4,
     is_featured: true,
@@ -89,7 +65,7 @@ export const categories: CategoryRow[] = [
     name: "Velvet",
     slug: "velvet",
     description: "Silk-blend and stretch velvets with a deep, even pile.",
-    image_url: IMAGES.velvet1,
+    image_url: categoryImages.velvet,
     parent_id: null,
     position: 5,
     is_featured: false,
@@ -100,7 +76,7 @@ export const categories: CategoryRow[] = [
     name: "Linen & Cotton",
     slug: "linen-cotton",
     description: "Breathable naturals for tailoring, resortwear and everyday elegance.",
-    image_url: IMAGES.linen1,
+    image_url: categoryImages["linen-cotton"],
     parent_id: null,
     position: 6,
     is_featured: false,
@@ -111,7 +87,7 @@ export const categories: CategoryRow[] = [
     name: "Chiffon & Georgette",
     slug: "chiffon-georgette",
     description: "Featherweight sheers that move with the wearer.",
-    image_url: IMAGES.chiffon1,
+    image_url: categoryImages["chiffon-georgette"],
     parent_id: null,
     position: 7,
     is_featured: false,
@@ -122,7 +98,7 @@ export const categories: CategoryRow[] = [
     name: "Brocade & Jacquard",
     slug: "brocade-jacquard",
     description: "Woven-in motifs with metallic thread, cut for ceremony.",
-    image_url: IMAGES.brocade1,
+    image_url: categoryImages["brocade-jacquard"],
     parent_id: null,
     position: 8,
     is_featured: false,
@@ -138,8 +114,8 @@ export const collections: CollectionRow[] = [
     tagline: "Hand-finished, endlessly detailed",
     description:
       "Our most requested house category. French-corded, Swiss-embroidered and beaded laces selected for the weight of the cord and the honesty of the finish — the two things a photograph cannot show you.",
-    cover_image_url: IMAGES.lace1,
-    accent_image_url: IMAGES.lace2,
+    cover_image_url: collectionImages["luxury-lace"].cover,
+    accent_image_url: collectionImages["luxury-lace"].accent,
     position: 1,
     is_featured: true,
     created_at: "2024-02-01T09:00:00Z",
@@ -151,8 +127,8 @@ export const collections: CollectionRow[] = [
     tagline: "For the day everything is measured against",
     description:
       "Everything a wedding party needs under one roof: gown fabrics, aso-ebi in matched dye lots, and lining that behaves under studio light.",
-    cover_image_url: IMAGES.bridal2,
-    accent_image_url: IMAGES.bridal1,
+    cover_image_url: collectionImages.wedding.cover,
+    accent_image_url: collectionImages.wedding.accent,
     position: 2,
     is_featured: true,
     created_at: "2024-02-01T09:00:00Z",
@@ -164,8 +140,8 @@ export const collections: CollectionRow[] = [
     tagline: "Heritage cloth, honestly sourced",
     description:
       "Wax prints, brocade and hand-stamped adire bought directly from mills and artisan houses we have worked with for years.",
-    cover_image_url: IMAGES.ankara1,
-    accent_image_url: IMAGES.ankara2,
+    cover_image_url: collectionImages.traditional.cover,
+    accent_image_url: collectionImages.traditional.accent,
     position: 3,
     is_featured: true,
     created_at: "2024-02-01T09:00:00Z",
@@ -177,8 +153,8 @@ export const collections: CollectionRow[] = [
     tagline: "Cloth that catches the light",
     description:
       "Duchess satin, silk velvet and metallic jacquard — fabrics with enough body to hold a silhouette across a long night.",
-    cover_image_url: IMAGES.velvet1,
-    accent_image_url: IMAGES.silk2,
+    cover_image_url: collectionImages.evening.cover,
+    accent_image_url: collectionImages.evening.accent,
     position: 4,
     is_featured: true,
     created_at: "2024-02-01T09:00:00Z",
@@ -190,8 +166,8 @@ export const collections: CollectionRow[] = [
     tagline: "Ivory, blush and every white in between",
     description:
       "Twelve distinct whites, swatched side by side, so you can choose against skin tone rather than against a screen.",
-    cover_image_url: IMAGES.bridal1,
-    accent_image_url: IMAGES.lace2,
+    cover_image_url: collectionImages.bridal.cover,
+    accent_image_url: collectionImages.bridal.accent,
     position: 5,
     is_featured: true,
     created_at: "2024-02-01T09:00:00Z",
@@ -203,8 +179,8 @@ export const collections: CollectionRow[] = [
     tagline: "The top of the house",
     description:
       "Limited-length bolts from European and Asian mills. When a premium piece sells out, it rarely returns.",
-    cover_image_url: IMAGES.silk1,
-    accent_image_url: IMAGES.brocade1,
+    cover_image_url: collectionImages.premium.cover,
+    accent_image_url: collectionImages.premium.accent,
     position: 6,
     is_featured: true,
     created_at: "2024-02-01T09:00:00Z",
@@ -215,8 +191,8 @@ export const collections: CollectionRow[] = [
     slug: "new-arrivals",
     tagline: "Just off the bolt",
     description: "The most recent additions to the shelves, updated as stock lands.",
-    cover_image_url: IMAGES.chiffon1,
-    accent_image_url: IMAGES.linen1,
+    cover_image_url: collectionImages["new-arrivals"].cover,
+    accent_image_url: collectionImages["new-arrivals"].accent,
     position: 7,
     is_featured: true,
     created_at: "2024-02-01T09:00:00Z",
@@ -260,7 +236,7 @@ const seeds: ProductSeed[] = [
     gsm: 150,
     colors: ["Ivory", "Champagne", "Blush", "Powder Blue"],
     tags: ["lace", "bridal", "premium"],
-    images: [IMAGES.lace1, IMAGES.lace2, IMAGES.bridal1],
+    images: [P.laceEyelet, P.laceRack, P.bridalFitting],
     short: "French-style corded lace with a scalloped double border.",
     description:
       "A true Alençon construction: fine net ground, dense floral motif, and a raised cotton cord tracing every outline. Both selvedges are finished with a deep scallop, so a skirt hem or sleeve edge needs no additional trim. Cuts cleanly and holds an appliqué without fraying.",
@@ -282,7 +258,7 @@ const seeds: ProductSeed[] = [
     gsm: 190,
     colors: ["Ivory", "Silver", "Antique Gold"],
     tags: ["lace", "beaded", "premium", "bridal"],
-    images: [IMAGES.lace2, IMAGES.bridal1, IMAGES.lace1],
+    images: [P.sequinGold, P.laceBeaded, P.laceRack],
     short: "Hand-beaded chantilly with glass seed beads and matte sequins.",
     description:
       "Each motif is beaded by hand — the reason no two metres are quite identical. Glass seed beads catch tungsten and daylight differently, which is why we recommend swatching under the light you will actually be photographed in. Sold in continuous lengths.",
@@ -304,7 +280,7 @@ const seeds: ProductSeed[] = [
     gsm: 92,
     colors: ["Champagne", "Emerald", "Onyx", "Bordeaux", "Pearl"],
     tags: ["silk", "premium", "evening"],
-    images: [IMAGES.silk1, IMAGES.silk2],
+    images: [P.silkTeal, P.silkNavy, P.silkStack],
     short: "19 momme charmeuse with a lacquered face and matte reverse.",
     description:
       "Grade 6A mulberry filament woven at 19 momme — heavy enough to fall in a clean column, light enough for a bias cut. The satin face has a wet shine; the reverse is a soft crepe, so a single fabric gives you two finishes in one garment.",
@@ -326,7 +302,7 @@ const seeds: ProductSeed[] = [
     gsm: 220,
     colors: ["Ivory", "Pure White", "Blush", "Navy"],
     tags: ["satin", "bridal", "structured"],
-    images: [IMAGES.silk2, IMAGES.bridal2],
+    images: [P.silkStack, P.silkPink],
     short: "Heavy structured satin that holds an architectural silhouette.",
     description:
       "The fabric to reach for when the design needs to stand away from the body — ballgown skirts, sculpted bodices, sharp lapels. Dense enough to be self-supporting with minimal interfacing, and it photographs without the harsh hot-spots of a cheaper satin.",
@@ -347,7 +323,7 @@ const seeds: ProductSeed[] = [
     gsm: 250,
     colors: ["Ivory", "Diamond White", "Oyster"],
     tags: ["bridal", "premium", "structured"],
-    images: [IMAGES.bridal1, IMAGES.bridal2, IMAGES.silk2],
+    images: [P.bridalFitting, P.laceTulle, P.silkStack],
     short: "Crisp mikado with a subdued lustre and remarkable body.",
     description:
       "Mikado sits between satin and faille: it has the sheen of one and the structure of the other. Pleats hold their fold, seams press flat, and the surface is matte enough that studio flash reads as light rather than glare.",
@@ -369,7 +345,7 @@ const seeds: ProductSeed[] = [
     gsm: 28,
     colors: ["Ivory", "White", "Nude", "Soft Blush"],
     tags: ["bridal", "tulle", "veil"],
-    images: [IMAGES.bridal2, IMAGES.chiffon2],
+    images: [P.laceTulle, P.bridalFitting],
     short: "300cm-wide soft tulle for veils, overlays and illusion necklines.",
     description:
       "Extra-wide so a cathedral veil can be cut with no centre seam. Soft-hand finish — it drapes rather than stands, and the nude shade genuinely disappears against a range of skin tones under camera.",
@@ -391,7 +367,7 @@ const seeds: ProductSeed[] = [
     gsm: 160,
     colors: ["Indigo", "Ochre", "Emerald", "Crimson"],
     tags: ["wax", "traditional", "cotton"],
-    images: [IMAGES.ankara1, IMAGES.ankara2],
+    images: [P.wax1, P.wax2],
     short: "Full six-yard piece, true wax, matched dye lots available.",
     description:
       "Genuine double-sided wax with the crackle veining that only comes from a real resist process — the colour reads identically from either face. Sold as a full six-yard piece; tell us your headcount and we will hold matching dye lots for an aso-ebi party.",
@@ -412,7 +388,7 @@ const seeds: ProductSeed[] = [
     width: 115,
     colors: ["Indigo", "Deep Navy", "Slate"],
     tags: ["adire", "artisan", "traditional"],
-    images: [IMAGES.ankara2, IMAGES.ankara1],
+    images: [P.wax3, P.wax2],
     short: "Artisan indigo resist-dyed by hand, no two lengths alike.",
     description:
       "Stamped and dyed by an artisan cooperative we buy from directly. The irregularities are the point — slight bleeding at a motif edge is evidence of a hand process, not a fault. Expect gentle indigo transfer on first wear.",
@@ -435,7 +411,7 @@ const seeds: ProductSeed[] = [
     gsm: 260,
     colors: ["Emerald", "Bordeaux", "Midnight", "Espresso"],
     tags: ["velvet", "evening", "premium"],
-    images: [IMAGES.velvet1, IMAGES.velvet2],
+    images: [P.velvetEmerald, P.velvetDark],
     short: "Fluid viscose-pile velvet with genuine depth of colour.",
     description:
       "A viscose pile on a silk ground, which is what gives this its liquid drape — it pours rather than stands. The pile has a clear direction, so cut every piece facing the same way or the panels will read as two different colours.",
@@ -457,7 +433,7 @@ const seeds: ProductSeed[] = [
     gsm: 230,
     colors: ["Sapphire", "Ruby", "Amethyst", "Onyx"],
     tags: ["velvet", "stretch", "evening"],
-    images: [IMAGES.velvet2, IMAGES.velvet1],
+    images: [P.velvetRed, P.velvetOlive],
     short: "Four-way stretch velvet for body-skimming evening wear.",
     description:
       "Forgiving, hard-wearing and considerably easier to sew than a silk pile. Recovers well after a full night of wear, which makes it a reliable choice for bridesmaids and performance costume.",
@@ -478,7 +454,7 @@ const seeds: ProductSeed[] = [
     gsm: 185,
     colors: ["Natural", "Sage", "Terracotta", "Chalk", "Ink"],
     tags: ["linen", "natural", "tailoring"],
-    images: [IMAGES.linen1, IMAGES.linen2],
+    images: [P.linenRolls, P.linenPeach],
     short: "Stone-washed flax that arrives already softened.",
     description:
       "Pre-washed at the mill, so it has done most of its shrinking and all of its softening before you cut it. Mid-weight — substantial enough for a structured shirt or unlined jacket, still breathable in real heat.",
@@ -500,7 +476,7 @@ const seeds: ProductSeed[] = [
     gsm: 120,
     colors: ["White", "Sky", "Stripe Navy", "Ecru"],
     tags: ["cotton", "shirting", "tailoring"],
-    images: [IMAGES.linen2, IMAGES.linen1],
+    images: [P.linenPeach, P.linenDenim],
     short: "Long-staple 120s poplin with a cool, dry hand.",
     description:
       "120s two-fold long-staple yarn: a smooth, near-silky face that keeps its crispness through a long day. The standard against which shirting is judged, and it takes a collar press beautifully.",
@@ -521,7 +497,7 @@ const seeds: ProductSeed[] = [
     gsm: 45,
     colors: ["Blush", "Ivory", "Dusty Rose", "Charcoal", "Sea Glass"],
     tags: ["chiffon", "sheer", "evening"],
-    images: [IMAGES.chiffon1, IMAGES.chiffon2],
+    images: [P.chiffonBlue, P.chiffonLilac],
     short: "Featherweight silk sheer with a faint grainy texture.",
     description:
       "Pure silk chiffon — airy, matte and slightly crisp rather than slippery. Ideal for layered overskirts, floating sleeves and anything meant to move on its own. Layer two to three plies for opacity without losing lightness.",
@@ -542,7 +518,7 @@ const seeds: ProductSeed[] = [
     gsm: 80,
     colors: ["Pearl", "Champagne", "Mint", "Lilac", "Slate"],
     tags: ["georgette", "flowing", "everyday"],
-    images: [IMAGES.chiffon2, IMAGES.chiffon1],
+    images: [P.chiffonChampagne, P.chiffonCoral],
     short: "Sand-textured georgette with excellent recovery.",
     description:
       "The practical alternative to silk georgette: same fluid movement and pebbled surface, but it travels well and resists creasing through a long event. A dependable choice for wide-leg trousers and bias skirts.",
@@ -564,7 +540,7 @@ const seeds: ProductSeed[] = [
     gsm: 240,
     colors: ["Antique Gold", "Rose Gold", "Emerald Gold"],
     tags: ["brocade", "ceremony", "traditional"],
-    images: [IMAGES.brocade1, IMAGES.brocade2],
+    images: [P.brocadeGold, P.brocadeDetail],
     short: "Woven-in metallic motif with a substantial ceremonial weight.",
     description:
       "The pattern is woven rather than printed, so it appears on both faces and will never crack or lift. Weighty enough for agbada, kaftan and full ceremonial skirts, and the metallic thread stays supple instead of scratching.",
@@ -586,7 +562,7 @@ const seeds: ProductSeed[] = [
     gsm: 210,
     colors: ["Emerald", "Sapphire", "Obsidian"],
     tags: ["jacquard", "evening", "structured"],
-    images: [IMAGES.brocade2, IMAGES.brocade1],
+    images: [P.brocadeDetail, P.velvetEmerald],
     short: "Tone-on-tone damask that reads as texture, not pattern.",
     description:
       "A self-coloured damask where the motif emerges only as the light shifts. Perfect where you want visual interest without competing with beading or a statement neckline.",
@@ -607,7 +583,7 @@ const seeds: ProductSeed[] = [
     gsm: 200,
     colors: ["Ivory", "Black", "Wine", "Gold"],
     tags: ["lace", "guipure", "structured"],
-    images: [IMAGES.lace1, IMAGES.lace2],
+    images: [P.laceRack, P.laceEyelet],
     short: "Netless cord lace — the motif is the fabric.",
     description:
       "Guipure has no net ground: the motifs are joined directly, which makes it stiffer and far easier to cut into clean appliqué shapes. Excellent for sculpted necklines, structured peplums and bold cut-out detail.",
@@ -628,7 +604,7 @@ const seeds: ProductSeed[] = [
     gsm: 180,
     colors: ["Champagne", "Silver", "Rose Gold", "Onyx"],
     tags: ["sequin", "evening", "party"],
-    images: [IMAGES.lace2, IMAGES.velvet2],
+    images: [P.sequinDrape, P.sequinGold],
     short: "Overlapping matte sequins on a stretch mesh ground.",
     description:
       "Sequins are stitched in overlapping rows on a two-way stretch mesh, so it moves with the body rather than fighting it. The matte finish flatters on camera where a high-gloss sequin tends to blow out.",
@@ -650,7 +626,7 @@ const seeds: ProductSeed[] = [
     gsm: 140,
     colors: ["Ivory", "Sage", "Mauve", "Black", "Cobalt"],
     tags: ["satin", "reversible", "bridesmaid"],
-    images: [IMAGES.silk2, IMAGES.silk1],
+    images: [P.silkPink, P.silkStack],
     short: "Two finishes in one cloth — satin face, crepe reverse.",
     description:
       "Use the satin side for sashes and facings, the crepe side for the body, and the garment reads as considered rather than shiny. A long-standing favourite for bridesmaid parties where budget matters but the photographs still do.",
@@ -672,7 +648,7 @@ const seeds: ProductSeed[] = [
     gsm: 55,
     colors: ["Iridescent Pearl", "Blush", "Sky", "Gold"],
     tags: ["organza", "sheer", "structured"],
-    images: [IMAGES.chiffon1, IMAGES.bridal2],
+    images: [P.chiffonLilac, P.laceTulle],
     short: "Crisp iridescent sheer that holds volume.",
     description:
       "Where chiffon falls, organza stands. Iridescent warp gives a colour shift as the wearer turns — used for puffed sleeves, ruffled tiers and structured overlays that need air beneath them.",
@@ -693,7 +669,7 @@ const seeds: ProductSeed[] = [
     gsm: 140,
     colors: ["White", "Natural", "Butter", "Sky"],
     tags: ["eyelet", "cotton", "summer"],
-    images: [IMAGES.linen1, IMAGES.lace1],
+    images: [P.laceEyelet, P.linenPeach],
     short: "Embroidered broderie anglaise with a scalloped edge.",
     description:
       "Machine-embroidered eyelet on a crisp cotton base, one selvedge finished with a scallop. Breathable and washable — this is lace for daylight, resortwear and children's occasion pieces.",
@@ -715,7 +691,7 @@ const seeds: ProductSeed[] = [
     gsm: 230,
     colors: ["Gold Multi", "Royal Multi", "Earth Multi"],
     tags: ["kente", "ceremony", "traditional"],
-    images: [IMAGES.ankara1, IMAGES.brocade1],
+    images: [P.wax2, P.brocadeGold],
     short: "Strip-woven ceremonial cloth in traditional colourways.",
     description:
       "Woven in narrow strips and joined in the traditional manner. Substantial, ceremonial, and intended to be seen — the geometry is best served by simple, uncluttered pattern pieces.",
@@ -736,7 +712,7 @@ const seeds: ProductSeed[] = [
     gsm: 65,
     colors: ["Ivory", "White", "Nude", "Champagne"],
     tags: ["lining", "bridal", "silk"],
-    images: [IMAGES.silk1, IMAGES.bridal1],
+    images: [P.chiffonChampagne, P.laceTulle],
     short: "Breathable silk habotai lining that keeps a gown wearable.",
     description:
       "The part of a gown nobody photographs and everybody feels. Silk habotai breathes where an acetate lining traps heat — which matters a great deal at an outdoor ceremony in the middle of the day.",
@@ -757,7 +733,7 @@ const seeds: ProductSeed[] = [
     gsm: 300,
     colors: ["Cream Gold", "Black White", "Blush Silver"],
     tags: ["tweed", "tailoring", "premium"],
-    images: [IMAGES.linen2, IMAGES.brocade2],
+    images: [P.linenPeach, P.silkStack],
     short: "Loopy bouclé with a fine metallic thread running through.",
     description:
       "A classic jacketing bouclé with just enough metallic to lift it under evening light. Loosely woven, so overlock or bind every edge as you cut. Rewards a fringed trim rather than a turned hem.",

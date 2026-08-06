@@ -5,7 +5,7 @@ import { ArrowRight, Check, MessageCircle } from "lucide-react";
 import * as Icons from "lucide-react";
 
 import { services, whyChooseUs } from "@/data/company";
-import { shopPhotos } from "@/data/images";
+import { sceneImages as S } from "@/data/images";
 import { siteConfig } from "@/config/site";
 import { cn, whatsappLink } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ export default function ServicesPage() {
         title="Services"
         description="Six ways we work with customers — from a single yard cut over the counter to a five-hundred-metre uniform contract. All of them start with the same conversation about what the cloth has to do."
         breadcrumbs={[{ name: "Services", href: "/services" }]}
-        image={shopPhotos.boltWall}
+        image={S.shop1}
       />
 
       {/* Overview cards */}

@@ -3,7 +3,7 @@ import { SafeImage as Image } from "@/components/shared/safe-image";
 import { Compass, Eye, Target } from "lucide-react";
 
 import { coreValues, storeStats, timeline, whyChooseUs } from "@/data/company";
-import { shopPhotos } from "@/data/images";
+import { sceneImages as S } from "@/data/images";
 import { PageHeader } from "@/components/shared/page-header";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
@@ -18,10 +18,10 @@ export const metadata: Metadata = {
 };
 
 const storePhotos = [
-  { src: shopPhotos.boltWall, caption: "The shelves, sorted every Monday" },
-  { src: shopPhotos.laceShelves, caption: "The lace corner" },
-  { src: shopPhotos.mannequin, caption: "Draped on the stand, tape alongside" },
-  { src: shopPhotos.displayWall, caption: "Lengths held for collection" },
+  { src: S.shop1, caption: "The bolt wall, sorted every Monday" },
+  { src: S.laceTable, caption: "The lace table" },
+  { src: S.shelfSilk, caption: "Silk, folded on the bias" },
+  { src: S.cottonRolls, caption: "Cotton rolls in forty shades" },
 ];
 
 export default function AboutPage() {
@@ -32,7 +32,7 @@ export default function AboutPage() {
         title="A family shop that never wanted to be a warehouse"
         description="We opened on a single rule: only sell fabric we would sew with ourselves, and publish the numbers that let you check."
         breadcrumbs={[{ name: "About", href: "/about" }]}
-        image={shopPhotos.boltWall}
+        image={S.shop1}
       />
 
       {/* Story */}
@@ -41,7 +41,7 @@ export default function AboutPage() {
           <Reveal preset="reveal">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-muted">
               <Image
-                src={shopPhotos.displayWall}
+                src={S.shop2}
                 alt="The YADIMS shop at Tam-Tam, opposite Bali Hotel"
                 fill
                 sizes="(min-width: 1024px) 45vw, 92vw"

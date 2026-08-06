@@ -33,8 +33,19 @@ export function CategoryShowcase({ categories }: { categories: CategoryRow[] }) 
             i === 0 ? "lg:col-span-2 lg:row-span-2" : "",
           )}
         >
-          <Link href={`/shop?category=${category.slug}`} className="block">
-            <div className={cn("relative", i === 0 ? "aspect-[4/5] lg:aspect-auto lg:h-full" : "aspect-[4/3]")}>
+          {/*
+            `h-full` has to be carried all the way down from the grid cell.
+            Without it on the anchor, the inner `lg:h-full` resolved against an
+            auto-height parent, collapsed to zero, and the `fill` image on the
+            large tile had no box to paint into — it rendered as a black panel.
+          */}
+          <Link href={`/shop?category=${category.slug}`} className="block h-full">
+            <div
+              className={cn(
+                "relative",
+                i === 0 ? "aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[26rem]" : "aspect-[4/3]",
+              )}
+            >
               {category.image_url ? (
                 <Image
                   src={category.image_url}

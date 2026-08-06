@@ -1,4 +1,4 @@
-import { shopPhotos, stock as img } from "@/data/images";
+import { productImages as P, sceneImages as S, shopPhotos } from "@/data/images";
 import type { BlogPostRow, GalleryItemRow } from "@/types/database";
 
 /* ------------------------------------------------------------------ */
@@ -7,7 +7,7 @@ import type { BlogPostRow, GalleryItemRow } from "@/types/database";
 
 type GallerySeed = [string, string, string, GalleryItemRow["category"], GalleryItemRow["aspect"]];
 
-/** Real shop photography — these lead the gallery. */
+/** The owner's own photographs lead the gallery once they are supplied. */
 const realSeeds: GallerySeed[] = [
   [shopPhotos.boltWall, "The Shelves", "Cottons, crepes and metallic jacquards, sorted by hand every Monday morning.", "Store", "portrait"],
   [shopPhotos.laceShelves, "The Lace Corner", "Sequin, beaded and embroidered lace — where every bridal decision actually gets made.", "Fabric Displays", "portrait"],
@@ -16,16 +16,16 @@ const realSeeds: GallerySeed[] = [
 ];
 
 const stockSeeds: GallerySeed[] = [
-  [img("1558769132-cb1aea458c5e"), "Chantilly, Under Light", "Beaded chantilly photographed under tungsten.", "Fabric Displays", "square"],
-  [img("1524292332709-b33366a7f165"), "Silk Column", "Nineteen momme charmeuse, falling as it should.", "Fabric Displays", "portrait"],
-  [img("1595777457583-95e059d581b8"), "Twelve Whites", "Our bridal swatch board — no two the same.", "New Stock", "landscape"],
-  [img("1589810635657-232948472d98"), "Wax Arrival", "A Ghanaian delivery, still in its wrap.", "New Stock", "portrait"],
-  [img("1606813907291-d86efa9b94db"), "Print Room", "Matching dye lots for a forty-guest aso-ebi.", "New Stock", "square"],
-  [img("1618354691373-d851c5c3a990"), "Velvet Corner", "Silk-blend velvet in four house colours.", "Fabric Displays", "portrait"],
-  [img("1519741497674-611481863552"), "The Kounde Wedding", "Our mikado, cut by Atelier Mbala.", "Customer Showcase", "landscape"],
-  [img("1596462502278-27bfdc403348"), "Chiffon in Motion", "Silk chiffon, three plies, one breeze.", "Customer Showcase", "portrait"],
-  [img("1620799140408-edc6dcb6d633"), "Linen Season", "Washed European flax in five shades.", "New Stock", "landscape"],
-  [img("1558769132-92e717d613cd"), "Trunk Show", "Designers previewing next season's laces.", "Events", "landscape"],
+  [S.shop1, "The Bolt Wall", "Floor to ceiling, sorted by weight rather than colour.", "Store", "portrait"],
+  [S.shelfSilk, "Silk Shelf", "Charmeuse and duchess satin, folded on the bias.", "Fabric Displays", "portrait"],
+  [S.laceTable, "The Lace Table", "Where every bridal decision actually gets made.", "Fabric Displays", "landscape"],
+  [S.cottonRolls, "Cotton Rolls", "Solid cottons and poplins in forty shades.", "New Stock", "portrait"],
+  [P.velvetEmerald, "Velvet Corner", "Silk-blend velvet in the house green.", "Fabric Displays", "square"],
+  [S.waxModel, "Wax, Worn", "A six-yard piece, cut and sewn by a customer.", "Customer Showcase", "portrait"],
+  [S.tailor1, "At the Machine", "The part nobody photographs and everybody feels.", "Events", "landscape"],
+  [S.tailor2, "Finishing", "A hem pressed before it leaves the counter.", "Customer Showcase", "portrait"],
+  [S.sequinDetail, "Sequin, Under Light", "Matte sequin on a stretch mesh ground.", "New Stock", "square"],
+  [S.shop3, "Opening Up", "The shop at eight in the morning.", "Events", "landscape"],
 ];
 
 export const galleryItems: GalleryItemRow[] = [...realSeeds, ...stockSeeds].map(
@@ -89,7 +89,7 @@ Take a swatch. Photograph it on a phone, with flash, against the skin of the per
 ## What to ask for at the counter
 
 Bring the sketch, the measurements, and the silhouette. Any shop worth buying from would rather talk through the design than sell you the most expensive bolt on the wall — and a good one will tell you when a cheaper lace is the better answer.`,
-    cover_image_url: img("1594633312681-425c7b97ccd1"),
+    cover_image_url: S.laceTable,
     category: "Bridal",
     tags: ["lace", "bridal", "buying guide"],
     author_name: "Yadims Editorial",
@@ -137,7 +137,7 @@ Width is where money is quietly won and lost. A 300cm-wide tulle and a 115cm-wid
 A rough rule: at 115cm you need roughly a third more length than at 150cm for the same garment. For anything cut on the bias, more again.
 
 Always tell us the width you are planning against before you commit to a quantity. We would rather spend five minutes on the arithmetic than have you return with a metre too little — after we have cut into the bolt.`,
-    cover_image_url: img("1615800098779-1be32e60cca3"),
+    cover_image_url: S.cottonRolls,
     category: "Fabric Care",
     tags: ["gsm", "momme", "guide"],
     author_name: "Yadims Editorial",
@@ -179,7 +179,7 @@ Get everyone into their outfit once, together. Small differences in interpretati
 ## What we do for you
 
 We hold matched lots, cut to a consistent length, mark each piece with the guest's name where you want that, and will deliver in one consignment across Yaoundé. Ask for the aso-ebi service by name when you call — it costs nothing extra.`,
-    cover_image_url: img("1589810635657-232948472d98"),
+    cover_image_url: S.waxModel,
     category: "Traditional",
     tags: ["aso-ebi", "wax print", "planning"],
     author_name: "Yadims Editorial",
@@ -223,7 +223,7 @@ Even one wearing puts body moisture into the fibre. Hang the garment somewhere s
 ## When something goes wrong
 
 Do not attempt a water spot yourself — you will set a ring. Take it to a cleaner who handles silk specifically and tell them what caused the mark. We keep a list of two in Yaoundé we trust; ask and we will share it.`,
-    cover_image_url: img("1524292332709-b33366a7f165"),
+    cover_image_url: P.silkTeal,
     category: "Fabric Care",
     tags: ["silk", "care", "storage"],
     author_name: "Yadims Editorial",
@@ -267,7 +267,7 @@ Steam only, from the reverse, with the garment hanging. If you must press a seam
 Velvet creeps. Two layers will walk against each other and your seam will finish out of alignment. Pin far more heavily than feels reasonable, use a walking foot if you have one, and sew in the direction of the nap.
 
 Our silk-blend velvet is the most forgiving of these in a coastal climate — the viscose pile recovers well from packing, and it does not hold heat the way a synthetic pile does.`,
-    cover_image_url: img("1618354691373-d851c5c3a990"),
+    cover_image_url: P.velvetEmerald,
     category: "Technique",
     tags: ["velvet", "sewing", "technique"],
     author_name: "Yadims Editorial",
@@ -313,7 +313,7 @@ Establish this before, not after. Our policy is straightforward: report within s
 ## Talk to us directly
 
 Wholesale pricing at YADIMS starts at 50 metres and improves at 200 and 500. Bring the spec sheet and we will quote against it — including the yardage arithmetic, which we would rather do twice than have you do once.`,
-    cover_image_url: img("1441984904996-e0b6ba687e04"),
+    cover_image_url: S.shop1,
     category: "Wholesale",
     tags: ["wholesale", "bulk", "trade"],
     author_name: "Yadims Editorial",

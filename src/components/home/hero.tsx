@@ -73,10 +73,11 @@ export function Hero() {
         {/*
           Green tint, multiplied rather than overlaid. Multiply darkens toward
           the tint where the cloth is shadowed and leaves the crest highlights
-          bright, so white silk reads as green silk instead of as a flat wash.
+          bright, so white silk reads as green silk rather than a flat wash.
+          Kept at brand-600 with the flat scrim removed — anything heavier
+          buries the folds entirely and the hero looks like plain colour.
         */}
-        <div className="absolute inset-0 bg-brand-700 mix-blend-multiply" aria-hidden />
-        <div className="absolute inset-0 bg-brand-900/35" aria-hidden />
+        <div className="absolute inset-0 bg-brand-600 mix-blend-multiply" aria-hidden />
 
         {/*
           3 — the owner's own shelves, if supplied. A plain <img>: routing a
@@ -102,11 +103,11 @@ export function Hero() {
         contrast for the copy, so the folds stay legible behind it.
       */}
       <div
-        className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-900/70 via-brand-900/40 to-brand-900/90"
+        className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-900/55 via-brand-900/25 to-brand-900/80"
         aria-hidden
       />
       <div
-        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(4,35,21,0.35)_12%,rgba(4,35,21,0.78)_100%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(4,35,21,0.18)_10%,rgba(4,35,21,0.7)_100%)]"
         aria-hidden
       />
 

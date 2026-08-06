@@ -4,10 +4,10 @@ import { ArrowRight, MessageCircle, Phone } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { whatsappLink } from "@/lib/utils";
-import { shopPhotos } from "@/data/images";
+import { sceneImages as S } from "@/data/images";
 import { Button } from "@/components/ui/button";
 
-const BANNER_IMAGE = shopPhotos.displayWall;
+const BANNER_IMAGE = S.shop2;
 
 export function ContactBanner() {
   return (

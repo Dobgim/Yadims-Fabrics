@@ -1,4 +1,4 @@
-import { shopPhotos, stock as img } from "@/data/images";
+import { productImages as P, sceneImages as S } from "@/data/images";
 
 export const services = [
   {
@@ -14,7 +14,7 @@ export const services = [
       "Weight, width and fibre content published for every bolt",
       "Swatch service before you commit",
     ],
-    image: shopPhotos.boltWall,
+    image: S.shop1,
   },
   {
     slug: "wholesale-supply",
@@ -29,7 +29,7 @@ export const services = [
       "30-day terms after three settled orders",
       "First look at incoming stock",
     ],
-    image: shopPhotos.displayWall,
+    image: S.cottonRolls,
   },
   {
     slug: "bulk-orders",
@@ -44,7 +44,7 @@ export const services = [
       "One consolidated delivery across Yaoundé",
       "No surcharge for the coordination",
     ],
-    image: img("1589810635657-232948472d98"),
+    image: S.waxModel,
   },
   {
     slug: "fashion-consultation",
@@ -59,7 +59,7 @@ export const services = [
       "Yardage calculated against your pattern layout",
       "Fee credited against your order",
     ],
-    image: shopPhotos.laceShelves,
+    image: S.laceTable,
   },
   {
     slug: "fabric-recommendations",
@@ -74,7 +74,7 @@ export const services = [
       "Honest about when the cheaper bolt is the right one",
       "Swatches posted anywhere in Cameroon",
     ],
-    image: img("1596462502278-27bfdc403348"),
+    image: P.chiffonBlue,
   },
   {
     slug: "special-orders",
@@ -89,7 +89,7 @@ export const services = [
       "Typical lead time four to eight weeks",
       "We say no when the answer is no",
     ],
-    image: img("1544441893-675973e31985"),
+    image: P.brocadeGold,
   },
 ] as const;
 
@@ -176,10 +176,10 @@ export const storeStats = [
 ] as const;
 
 export const instagramGrid = [
-  shopPhotos.boltWall,
-  shopPhotos.laceShelves,
-  shopPhotos.mannequin,
-  shopPhotos.displayWall,
-  img("1589810635657-232948472d98", 600),
-  img("1618354691373-d851c5c3a990", 600),
+  S.shop1,
+  P.velvetEmerald,
+  S.waxModel,
+  P.sequinGold,
+  S.laceTable,
+  P.silkTeal,
 ] as const;

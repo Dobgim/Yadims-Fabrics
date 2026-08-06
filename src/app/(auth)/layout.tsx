@@ -3,10 +3,10 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { shopPhotos } from "@/data/images";
+import { sceneImages as S } from "@/data/images";
 import { Wordmark } from "@/components/layout/wordmark";
 
-const AUTH_IMAGE = shopPhotos.laceShelves;
+const AUTH_IMAGE = S.laceTable;
 
 /**
  * Split-screen auth shell: form on the left, editorial imagery on the right.
