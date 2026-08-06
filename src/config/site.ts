@@ -12,8 +12,8 @@ export const siteConfig = {
   contact: {
     email: "hello@yadimsfabrics.com",
     salesEmail: "orders@yadimsfabrics.com",
-    phone: "+237 670 000 000",
-    phoneHref: "tel:+237670000000",
+    phone: "+237 677 69 39 01",
+    phoneHref: "tel:+237677693901",
     whatsapp: publicEnv.NEXT_PUBLIC_WHATSAPP_NUMBER,
     address: {
       line1: "Tam-Tam, Opposite Bali Hotel",

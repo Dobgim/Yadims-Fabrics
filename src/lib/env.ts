@@ -11,7 +11,7 @@ const publicSchema = z.object({
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().default(""),
   NEXT_PUBLIC_SITE_URL: z.string().url().default("http://localhost:3000"),
   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: z.string().default(""),
-  NEXT_PUBLIC_WHATSAPP_NUMBER: z.string().default("237670000000"),
+  NEXT_PUBLIC_WHATSAPP_NUMBER: z.string().default("237677693901"),
 });
 
 export const publicEnv = publicSchema.parse({
@@ -22,7 +22,7 @@ export const publicEnv = publicSchema.parse({
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined) ||
     "http://localhost:3000",
   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
-  NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "237670000000",
+  NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "237677693901",
 });
 
 /**
