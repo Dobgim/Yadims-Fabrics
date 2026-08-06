@@ -14,7 +14,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Collections",
   description:
-    "Seven house collections — Luxury Lace, Wedding, Traditional, Evening, Bridal, Premium and New Arrivals. Each grouped by what the cloth is actually for.",
+    "Seven house collections — Stone & Beaded Lace, Wedding, Traditional, Evening, Bridal, Premium and New Arrivals. Each grouped by what the cloth is actually for.",
   alternates: { canonical: "/collections" },
 };
 

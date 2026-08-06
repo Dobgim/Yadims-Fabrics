@@ -33,18 +33,18 @@ export default async function HomePage() {
       getFeaturedProducts(8),
       getNewArrivals(8),
       getProductsByCollectionSlug("wedding", 4),
-      getProductsByCollectionSlug("luxury-lace", 4),
+      getProductsByCollectionSlug("stone-lace", 4),
       getProductsByCollectionSlug("premium", 3),
     ]);
 
   const weddingCollection = collections.find((c) => c.slug === "wedding");
-  const laceCollection = collections.find((c) => c.slug === "luxury-lace");
+  const laceCollection = collections.find((c) => c.slug === "stone-lace");
 
   // Full counts for the feature meta strips — `wedding`/`lace` above are
   // capped at four for the grid, so they cannot be used for this.
   const [weddingCount, laceCount] = await Promise.all([
     getProductsByCollectionSlug("wedding").then((p) => p.length),
-    getProductsByCollectionSlug("luxury-lace").then((p) => p.length),
+    getProductsByCollectionSlug("stone-lace").then((p) => p.length),
   ]);
 
   return (
@@ -57,7 +57,7 @@ export default async function HomePage() {
           <SectionHeading
             eyebrow="Browse by cloth"
             title="Featured categories"
-            description="Eight house categories, each chosen because we could source it well — not because the shelf needed filling."
+            description="Nine house categories, each chosen because we could source it well — not because the shelf needed filling."
             action={
               <Button asChild variant="outline">
                 <Link href="/shop">

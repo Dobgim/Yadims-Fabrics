@@ -31,14 +31,15 @@ export const brand = {
 /* ------------------------------------------------------------------ */
 
 export const categoryImages = {
-  lace: "/fabrics/cat-lace.jpg",
-  "silk-satin": "/fabrics/cat-silk.jpg",
-  bridal: "/fabrics/cat-bridal.jpg",
-  "african-prints": "/fabrics/cat-wax.jpg",
-  velvet: "/fabrics/cat-velvet.jpg",
-  "linen-cotton": "/fabrics/cat-linen.jpg",
-  "chiffon-georgette": "/fabrics/cat-chiffon.jpg",
-  "brocade-jacquard": "/fabrics/cat-brocade.jpg",
+  "italian-silk": "/fabrics/cat-silk.jpg",
+  "stone-beaded-lace": "/fabrics/cat-stone-lace.jpg",
+  jacquard: "/fabrics/cat-jacquard.jpg",
+  brocade: "/fabrics/cat-brocade.jpg",
+  organza: "/fabrics/cat-organza.jpg",
+  crepe: "/fabrics/cat-crepe.jpg",
+  chiffon: "/fabrics/cat-chiffon.jpg",
+  linen: "/fabrics/cat-linen-new.jpg",
+  ankara: "/fabrics/cat-wax.jpg",
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -46,7 +47,7 @@ export const categoryImages = {
 /* ------------------------------------------------------------------ */
 
 export const collectionImages = {
-  "luxury-lace": { cover: "/fabrics/col-lace.jpg", accent: "/fabrics/col-lace-accent.jpg" },
+  "stone-lace": { cover: "/fabrics/col-stone-lace-cover.jpg", accent: "/fabrics/col-stone-lace-accent.jpg" },
   wedding: { cover: "/fabrics/col-wedding.jpg", accent: "/fabrics/col-wedding-accent.jpg" },
   traditional: {
     cover: "/fabrics/col-traditional.jpg",
@@ -63,6 +64,28 @@ export const collectionImages = {
 /* ------------------------------------------------------------------ */
 
 export const productImages = {
+  // Stone & beaded lace
+  stonePearl: "/fabrics/p-stone-pearl.jpg",
+  stoneColour: "/fabrics/p-stone-colour.jpg",
+  stoneRack: "/fabrics/p-stone-rack.jpg",
+  stoneBridal: "/fabrics/p-stone-bridal.jpg",
+  // Jacquard
+  jacquardMetallic: "/fabrics/p-jacquard-metallic.jpg",
+  jacquardDamask: "/fabrics/p-jacquard-damask.jpg",
+  jacquardPattern: "/fabrics/p-jacquard-pattern.jpg",
+  // Organza
+  organzaPeach: "/fabrics/p-organza-peach.jpg",
+  organzaBlue: "/fabrics/p-organza-blue.jpg",
+  organzaBlack: "/fabrics/p-organza-black.jpg",
+  // Crepe
+  crepeSage: "/fabrics/p-crepe-sage.jpg",
+  crepeTerracotta: "/fabrics/p-crepe-terracotta.jpg",
+  crepeIvory: "/fabrics/p-crepe-ivory.jpg",
+  // Linen
+  linenCream: "/fabrics/p-linen-cream.jpg",
+  linenNatural: "/fabrics/p-linen-natural.jpg",
+  linenWeave: "/fabrics/p-linen-weave.jpg",
+  // Lace and net
   laceEyelet: "/fabrics/p-lace-eyelet.jpg",
   laceBeaded: "/fabrics/p-lace-beaded.jpg",
   laceTulle: "/fabrics/p-lace-tulle.jpg",

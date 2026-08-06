@@ -50,7 +50,7 @@ export const footerNav = {
   shop: [
     { title: "All Fabrics", href: "/shop" },
     { title: "New Arrivals", href: "/collections/new-arrivals" },
-    { title: "Luxury Lace", href: "/collections/luxury-lace" },
+    { title: "Stone & Beaded Lace", href: "/collections/stone-lace" },
     { title: "Wedding Collection", href: "/collections/wedding" },
     { title: "Wishlist", href: "/wishlist" },
   ],
