@@ -142,6 +142,21 @@ export async function getAdminProducts(): Promise<ProductRow[]> {
   return (data as ProductRow[]) ?? [];
 }
 
+/** A single row by id, for the editors. `null` means "show a 404". */
+export async function getAdminProduct(id: string): Promise<ProductRow | null> {
+  const db = await adminDb();
+  if (!db) return null;
+  const { data } = await db.from("products").select("*").eq("id", id).maybeSingle();
+  return (data as ProductRow | null) ?? null;
+}
+
+export async function getAdminPost(id: string): Promise<BlogPostRow | null> {
+  const db = await adminDb();
+  if (!db) return null;
+  const { data } = await db.from("blog_posts").select("*").eq("id", id).maybeSingle();
+  return (data as BlogPostRow | null) ?? null;
+}
+
 export async function getAdminCategories(): Promise<CategoryRow[]> {
   const db = await adminDb();
   if (!db) return [];
@@ -185,6 +200,66 @@ export async function getAdminMessages(): Promise<ContactMessageRow[]> {
     .select("*")
     .order("created_at", { ascending: false });
   return (data as ContactMessageRow[]) ?? [];
+}
+
+export interface StorageAsset {
+  url: string;
+  bucket: string;
+  path: string;
+  name: string;
+  size: number;
+  createdAt: string;
+}
+
+const MEDIA_BUCKETS = ["products", "gallery", "blog"] as const;
+
+/**
+ * Everything actually sitting in Supabase Storage, newest first.
+ *
+ * The uploader files under `<year>/<uuid>.<ext>`, so this walks one level of
+ * folders rather than assuming a flat bucket. `list()` returns folders as
+ * entries with no `id`, which is how they are told apart from files.
+ */
+export async function getStorageAssets(): Promise<StorageAsset[]> {
+  const db = await adminDb();
+  if (!db) return [];
+
+  const assets: StorageAsset[] = [];
+
+  await Promise.all(
+    MEDIA_BUCKETS.map(async (bucket) => {
+      const store = db.storage.from(bucket);
+      const { data: top } = await store.list("", { limit: 100 });
+      if (!top) return;
+
+      const prefixes = top.filter((entry) => !entry.id).map((entry) => entry.name);
+      const files = top.filter((entry) => entry.id).map((entry) => ({ prefix: "", entry }));
+
+      const nested = await Promise.all(
+        prefixes.map(async (prefix) => {
+          const { data } = await store.list(prefix, {
+            limit: 1000,
+            sortBy: { column: "created_at", order: "desc" },
+          });
+          return (data ?? []).filter((entry) => entry.id).map((entry) => ({ prefix, entry }));
+        }),
+      );
+
+      for (const { prefix, entry } of [...files, ...nested.flat()]) {
+        const path = prefix ? `${prefix}/${entry.name}` : entry.name;
+        assets.push({
+          url: store.getPublicUrl(path).data.publicUrl,
+          bucket,
+          path,
+          name: entry.name,
+          size: (entry.metadata?.size as number | undefined) ?? 0,
+          createdAt: entry.created_at ?? new Date(0).toISOString(),
+        });
+      }
+    }),
+  );
+
+  return assets.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export async function getAdminSubscribers(): Promise<NewsletterRow[]> {

@@ -2,39 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 
+import { FORBIDDEN, NOT_CONFIGURED, requireStaff } from "@/lib/admin-guard";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/lib/validations";
 import type { MessageStatus, OrderStatus } from "@/types/database";
-
-const NOT_CONFIGURED = "Connect Supabase to make changes.";
-const FORBIDDEN = "You do not have permission to do that.";
-
-/**
- * Confirms the caller is staff before any privileged write. Middleware already
- * guards the route, but an action can be invoked directly — so it is checked
- * again here, against the session rather than the request path.
- */
-async function requireStaff() {
-  const supabase = await createClient();
-  if (!supabase) return null;
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  if (!profile || (profile.role !== "admin" && profile.role !== "staff")) return null;
-
-  // Prefer the service-role client for the write itself so cross-customer
-  // rows are reachable, falling back to the user's own client.
-  return createAdminClient() ?? supabase;
-}
 
 export async function updateOrderStatus(
   orderId: string,

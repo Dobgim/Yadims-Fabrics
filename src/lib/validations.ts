@@ -83,3 +83,138 @@ export type ReviewInput = z.infer<typeof reviewSchema>;
 export type ActionResult<T = undefined> =
   | { ok: true; message: string; data?: T }
   | { ok: false; message: string; fieldErrors?: Record<string, string[]> };
+
+// =====================================================================
+// Admin editors
+//
+// These parse `FormData`, so every value arrives as a string. The helpers
+// below turn the empty string — what an untouched input actually submits —
+// into `null` rather than letting it through as "", which would write empty
+// strings into nullable columns and show up as blank lines on the storefront.
+// =====================================================================
+
+/** Trims, then maps "" to null. For nullable text columns. */
+const optionalText = (max = 2000) =>
+  z.preprocess(
+    (v) => (typeof v === "string" ? v.trim() : v),
+    z.string().max(max).nullish().transform((v) => (v ? v : null)),
+  );
+
+/** Trims, then maps "" and absent to null. For nullable numeric columns. */
+const optionalNumber = z.preprocess(
+  (v) => (v === undefined || v === null || (typeof v === "string" && v.trim() === "") ? null : v),
+  z.coerce.number().min(0, "Cannot be negative").nullable(),
+);
+
+/**
+ * Comma- or newline-separated free text into a clean array. Used for colours
+ * and tags, which are `text[]` in Postgres.
+ */
+const textList = z.preprocess((v) => {
+  if (Array.isArray(v)) return v;
+  if (typeof v !== "string") return [];
+  return v
+    .split(/[,\n]/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+}, z.array(z.string().min(1).max(60)).max(40));
+
+/**
+ * Image URLs arrive as repeated `images` fields, one per uploaded file, in the
+ * order the uploader shows them. A single value arrives as a bare string.
+ */
+const imageList = z.preprocess((v) => {
+  if (Array.isArray(v)) return v.filter(Boolean);
+  if (typeof v === "string" && v) return [v];
+  return [];
+}, z.array(z.string().min(1)).max(12));
+
+/** HTML form checkboxes submit "on" when ticked and nothing at all when not. */
+const checkbox = z.preprocess((v) => v === "on" || v === "true" || v === true, z.boolean());
+
+const slugField = z
+  .string()
+  .trim()
+  .min(1, "A URL slug is required")
+  .max(90)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers and hyphens only");
+
+export const productSchema = z.object({
+  id: z.string().uuid().optional().or(z.literal("")),
+  name: z.string().trim().min(2, "Give the fabric a name"),
+  slug: slugField,
+  sku: optionalText(40),
+  short_description: optionalText(200),
+  description: optionalText(6000),
+  price: z.coerce.number({ invalid_type_error: "Price must be a number" }).min(0, "Price cannot be negative"),
+  compare_at_price: optionalNumber,
+  currency: z.string().trim().min(3).max(3).default("XAF"),
+  unit: z.string().trim().min(1).max(20).default("yard"),
+  material: optionalText(80),
+  width_cm: optionalNumber,
+  weight_gsm: optionalNumber,
+  care_instructions: optionalText(500),
+  origin: optionalText(80),
+  colors: textList,
+  tags: textList,
+  images: imageList,
+  stock_quantity: z.coerce.number().int().min(0, "Stock cannot be negative").default(0),
+  min_order_quantity: z.coerce.number().int().min(1, "Minimum order is at least 1").default(1),
+  category_id: z.preprocess((v) => (v ? v : null), z.string().uuid().nullable()),
+  collection_id: z.preprocess((v) => (v ? v : null), z.string().uuid().nullable()),
+  status: z.enum(["draft", "active", "archived"]).default("draft"),
+  is_featured: checkbox,
+  is_new_arrival: checkbox,
+});
+export type ProductInput = z.infer<typeof productSchema>;
+
+export const categorySchema = z.object({
+  id: z.string().uuid().optional().or(z.literal("")),
+  name: z.string().trim().min(2, "Give the category a name"),
+  slug: slugField,
+  description: optionalText(600),
+  image_url: optionalText(600),
+  position: z.coerce.number().int().min(0).default(0),
+  is_featured: checkbox,
+});
+export type CategoryInput = z.infer<typeof categorySchema>;
+
+export const collectionSchema = z.object({
+  id: z.string().uuid().optional().or(z.literal("")),
+  name: z.string().trim().min(2, "Give the collection a name"),
+  slug: slugField,
+  tagline: optionalText(160),
+  description: optionalText(1200),
+  cover_image_url: optionalText(600),
+  accent_image_url: optionalText(600),
+  position: z.coerce.number().int().min(0).default(0),
+  is_featured: checkbox,
+});
+export type CollectionInput = z.infer<typeof collectionSchema>;
+
+export const galleryItemSchema = z.object({
+  id: z.string().uuid().optional().or(z.literal("")),
+  title: z.string().trim().min(2, "Give the photograph a title"),
+  caption: optionalText(300),
+  image_url: z.string().trim().min(1, "Upload an image first"),
+  category: z.string().trim().min(1).max(40).default("Store"),
+  aspect: z.enum(["portrait", "landscape", "square"]).default("portrait"),
+  position: z.coerce.number().int().min(0).default(0),
+  is_published: checkbox,
+});
+export type GalleryItemInput = z.infer<typeof galleryItemSchema>;
+
+export const postSchema = z.object({
+  id: z.string().uuid().optional().or(z.literal("")),
+  title: z.string().trim().min(4, "Give the article a title"),
+  slug: slugField,
+  excerpt: optionalText(320),
+  content: z.string().trim().min(50, "An article needs at least a paragraph"),
+  cover_image_url: optionalText(600),
+  category: z.string().trim().min(1).max(40).default("Fabric Care"),
+  tags: textList,
+  author_name: z.string().trim().min(2).max(80).default("YADIMS Editorial"),
+  read_minutes: z.coerce.number().int().min(1).max(60).default(4),
+  status: z.enum(["draft", "published"]).default("draft"),
+});
+export type PostInput = z.infer<typeof postSchema>;

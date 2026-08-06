@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, Heart, MapPin, Package, Settings, User } from "lucide-react";
+import { Bell, Heart, LayoutDashboard, MapPin, Package, Settings, User } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -15,12 +15,20 @@ export const accountNav = [
   { title: "Settings", href: "/account/settings", icon: Settings },
 ] as const;
 
-export function AccountNav() {
+/**
+ * `isStaff` puts the dashboard one click from the shopkeeper's own account
+ * page — otherwise `/admin` is a URL you have to remember and type.
+ */
+export function AccountNav({ isStaff = false }: { isStaff?: boolean }) {
   const pathname = usePathname();
+
+  const items = isStaff
+    ? [{ title: "Dashboard", href: "/admin", icon: LayoutDashboard } as const, ...accountNav]
+    : accountNav;
 
   return (
     <nav aria-label="Account" className="flex gap-1 overflow-x-auto no-scrollbar lg:flex-col">
-      {accountNav.map((item) => {
+      {items.map((item) => {
         const active = pathname === item.href;
         return (
           <Link

@@ -3,14 +3,16 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, Plus } from "lucide-react";
+import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { cn, formatDate } from "@/lib/utils";
 import { togglePostStatus } from "@/app/actions/admin";
+import { deletePost } from "@/app/actions/catalogue";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DataTable, type Column } from "@/components/admin/data-table";
+import { DeleteButton } from "@/components/admin/form-kit";
 import type { BlogPostRow } from "@/types/database";
 
 export function PostsTable({ posts }: { posts: BlogPostRow[] }) {
@@ -30,19 +32,21 @@ export function PostsTable({ posts }: { posts: BlogPostRow[] }) {
       header: "Article",
       value: (p) => p.title,
       cell: (p) => (
-        <div className="flex items-center gap-3">
+        <Link href={`/admin/blog/${p.id}`} className="group flex items-center gap-3">
           <span className="relative h-11 w-16 shrink-0 overflow-hidden rounded-xl bg-muted">
             {p.cover_image_url ? (
               <Image src={p.cover_image_url} alt="" fill sizes="64px" className="object-cover" />
             ) : null}
           </span>
           <span className="min-w-0">
-            <span className="block max-w-[20rem] truncate font-medium">{p.title}</span>
+            <span className="block max-w-[20rem] truncate font-medium group-hover:text-brand-600">
+              {p.title}
+            </span>
             <span className="block text-xs text-muted-foreground">
               {p.read_minutes} min · {p.author_name}
             </span>
           </span>
-        </div>
+        </Link>
       ),
     },
     {
@@ -84,11 +88,27 @@ export function PostsTable({ posts }: { posts: BlogPostRow[] }) {
       header: "",
       align: "right",
       cell: (p) => (
-        <Button asChild variant="ghost" size="icon-sm" aria-label={`Read ${p.title}`}>
-          <Link href={`/blog/${p.slug}`} target="_blank">
-            <ExternalLink />
-          </Link>
-        </Button>
+        <div className="flex items-center justify-end gap-1">
+          <Button asChild variant="ghost" size="icon-sm" aria-label={`Edit ${p.title}`}>
+            <Link href={`/admin/blog/${p.id}`}>
+              <Pencil />
+            </Link>
+          </Button>
+          <Button asChild variant="ghost" size="icon-sm" aria-label={`Read ${p.title}`}>
+            <Link href={`/blog/${p.slug}`} target="_blank">
+              <ExternalLink />
+            </Link>
+          </Button>
+          <DeleteButton
+            action={deletePost}
+            id={p.id}
+            entity="article"
+            name={p.title}
+            size="icon-sm"
+          >
+            <Trash2 />
+          </DeleteButton>
+        </div>
       ),
     },
   ];
@@ -101,8 +121,10 @@ export function PostsTable({ posts }: { posts: BlogPostRow[] }) {
       searchPlaceholder="Search articles"
       emptyMessage="No articles yet."
       toolbar={
-        <Button variant="luxe" size="sm">
-          <Plus /> New article
+        <Button asChild variant="luxe" size="sm">
+          <Link href="/admin/blog/new">
+            <Plus /> New article
+          </Link>
         </Button>
       }
     />

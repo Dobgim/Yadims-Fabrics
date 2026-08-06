@@ -54,21 +54,42 @@ function AdminNotConfigured() {
       <div className="max-w-lg space-y-3">
         <h1 className="font-display text-3xl">The dashboard needs a database</h1>
         <p className="leading-relaxed text-muted-foreground">
-          Add your Supabase URL, anon key and service-role key to{" "}
-          <code className="rounded bg-card px-1.5 py-0.5 text-sm">.env.local</code>, then apply the
-          migrations in <code className="rounded bg-card px-1.5 py-0.5 text-sm">supabase/migrations</code>.
-          The storefront runs without this; the dashboard cannot.
+          The storefront runs on the fabrics bundled with the site. To add your own — with
+          photographs, prices and stock — the shop needs somewhere to keep them. That takes about
+          fifteen minutes, once, and costs nothing.
         </p>
       </div>
 
       <div className="w-full max-w-lg rounded-3xl border border-border bg-card p-6 text-left">
-        <p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">Setup order</p>
+        <p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
+          Follow ADMIN-SETUP.md
+        </p>
         <ol className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-          <li>1. Create a Supabase project and copy the three keys.</li>
-          <li>2. Run 20250101000000_init.sql, then 20250101000001_rls.sql.</li>
-          <li>3. Sign up through /sign-up, then set that profile&apos;s role to &lsquo;admin&rsquo;.</li>
-          <li>4. Return here.</li>
+          <li>
+            <span className="font-medium text-foreground">1.</span> Create a free Supabase project.
+          </li>
+          <li>
+            <span className="font-medium text-foreground">2.</span> Run the two files in{" "}
+            <code className="rounded bg-secondary px-1.5 py-0.5 text-xs">supabase/migrations</code>,
+            init first.
+          </li>
+          <li>
+            <span className="font-medium text-foreground">3.</span> Paste the three keys into{" "}
+            <code className="rounded bg-secondary px-1.5 py-0.5 text-xs">.env.local</code> and
+            restart.
+          </li>
+          <li>
+            <span className="font-medium text-foreground">4.</span> Sign up at /sign-up, then run{" "}
+            <code className="rounded bg-secondary px-1.5 py-0.5 text-xs">
+              supabase/make-admin.sql
+            </code>
+            .
+          </li>
         </ol>
+        <p className="mt-5 border-t border-border pt-4 text-xs leading-relaxed text-muted-foreground">
+          The full instructions, including how to go live on Vercel, are in{" "}
+          <span className="font-medium text-foreground">ADMIN-SETUP.md</span> in the project folder.
+        </p>
       </div>
 
       <Button asChild variant="luxe">

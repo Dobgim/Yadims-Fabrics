@@ -44,6 +44,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
   }
 
   const name = session?.profile?.full_name ?? "Your account";
+  const role = session?.profile?.role;
 
   return (
     <>
@@ -70,7 +71,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
               </div>
             </div>
 
-            <AccountNav />
+            <AccountNav isStaff={role === "admin" || role === "staff"} />
 
             <form action={signOut} className="mt-6">
               <Button
