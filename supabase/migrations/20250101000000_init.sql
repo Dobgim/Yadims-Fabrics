@@ -58,6 +58,7 @@ create table if not exists public.profiles (
   updated_at timestamptz not null default now()
 );
 
+drop trigger if exists profiles_set_updated_at on public.profiles;
 create trigger profiles_set_updated_at
   before update on public.profiles
   for each row execute function public.set_updated_at();
@@ -157,6 +158,7 @@ create table if not exists public.products (
   updated_at timestamptz not null default now()
 );
 
+drop trigger if exists products_set_updated_at on public.products;
 create trigger products_set_updated_at
   before update on public.products
   for each row execute function public.set_updated_at();
@@ -202,6 +204,7 @@ create table if not exists public.blog_posts (
   updated_at timestamptz not null default now()
 );
 
+drop trigger if exists blog_posts_set_updated_at on public.blog_posts;
 create trigger blog_posts_set_updated_at
   before update on public.blog_posts
   for each row execute function public.set_updated_at();
@@ -259,6 +262,7 @@ create table if not exists public.orders (
   updated_at timestamptz not null default now()
 );
 
+drop trigger if exists orders_set_updated_at on public.orders;
 create trigger orders_set_updated_at
   before update on public.orders
   for each row execute function public.set_updated_at();
@@ -353,6 +357,7 @@ create table if not exists public.settings (
   updated_at timestamptz not null default now()
 );
 
+drop trigger if exists settings_set_updated_at on public.settings;
 create trigger settings_set_updated_at
   before update on public.settings
   for each row execute function public.set_updated_at();

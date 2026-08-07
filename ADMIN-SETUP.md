@@ -24,23 +24,54 @@ Wait a minute or two while the project provisions.
 
 In the Supabase dashboard, open **SQL Editor** → **New query**.
 
-Run these two files, in this order, pasting the whole contents of each and
-clicking **Run**:
+Open **`supabase/setup.sql`**, copy the whole file, paste it into the editor and
+click **Run**. That is the entire database — one paste.
 
-1. `supabase/migrations/20250101000000_init.sql` — tables, indexes, triggers
-2. `supabase/migrations/20250101000001_rls.sql` — security rules and storage buckets
+It contains three parts, in the order they have to run:
 
-The second one is not optional. It is what stops a customer reading another
-customer's orders, and what allows you — and only you — to upload images.
+1. **Schema** — 14 tables, enums, indexes, triggers
+2. **Security** — Row Level Security policies and the four storage buckets
+3. **Starter catalogue** — the fabrics, categories and collections the site
+   currently shows, so the shop is not empty on the first load
 
-Optionally run `supabase/seed.sql` afterwards to fill the shop with the
-starting catalogue. Skip it if you would rather add every fabric yourself.
+Part 2 is not optional. It is what stops a customer reading another customer's
+orders, and what allows you — and only you — to upload images.
+
+The whole file is safe to run again. If a step fails halfway, fix it and re-run
+the lot; nothing is duplicated.
+
+To check it worked, run:
+
+```sql
+select table_name from information_schema.tables
+where table_schema = 'public' order by table_name;
+```
+
+You should get 14 rows, from `addresses` through to `wishlist_items`.
+
+> The individual files in `supabase/migrations/` and `supabase/seed.sql` are the
+> same SQL, split up. Use `setup.sql` unless you have a reason not to.
 
 ---
 
-## 3. Copy the three keys
+## 3. Copy the keys
 
-In Supabase: **Project Settings** → **API**.
+**This is already done for this project** — `.env.local` is filled in with the
+project URL and anon key.
+
+One key is still missing, and the dashboard is slower without it: the
+**service-role key**. In Supabase go to **Project Settings** → **API**, copy the
+`service_role` `secret` value, and paste it into `.env.local`:
+
+```
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...
+```
+
+Everything works without it — the dashboard falls back to your own signed-in
+permissions, which the staff policies already allow. It mainly matters for
+reading across every customer's rows at once, such as the analytics totals.
+
+For reference, the three values come from **Project Settings** → **API**:
 
 | On that page | Goes into `.env.local` as |
 | --- | --- |
@@ -71,11 +102,17 @@ read once at boot.
 ## 4. Make yourself the admin
 
 1. Start the site and go to **`/sign-up`**. Register with the email address you
-   want to use as the shop's login.
-2. Back in Supabase → **SQL Editor**, open `supabase/make-admin.sql`, change the
+   want to use as the shop's login, and a password of your choosing.
+2. Confirm the address from the email Supabase sends you.
+3. Back in Supabase → **SQL Editor**, open `supabase/make-admin.sql`, change the
    email on line 16 to the one you just used, and run it.
-3. Sign out and sign in again. The session carries your role, so it needs
+4. Sign out and sign in again. The session carries your role, so it needs
    refreshing once.
+
+> **To skip the confirmation email** while you are setting up: Supabase →
+> **Authentication** → **Sign In / Providers** → **Email**, turn off *Confirm
+> email*, and sign-up becomes instant. Turn it back on before you take real
+> customers, or anyone can register under an address they do not own.
 
 Now **`/admin`** opens, and a **Dashboard** link appears at the top of your
 account page.
