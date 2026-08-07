@@ -31,6 +31,35 @@ drop policy if exists "profiles_update_own" on public.profiles;
 create policy "profiles_update_own" on public.profiles
   for update using (id = auth.uid()) with check (id = auth.uid());
 
+-- A policy cannot compare a column's old value with its new one, so
+-- `profiles_update_own` above cannot tell "changing my name" from "making
+-- myself an admin" — both are an update to my own row. This trigger draws
+-- that line: a role change requires an admin, or the server's service-role
+-- key (which has no auth.uid()).
+create or replace function public.guard_profile_role()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if new.role is distinct from old.role
+     and auth.uid() is not null
+     and not public.is_admin()
+  then
+    raise exception 'Only an admin may change a role'
+      using errcode = 'insufficient_privilege';
+  end if;
+
+  return new;
+end $$;
+
+drop trigger if exists profiles_guard_role on public.profiles;
+create trigger profiles_guard_role
+  before update on public.profiles
+  for each row execute function public.guard_profile_role();
+
+
 drop policy if exists "profiles_admin_all" on public.profiles;
 create policy "profiles_admin_all" on public.profiles
   for all using (public.is_admin()) with check (public.is_admin());
