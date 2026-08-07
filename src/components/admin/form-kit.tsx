@@ -136,9 +136,11 @@ SelectField.displayName = "SelectField";
 /**
  * Title and URL slug, paired.
  *
- * The slug follows the title while it is still untouched, then stops the moment
- * the owner edits it by hand — changing the slug of a live product breaks its
- * links, so it must never move on its own once it has been set deliberately.
+ * The slug is optional. It follows the title while it is still untouched, then
+ * stops the moment the owner edits it by hand — changing the slug of a live
+ * product breaks its links, so it must never move on its own once it has been
+ * set deliberately. Left empty altogether, the server builds one from the name
+ * and makes it unique, so nobody has to think about URLs to add a fabric.
  */
 export function TitleAndSlug({
   titleLabel,
@@ -180,17 +182,20 @@ export function TitleAndSlug({
       </Field>
 
       <Field
-        label="URL slug"
+        label="URL slug (optional)"
         htmlFor="slug"
-        required
         error={slugError}
-        hint={`${slugPrefix}${slug || "…"}`}
+        hint={
+          slug
+            ? `${slugPrefix}${slug}`
+            : `Leave blank and we will make one from the ${titleLabel.toLowerCase()}`
+        }
       >
         <Input
           id="slug"
           name="slug"
           value={slug}
-          required
+          placeholder={title ? slugify(title) : "made-from-the-name"}
           onChange={(event) => {
             setLinked(false);
             setSlug(event.target.value);

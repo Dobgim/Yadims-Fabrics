@@ -132,12 +132,20 @@ const imageList = z.preprocess((v) => {
 /** HTML form checkboxes submit "on" when ticked and nothing at all when not. */
 const checkbox = z.preprocess((v) => v === "on" || v === "true" || v === true, z.boolean());
 
-const slugField = z
-  .string()
-  .trim()
-  .min(1, "A URL slug is required")
-  .max(90)
-  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers and hyphens only");
+/**
+ * Optional. Left blank, the server builds one from the name — nobody should
+ * have to invent a URL to add a bolt of cloth. Validated only when something
+ * was actually typed, so a bad hand-written slug is still caught.
+ */
+const slugField = z.preprocess(
+  (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+  z
+    .string()
+    .trim()
+    .max(90)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers and hyphens only")
+    .optional(),
+);
 
 export const productSchema = z.object({
   id: z.string().uuid().optional().or(z.literal("")),

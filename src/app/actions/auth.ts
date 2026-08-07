@@ -14,7 +14,10 @@ import {
 const NO_DB =
   "Authentication is not configured yet. Add your Supabase keys to .env.local to enable accounts.";
 
-export async function signIn(_prev: ActionResult | null, formData: FormData): Promise<ActionResult> {
+export async function signIn(
+  _prev: ActionResult<{ next: string }> | null,
+  formData: FormData,
+): Promise<ActionResult<{ next: string }>> {
   const parsed = signInSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -39,8 +42,18 @@ export async function signIn(_prev: ActionResult | null, formData: FormData): Pr
   }
 
   const next = String(formData.get("next") || "/admin");
+
+  // The signed-in header and the dashboard both read the session, so the
+  // cached layout has to go.
   revalidatePath("/", "layout");
-  redirect(next);
+
+  // Deliberately not `redirect()` here. Redirecting out of a Server Action
+  // that has just written the auth cookie proved unreliable: the browser was
+  // left on the sign-in page, and in some orderings the cookie did not stick
+  // at all — a shopkeeper typing the right password and seeing nothing happen.
+  // Returning the destination and navigating on the client is one plain step
+  // and always lands.
+  return { ok: true, message: "Signed in.", data: { next } };
 }
 
 export async function signOut() {

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
@@ -80,7 +80,7 @@ function Submit({ label, pendingLabel }: { label: string; pendingLabel: string }
 }
 
 /** Toasts server-action results and returns a field-error lookup. */
-function useActionFeedback(state: ActionResult | null, onSuccess?: () => void) {
+function useActionFeedback<T>(state: ActionResult<T> | null, onSuccess?: () => void) {
   React.useEffect(() => {
     if (!state) return;
     if (state.ok) {
@@ -102,10 +102,21 @@ function useActionFeedback(state: ActionResult | null, onSuccess?: () => void) {
 
 export function SignInForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const next = searchParams.get("next") ?? "/admin";
 
-  const [state, formAction] = useActionState<ActionResult | null, FormData>(signIn, null);
-  const errorFor = useActionFeedback(state);
+  const [state, formAction] = useActionState<ActionResult<{ next: string }> | null, FormData>(
+    signIn,
+    null,
+  );
+
+  // The action sets the auth cookie and hands back where to go; the navigation
+  // happens here. `refresh` afterwards so the server re-renders the layout with
+  // the new session rather than serving the signed-out one from cache.
+  const errorFor = useActionFeedback(state, () => {
+    router.replace(state?.ok ? (state.data?.next ?? "/admin") : "/admin");
+    router.refresh();
+  });
 
   return (
     <div>

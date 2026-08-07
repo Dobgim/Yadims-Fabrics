@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import type { z } from "zod";
 
 import { FORBIDDEN, NOT_CONFIGURED, describeDbError, requireStaff } from "@/lib/admin-guard";
+import { slugify } from "@/lib/utils";
 import {
   categorySchema,
   collectionSchema,
@@ -57,6 +58,51 @@ function invalid(error: z.ZodError): ActionResult<never> {
   };
 }
 
+/** Tables whose rows are addressed by a slug. */
+type SluggedTable = "products" | "categories" | "collections";
+
+/**
+ * Works out the URL slug for a row.
+ *
+ * The slug field in the editor is optional: left blank it is built from the
+ * name, so adding a bolt of cloth never requires inventing a URL. Whichever
+ * way it arrives, it then has to be unique — the column carries a unique
+ * constraint, and two fabrics called "Ivory Lace" is an ordinary thing to
+ * want. A collision appends -2, -3 and so on rather than rejecting the save.
+ *
+ * On an edit, the row's own slug is excluded from the check, or re-saving a
+ * product without touching the name would rename it to `-2` every time.
+ */
+async function resolveSlug(
+  db: NonNullable<Awaited<ReturnType<typeof requireStaff>>>,
+  table: SluggedTable,
+  typed: string | undefined,
+  name: string,
+  currentId?: string,
+): Promise<string | null> {
+  const base = slugify(typed?.trim() ? typed : name);
+  if (!base) return null;
+
+  const { data } = await db.from(table).select("id, slug").like("slug", `${base}%`);
+
+  const taken = new Set(
+    (data ?? [])
+      .filter((row) => row.id !== currentId)
+      .map((row) => row.slug as string),
+  );
+
+  if (!taken.has(base)) return base;
+
+  for (let n = 2; n < 500; n++) {
+    const candidate = `${base}-${n}`;
+    if (!taken.has(candidate)) return candidate;
+  }
+
+  // 500 fabrics sharing one name is not a real case, but the save should
+  // still succeed rather than loop or throw.
+  return `${base}-${Date.now().toString(36)}`;
+}
+
 // ---------------------------------------------------------------------
 // Products
 // ---------------------------------------------------------------------
@@ -70,9 +116,20 @@ export async function saveProduct(_prev: SaveResult | null, formData: FormData):
 
   const { id, ...values } = parsed.data;
 
+  const slug = await resolveSlug(db, "products", values.slug, values.name, id || undefined);
+  if (!slug) {
+    return {
+      ok: false,
+      message: "Please correct the highlighted fields.",
+      fieldErrors: { name: ["A name with at least one letter or number is required"] },
+    };
+  }
+
+  const row = { ...values, slug };
+
   const { data, error } = id
-    ? await db.from("products").update(values).eq("id", id).select("id, slug").single()
-    : await db.from("products").insert(values).select("id, slug").single();
+    ? await db.from("products").update(row).eq("id", id).select("id, slug").single()
+    : await db.from("products").insert(row).select("id, slug").single();
 
   if (error || !data) {
     return { ok: false, ...describeDbError(error, "Could not save that fabric.") };
@@ -138,9 +195,20 @@ export async function saveCategory(
 
   const { id, ...values } = parsed.data;
 
+  const slug = await resolveSlug(db, "categories", values.slug, values.name, id || undefined);
+  if (!slug) {
+    return {
+      ok: false,
+      message: "Please correct the highlighted fields.",
+      fieldErrors: { name: ["A name with at least one letter or number is required"] },
+    };
+  }
+
+  const row = { ...values, slug };
+
   const { data, error } = id
-    ? await db.from("categories").update(values).eq("id", id).select("id").single()
-    : await db.from("categories").insert(values).select("id").single();
+    ? await db.from("categories").update(row).eq("id", id).select("id").single()
+    : await db.from("categories").insert(row).select("id").single();
 
   if (error || !data) {
     return { ok: false, ...describeDbError(error, "Could not save that category.") };
@@ -183,9 +251,20 @@ export async function saveCollection(
 
   const { id, ...values } = parsed.data;
 
+  const slug = await resolveSlug(db, "collections", values.slug, values.name, id || undefined);
+  if (!slug) {
+    return {
+      ok: false,
+      message: "Please correct the highlighted fields.",
+      fieldErrors: { name: ["A name with at least one letter or number is required"] },
+    };
+  }
+
+  const row = { ...values, slug };
+
   const { data, error } = id
-    ? await db.from("collections").update(values).eq("id", id).select("id, slug").single()
-    : await db.from("collections").insert(values).select("id, slug").single();
+    ? await db.from("collections").update(row).eq("id", id).select("id, slug").single()
+    : await db.from("collections").insert(row).select("id, slug").single();
 
   if (error || !data) {
     return { ok: false, ...describeDbError(error, "Could not save that collection.") };
