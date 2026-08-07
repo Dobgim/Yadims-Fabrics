@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
+import { Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { luxeEase } from "@/lib/motion";
@@ -96,12 +96,6 @@ export function Navbar() {
               </Link>
             </Button>
 
-            <Button variant="ghost" size="icon" asChild className="hidden sm:inline-flex">
-              <Link href="/account" aria-label="My account">
-                <User />
-              </Link>
-            </Button>
-
             <Button
               variant="ghost"
               size="icon"
@@ -169,18 +163,11 @@ function MobileMenu({ onNavigate }: { onNavigate: () => void }) {
       </nav>
 
       <div className="space-y-4 border-t border-white/15 px-6 py-6">
-        <div className="grid grid-cols-2 gap-3">
-          <Button asChild variant="glass" size="sm">
-            <Link href="/wishlist" onClick={onNavigate}>
-              <Heart /> Wishlist
-            </Link>
-          </Button>
-          <Button asChild variant="gold" size="sm">
-            <Link href="/account" onClick={onNavigate}>
-              <User /> Account
-            </Link>
-          </Button>
-        </div>
+        <Button asChild variant="gold" size="sm" className="w-full">
+          <Link href="/wishlist" onClick={onNavigate}>
+            <Heart /> Wishlist
+          </Link>
+        </Button>
         <p className="text-sm text-white/70">
           {siteConfig.contact.phone}
           <br />

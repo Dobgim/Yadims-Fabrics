@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { getProductReviews } from "@/lib/queries/content";
 import {
   getAllProducts,
   getCategories,
@@ -16,7 +15,6 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { ProductGallery } from "@/components/shop/product-gallery";
 import { ProductGrid } from "@/components/shop/product-grid";
 import { ProductPurchasePanel } from "@/components/shop/product-purchase-panel";
-import { ProductReviews, StarRating } from "@/components/shop/product-reviews";
 import { ProductJsonLd } from "@/components/seo/json-ld";
 
 export const revalidate = 3600;
@@ -62,9 +60,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const [related, reviews, categories] = await Promise.all([
+  const [related, categories] = await Promise.all([
     getRelatedProducts(product, 4),
-    getProductReviews(product.id),
     getCategories(),
   ]);
 
@@ -98,15 +95,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <ProductGallery images={product.images} alt={product.name} />
 
           <div>
-            {product.rating_count > 0 ? (
-              <div className="mb-6 flex items-center gap-3">
-                <StarRating value={product.rating_average} />
-                <span className="text-sm text-muted-foreground">
-                  {product.rating_average.toFixed(1)} · {product.rating_count} reviews
-                </span>
-              </div>
-            ) : null}
-
             <p className="text-lg leading-relaxed text-muted-foreground">
               {product.short_description}
             </p>
@@ -129,9 +117,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </TabsTrigger>
             <TabsTrigger value="care" className="rounded-full px-5 py-2.5">
               Care
-            </TabsTrigger>
-            <TabsTrigger value="reviews" className="rounded-full px-5 py-2.5">
-              Reviews
             </TabsTrigger>
           </TabsList>
 
@@ -166,10 +151,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 plastic. Plastic storage is the single most common cause of ruined silk.
               </p>
             </div>
-          </TabsContent>
-
-          <TabsContent value="reviews" className="pt-10">
-            <ProductReviews product={product} reviews={reviews} />
           </TabsContent>
         </Tabs>
       </section>

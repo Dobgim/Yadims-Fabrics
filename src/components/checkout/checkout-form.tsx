@@ -426,10 +426,10 @@ function OrderConfirmation({ order }: { order: PlacedOrder }) {
 
       <div className="flex flex-wrap justify-center gap-3">
         <Button asChild variant="luxe">
-          <Link href="/account/orders">View my orders</Link>
+          <Link href="/shop">Keep shopping</Link>
         </Button>
         <Button asChild variant="outline">
-          <Link href="/shop">Keep shopping</Link>
+          <Link href="/contact">Ask about this order</Link>
         </Button>
       </div>
     </div>

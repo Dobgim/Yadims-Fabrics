@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DataTable, type Column } from "@/components/admin/data-table";
-import { OrderStatusBadge } from "@/components/account/order-list";
+import { OrderStatusBadge } from "@/components/admin/order-status-badge";
 import type { AdminOrder } from "@/lib/queries/admin";
 import type { OrderStatus } from "@/types/database";
 

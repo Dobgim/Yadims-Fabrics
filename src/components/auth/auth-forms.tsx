@@ -8,9 +8,8 @@ import { useFormStatus } from "react-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { requestPasswordReset, signIn, signUp } from "@/app/actions/auth";
+import { requestPasswordReset, signIn } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { ActionResult } from "@/lib/validations";
@@ -103,16 +102,16 @@ function useActionFeedback(state: ActionResult | null, onSuccess?: () => void) {
 
 export function SignInForm() {
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/account";
+  const next = searchParams.get("next") ?? "/admin";
 
   const [state, formAction] = useActionState<ActionResult | null, FormData>(signIn, null);
   const errorFor = useActionFeedback(state);
 
   return (
     <div>
-      <h1 className="font-display text-3xl">Welcome back</h1>
+      <h1 className="font-display text-3xl">Shop sign in</h1>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-        Sign in to see your orders, saved addresses and wishlist.
+        For the owner of the shop. Customers order without an account.
       </p>
 
       <form action={formAction} className="mt-9 space-y-5" noValidate>
@@ -144,106 +143,6 @@ export function SignInForm() {
 
         <Submit label="Sign in" pendingLabel="Signing in" />
       </form>
-
-      <p className="mt-8 text-center text-sm text-muted-foreground">
-        No account yet?{" "}
-        <Link href="/sign-up" className="text-brand-600 link-underline">
-          Create one
-        </Link>
-      </p>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Sign up                                                             */
-/* ------------------------------------------------------------------ */
-
-export function SignUpForm() {
-  const [state, formAction] = useActionState<ActionResult | null, FormData>(signUp, null);
-  const formRef = React.useRef<HTMLFormElement>(null);
-  const errorFor = useActionFeedback(state, () => formRef.current?.reset());
-
-  return (
-    <div>
-      <h1 className="font-display text-3xl">Create an account</h1>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-        Keep your addresses, follow your orders, and carry your wishlist between devices.
-      </p>
-
-      <form ref={formRef} action={formAction} className="mt-9 space-y-5" noValidate>
-        <Field id="fullName" label="Full name" error={errorFor("fullName")}>
-          <Input
-            id="fullName"
-            name="fullName"
-            autoComplete="name"
-            required
-            placeholder="Ada Kounde"
-          />
-        </Field>
-
-        <Field id="email" label="Email" error={errorFor("email")}>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder="you@email.com"
-          />
-        </Field>
-
-        <Field id="password" label="Password" error={errorFor("password")}>
-          <PasswordInput
-            id="password"
-            name="password"
-            autoComplete="new-password"
-            required
-            minLength={8}
-            placeholder="At least 8 characters"
-          />
-        </Field>
-
-        <Field id="confirmPassword" label="Confirm password" error={errorFor("confirmPassword")}>
-          <PasswordInput
-            id="confirmPassword"
-            name="confirmPassword"
-            autoComplete="new-password"
-            required
-          />
-        </Field>
-
-        <div className="flex items-start gap-3">
-          <Checkbox id="marketingOptIn" name="marketingOptIn" className="mt-0.5" />
-          <Label
-            htmlFor="marketingOptIn"
-            className="text-sm font-normal leading-relaxed text-muted-foreground"
-          >
-            Email me when new fabrics land. One email a month, one click to leave.
-          </Label>
-        </div>
-
-        <Submit label="Create account" pendingLabel="Creating account" />
-
-        <p className="text-xs leading-relaxed text-muted-foreground">
-          By creating an account you agree to our{" "}
-          <Link href="/terms" className="text-brand-600 link-underline">
-            terms
-          </Link>{" "}
-          and{" "}
-          <Link href="/privacy-policy" className="text-brand-600 link-underline">
-            privacy policy
-          </Link>
-          .
-        </p>
-      </form>
-
-      <p className="mt-8 text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
-        <Link href="/sign-in" className="text-brand-600 link-underline">
-          Sign in
-        </Link>
-      </p>
     </div>
   );
 }
@@ -263,7 +162,7 @@ export function ForgotPasswordForm() {
     <div>
       <h1 className="font-display text-3xl">Reset your password</h1>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-        Enter the address on your account and we will send a link to set a new password.
+        Enter the shop email address and we will send a link to set a new password.
       </p>
 
       <form action={formAction} className="mt-9 space-y-5" noValidate>

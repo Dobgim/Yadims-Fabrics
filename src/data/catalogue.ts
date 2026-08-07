@@ -897,8 +897,11 @@ export const products: ProductRow[] = seeds.map((seed, index) => ({
   status: "active",
   is_featured: seed.featured ?? false,
   is_new_arrival: seed.isNew ?? false,
-  rating_average: seed.rating,
-  rating_count: seed.reviews,
+  // Nothing can be rated without customer accounts, so nothing claims a
+  // rating. Left at zero rather than removed, so the column still matches
+  // the database schema.
+  rating_average: 0,
+  rating_count: 0,
   created_at: new Date(Date.UTC(2025, 0, 1 + index)).toISOString(),
   updated_at: new Date(Date.UTC(2025, 0, 1 + index)).toISOString(),
 }));

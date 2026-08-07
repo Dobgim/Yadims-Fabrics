@@ -79,7 +79,8 @@ function AdminNotConfigured() {
             restart.
           </li>
           <li>
-            <span className="font-medium text-foreground">4.</span> Sign up at /sign-up, then run{" "}
+            <span className="font-medium text-foreground">4.</span> Add your user in Supabase
+            &rarr; Authentication, then run{" "}
             <code className="rounded bg-secondary px-1.5 py-0.5 text-xs">
               supabase/make-admin.sql
             </code>

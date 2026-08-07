@@ -7,7 +7,7 @@ import { Wordmark } from "@/components/layout/wordmark";
 const suggestions = [
   { title: "Shop all fabrics", href: "/shop" },
   { title: "Collections", href: "/collections" },
-  { title: "The journal", href: "/blog" },
+  { title: "Gallery", href: "/gallery" },
   { title: "Contact us", href: "/contact" },
 ];
 

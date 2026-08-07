@@ -2,7 +2,6 @@ import "server-only";
 
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import type {
-  BlogPostRow,
   CategoryRow,
   CollectionRow,
   ContactMessageRow,
@@ -150,13 +149,6 @@ export async function getAdminProduct(id: string): Promise<ProductRow | null> {
   return (data as ProductRow | null) ?? null;
 }
 
-export async function getAdminPost(id: string): Promise<BlogPostRow | null> {
-  const db = await adminDb();
-  if (!db) return null;
-  const { data } = await db.from("blog_posts").select("*").eq("id", id).maybeSingle();
-  return (data as BlogPostRow | null) ?? null;
-}
-
 export async function getAdminCategories(): Promise<CategoryRow[]> {
   const db = await adminDb();
   if (!db) return [];
@@ -183,13 +175,6 @@ export async function getAdminGallery(): Promise<GalleryItemRow[]> {
   if (!db) return [];
   const { data } = await db.from("gallery_items").select("*").order("position");
   return (data as GalleryItemRow[]) ?? [];
-}
-
-export async function getAdminPosts(): Promise<BlogPostRow[]> {
-  const db = await adminDb();
-  if (!db) return [];
-  const { data } = await db.from("blog_posts").select("*").order("created_at", { ascending: false });
-  return (data as BlogPostRow[]) ?? [];
 }
 
 export async function getAdminMessages(): Promise<ContactMessageRow[]> {

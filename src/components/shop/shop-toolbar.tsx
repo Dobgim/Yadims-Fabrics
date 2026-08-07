@@ -19,7 +19,6 @@ const sortOptions = [
   { value: "price-asc", label: "Price: low to high" },
   { value: "price-desc", label: "Price: high to low" },
   { value: "name-asc", label: "Name: A to Z" },
-  { value: "rating", label: "Best rated" },
 ] as const;
 
 interface ShopToolbarProps {

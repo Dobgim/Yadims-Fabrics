@@ -42,7 +42,6 @@ export const mainNav = [
   { title: "Gallery", href: "/gallery" },
   { title: "Services", href: "/services" },
   { title: "About", href: "/about" },
-  { title: "Journal", href: "/blog" },
   { title: "Contact", href: "/contact" },
 ] as const;
 
@@ -58,8 +57,7 @@ export const footerNav = {
     { title: "Our Story", href: "/about" },
     { title: "Services", href: "/services" },
     { title: "Gallery", href: "/gallery" },
-    { title: "Journal", href: "/blog" },
-    { title: "Contact", href: "/contact" },
+      { title: "Contact", href: "/contact" },
   ],
   care: [
     { title: "FAQs", href: "/faqs" },
@@ -79,7 +77,6 @@ export const adminNav = [
   { title: "Orders", href: "/admin/orders", icon: "ShoppingBag" },
   { title: "Customers", href: "/admin/customers", icon: "Users" },
   { title: "Gallery", href: "/admin/gallery", icon: "Images" },
-  { title: "Journal", href: "/admin/blog", icon: "Newspaper" },
   { title: "Messages", href: "/admin/messages", icon: "MessageSquare" },
   { title: "Newsletter", href: "/admin/newsletter", icon: "Mail" },
   { title: "Media Library", href: "/admin/media", icon: "FolderOpen" },

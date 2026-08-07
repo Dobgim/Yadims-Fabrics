@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata: Metadata = {
   title: "Sign In",
-  description: "Sign in to your YADIMS account.",
+  description: "Shop owner sign in.",
   robots: { index: false, follow: false },
 };
 

@@ -18,9 +18,12 @@ npm run dev
 Open <http://localhost:3000>.
 
 **The storefront runs with no configuration at all.** Every query falls back to a curated
-catalogue in `src/data/`, so the full site — 24 fabrics, 7 collections, 18 gallery images, 6
-journal articles — renders, filters, sorts and paginates before Supabase exists. Accounts, order
-persistence and the admin dashboard are the only things that need a database.
+catalogue in `src/data/`, so the full site — fabrics, collections and gallery — renders, filters,
+sorts and paginates before Supabase exists. Order persistence and the admin dashboard are the only
+things that need a database.
+
+The shop has **no customer accounts**. One person runs it: orders are placed as a guest, and the
+single sign-in belongs to the owner, on her way to the dashboard.
 
 ---
 
@@ -30,7 +33,7 @@ persistence and the admin dashboard are the only things that need a database.
 | --- | --- | --- |
 | Routing | `src/app` | Route groups: `(shop)` storefront, `(auth)` sign-in flows, `admin` dashboard |
 | Data access | `src/lib/queries/*` | The only place Supabase is touched; components never query directly |
-| Fallback content | `src/data/*` | Curated catalogue, journal, gallery, policies |
+| Fallback content | `src/data/*` | Curated catalogue, gallery, policies |
 | Server actions | `src/app/actions/*` | All writes; every one returns the same `ActionResult` shape |
 | Validation | `src/lib/validations.ts` | Zod schemas shared by client forms and server actions |
 | Design tokens | `src/app/globals.css`, `tailwind.config.ts` | CSS variables + brand scales |
@@ -51,16 +54,14 @@ server-side before writing an order.
 
 **Storefront** — Home, Shop (search / category / collection / material / colour / price filters,
 sort, grid–list toggle, pagination, quick view), Product detail (zoom gallery, specs, care,
-reviews, WhatsApp enquiry, related), Collections + detail, Gallery (masonry + lightbox), Services,
-About, Journal + article, FAQs, Contact (Google Maps), Wishlist, Cart, Checkout.
+WhatsApp enquiry, related), Collections + detail, Gallery (masonry + lightbox), Services,
+About, FAQs, Contact (Google Maps), Wishlist, Cart, guest Checkout.
 
 **Legal** — Privacy Policy, Shipping Policy, Return Policy, Terms & Conditions. All four are
 authored in `src/data/legal.ts` and rendered by one component.
 
-**Account** — Overview, Orders, Addresses, Notifications, Settings.
-
 **Admin** — Overview, Analytics, Products, Categories, Collections, Orders, Customers, Gallery,
-Journal, Messages, Newsletter, Media Library, Settings.
+Messages, Newsletter, Media Library, Settings.
 
 Plus a custom 404, route-level loading UI and an error boundary.
 
@@ -70,23 +71,24 @@ Plus a custom 404, route-level loading UI and an error boundary.
 
 1. Create a project at [supabase.com](https://supabase.com) and copy the URL, anon key and
    service-role key into `.env.local`.
-2. In the SQL editor, run in order:
-   - `supabase/migrations/20250101000000_init.sql` — tables, enums, triggers, indexes
-   - `supabase/migrations/20250101000001_rls.sql` — RLS policies and storage buckets
-   - `supabase/seed.sql` — optional starter catalogue
-3. Sign up at `/sign-up`, then promote yourself:
+2. In the SQL editor, paste and run `supabase/setup.sql` — schema, RLS policies, storage
+   buckets and the starter catalogue, in one go.
+3. Create the owner's user in Supabase → Authentication → Users → Add user, then promote it:
    ```sql
    update public.profiles set role = 'admin' where email = 'you@example.com';
    ```
-4. Visit `/admin`.
+4. Turn off Authentication → Sign In / Providers → Email → *Allow new users to sign up*.
+5. Sign in at `/sign-in`.
+
+Full walkthrough in [ADMIN-SETUP.md](ADMIN-SETUP.md).
 
 ### Security model
 
 - Catalogue and published content are readable by anyone, including anonymous visitors.
-- Customer-owned rows (orders, addresses, wishlist) are readable and writable only by their owner.
+- Orders may be placed by a guest; only staff can read them back.
 - Everything else requires `staff` or `admin`, checked through `SECURITY DEFINER` helpers
   (`public.is_staff()` / `public.is_admin()`) so a policy on `profiles` cannot recurse into itself.
-- `middleware.ts` guards `/account`, `/checkout` and `/admin`, and every admin server action
+- `proxy.ts` guards `/admin` — the only gated area — and every admin server action
   re-checks the caller's role against the session — a route guard alone is not enough when an
   action can be invoked directly.
 - Role changes are admin-only, so staff cannot promote themselves.

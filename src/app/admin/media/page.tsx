@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import {
   getAdminGallery,
-  getAdminPosts,
   getAdminProducts,
   getStorageAssets,
 } from "@/lib/queries/admin";
@@ -13,10 +12,9 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Media Library" };
 
 export default async function AdminMediaPage() {
-  const [products, gallery, posts, stored] = await Promise.all([
+  const [products, gallery, stored] = await Promise.all([
     getAdminProducts(),
     getAdminGallery(),
-    getAdminPosts(),
     getStorageAssets(),
   ]);
 
@@ -30,7 +28,6 @@ export default async function AdminMediaPage() {
 
   for (const product of products) product.images.forEach((url) => reference(url, product.name));
   for (const item of gallery) reference(item.image_url, item.title);
-  for (const post of posts) reference(post.cover_image_url, post.title);
 
   const assets: MediaAsset[] = stored.map((asset) => ({
     ...asset,

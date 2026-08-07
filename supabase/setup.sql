@@ -672,7 +672,7 @@ from (values
    'Woven in Como, Italy',
    array['Champagne','Emerald','Onyx','Bordeaux','Pearl'], array['italian silk','charmeuse','premium'],
    array['/fabrics/p-silk-teal.jpg','/fabrics/p-silk-navy.jpg'],
-   54, 'italian-silk', 'premium', true, false, 4.9::numeric, 12),
+   54, 'italian-silk', 'premium', true, false, 0::numeric, 0),
 
   ('Stone-Beaded French Lace', 'stone-beaded-french-lace', 'YF-0002',
    'Hand-set stones and pearls on a fine French net.',
@@ -682,7 +682,7 @@ from (values
    'Net milled in France, beaded by hand in India',
    array['Ivory','Champagne','Silver','Blush'], array['stone lace','beaded','bridal','premium'],
    array['/fabrics/p-stone-pearl.jpg','/fabrics/p-stone-bridal.jpg'],
-   11, 'stone-beaded-lace', 'stone-lace', true, false, 5.0::numeric, 7),
+   11, 'stone-beaded-lace', 'stone-lace', true, false, 0::numeric, 0),
 
   ('Metallic Jacquard', 'metallic-jacquard', 'YF-0003',
    'Woven-in metallic motif with real ceremonial weight.',
@@ -692,7 +692,7 @@ from (values
    'Woven in India',
    array['Antique Gold','Rose Gold','Emerald Gold','Royal Multi'], array['jacquard','metallic','evening'],
    array['/fabrics/p-jacquard-metallic.jpg','/fabrics/p-jacquard-pattern.jpg'],
-   34, 'jacquard', 'evening', true, false, 4.8::numeric, 10),
+   34, 'jacquard', 'evening', true, false, 0::numeric, 0),
 
   ('Organza Brocade', 'organza-brocade', 'YF-0004',
    'A brocade motif floating on a sheer organza ground.',
@@ -702,7 +702,7 @@ from (values
    'Woven in India',
    array['Champagne Gold','Ivory Silver','Blush Gold','Emerald Gold'], array['brocade','organza','premium'],
    array['/fabrics/p-organza-peach.jpg','/fabrics/p-brocade-detail.jpg'],
-   16, 'brocade', 'premium', true, true, 5.0::numeric, 6),
+   16, 'brocade', 'premium', true, true, 0::numeric, 0),
 
   ('Silk Organza', 'silk-organza', 'YF-0005',
    'True silk organza — crisper, finer and far more alive than polyester.',
@@ -712,7 +712,7 @@ from (values
    'Woven in China',
    array['Ivory','Champagne','Powder Blue','Onyx'], array['organza','silk','premium','sheer'],
    array['/fabrics/p-organza-blue.jpg','/fabrics/p-organza-black.jpg'],
-   29, 'organza', 'premium', true, false, 4.9::numeric, 7),
+   29, 'organza', 'premium', true, false, 0::numeric, 0),
 
   ('Silk Crepe', 'silk-crepe', 'YF-0006',
    'Matte silk crepe with a fine pebbled surface and heavy fall.',
@@ -722,7 +722,7 @@ from (values
    'Woven in Italy',
    array['Sage','Ivory','Terracotta','Onyx','Bordeaux'], array['crepe','silk','premium'],
    array['/fabrics/p-crepe-sage.jpg','/fabrics/p-crepe-ivory.jpg'],
-   43, 'crepe', 'premium', true, false, 4.9::numeric, 11),
+   43, 'crepe', 'premium', true, false, 0::numeric, 0),
 
   ('Silk Chiffon', 'silk-chiffon', 'YF-0007',
    'Featherweight silk sheer with a faint grainy texture.',
@@ -732,7 +732,7 @@ from (values
    'Woven in China',
    array['Blush','Ivory','Dusty Rose','Charcoal','Sea Glass'], array['chiffon','silk','sheer'],
    array['/fabrics/p-chiffon-blue.jpg','/fabrics/p-chiffon-lilac.jpg'],
-   58, 'chiffon', 'evening', true, false, 4.7::numeric, 10),
+   58, 'chiffon', 'evening', true, false, 0::numeric, 0),
 
   ('Washed European Linen', 'washed-european-linen', 'YF-0008',
    'Stone-washed flax that arrives already softened.',
@@ -742,7 +742,7 @@ from (values
    'Woven in Lithuania',
    array['Natural','Cream','Sage','Terracotta','Ink'], array['linen','natural','tailoring'],
    array['/fabrics/p-linen-cream.jpg','/fabrics/p-linen-natural.jpg'],
-   104, 'linen', 'premium', true, false, 4.8::numeric, 21),
+   104, 'linen', 'premium', true, false, 0::numeric, 0),
 
   ('Premium Wax Print — Royal', 'premium-wax-print-royal', 'YF-0009',
    'Full six-yard piece, true wax, matched dye lots available.',
@@ -752,7 +752,7 @@ from (values
    'Printed in Ghana',
    array['Indigo','Ochre','Emerald','Crimson'], array['ankara','wax','traditional'],
    array['/fabrics/p-wax-1.jpg','/fabrics/p-wax-3.jpg'],
-   86, 'ankara', 'traditional', true, false, 4.8::numeric, 24)
+   86, 'ankara', 'traditional', true, false, 0::numeric, 0)
 ) as v(
   name, slug, sku, short_description, description, price, compare_at_price, material,
   width_cm, weight_gsm, care_instructions, origin, colors, tags, images, stock_quantity,

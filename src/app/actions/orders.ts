@@ -141,7 +141,6 @@ export async function placeOrder(
   }
 
   revalidatePath("/admin/orders");
-  revalidatePath("/account/orders");
 
   return {
     ok: true,

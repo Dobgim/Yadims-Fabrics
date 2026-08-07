@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         // Private and transactional routes carry no SEO value and should
         // never appear in an index.
-        disallow: ["/admin", "/account", "/checkout", "/cart", "/api/"],
+        disallow: ["/admin", "/checkout", "/cart", "/api/"],
       },
     ],
     sitemap: `${siteConfig.url}/sitemap.xml`,

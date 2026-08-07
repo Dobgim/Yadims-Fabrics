@@ -4,7 +4,10 @@ import { createServerClient } from "@supabase/ssr";
 import { isSupabaseConfigured, publicEnv } from "@/lib/env";
 import type { Database } from "@/types/database";
 
-const PROTECTED_PREFIXES = ["/account", "/checkout"];
+/**
+ * `/admin` is the only gated area. The shop has no customer accounts — orders
+ * are placed as a guest — so checkout must stay open to everyone.
+ */
 const ADMIN_PREFIX = "/admin";
 
 /**
@@ -40,29 +43,28 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname, search } = request.nextUrl;
 
-  const needsAuth =
-    PROTECTED_PREFIXES.some((p) => pathname.startsWith(p)) || pathname.startsWith(ADMIN_PREFIX);
+  if (!pathname.startsWith(ADMIN_PREFIX)) return response;
 
-  if (needsAuth && !user) {
+  if (!user) {
     const url = request.nextUrl.clone();
     url.pathname = "/sign-in";
     url.search = `?next=${encodeURIComponent(pathname + search)}`;
     return NextResponse.redirect(url);
   }
 
-  if (pathname.startsWith(ADMIN_PREFIX) && user) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle();
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
 
-    if (!profile || (profile.role !== "admin" && profile.role !== "staff")) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/account";
-      url.search = "";
-      return NextResponse.redirect(url);
-    }
+  if (!profile || (profile.role !== "admin" && profile.role !== "staff")) {
+    // Signed in but not staff. There is no customer area to send them to, so
+    // the shop front is the only sensible destination.
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    url.search = "";
+    return NextResponse.redirect(url);
   }
 
   return response;

@@ -8,7 +8,6 @@ import {
   categorySchema,
   collectionSchema,
   galleryItemSchema,
-  postSchema,
   productSchema,
   type ActionResult,
 } from "@/lib/validations";
@@ -255,61 +254,6 @@ export async function deleteGalleryItem(itemId: string): Promise<ActionResult> {
   revalidatePath("/admin/gallery");
   revalidatePath("/gallery");
   return { ok: true, message: "Photograph removed from the gallery." };
-}
-
-// ---------------------------------------------------------------------
-// Journal
-// ---------------------------------------------------------------------
-
-export async function savePost(_prev: SaveResult | null, formData: FormData): Promise<SaveResult> {
-  const db = await requireStaff();
-  if (!db) return { ok: false, message: NOT_CONFIGURED };
-
-  const parsed = readForm(postSchema, formData);
-  if (!parsed.success) return invalid(parsed.error);
-
-  const { id, ...values } = parsed.data;
-
-  // Publishing stamps the date once. Re-saving a live article must not move it,
-  // so the existing stamp is read back rather than overwritten.
-  let published_at: string | null = null;
-  if (values.status === "published") {
-    const { data: existing } = id
-      ? await db.from("blog_posts").select("published_at").eq("id", id).maybeSingle()
-      : { data: null };
-    published_at = existing?.published_at ?? new Date().toISOString();
-  }
-
-  const payload = { ...values, published_at };
-
-  const { data, error } = id
-    ? await db.from("blog_posts").update(payload).eq("id", id).select("id, slug").single()
-    : await db.from("blog_posts").insert(payload).select("id, slug").single();
-
-  if (error || !data) {
-    return { ok: false, ...describeDbError(error, "Could not save that article.") };
-  }
-
-  revalidatePath("/admin/blog");
-  revalidatePath("/blog");
-  revalidatePath(`/blog/${data.slug}`);
-  return {
-    ok: true,
-    message: values.status === "published" ? "Article published." : "Draft saved.",
-    data: { id: data.id },
-  };
-}
-
-export async function deletePost(postId: string): Promise<ActionResult> {
-  const db = await requireStaff();
-  if (!db) return { ok: false, message: NOT_CONFIGURED };
-
-  const { error } = await db.from("blog_posts").delete().eq("id", postId);
-  if (error) return { ok: false, message: "Could not delete that article." };
-
-  revalidatePath("/admin/blog");
-  revalidatePath("/blog");
-  return { ok: true, message: "Article deleted." };
 }
 
 // ---------------------------------------------------------------------

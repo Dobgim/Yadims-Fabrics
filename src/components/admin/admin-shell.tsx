@@ -165,9 +165,6 @@ export function AdminTopbar({ name, email, role, initials, avatarUrl }: AdminTop
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/account">Customer account</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
               <Link href="/admin/settings">Store settings</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

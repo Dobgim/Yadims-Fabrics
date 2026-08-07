@@ -7,7 +7,7 @@ import { paginate } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server";
 import type { CategoryRow, CollectionRow, ProductRow } from "@/types/database";
 
-export type SortKey = "newest" | "price-asc" | "price-desc" | "name-asc" | "rating";
+export type SortKey = "newest" | "price-asc" | "price-desc" | "name-asc";
 
 export interface ProductQuery {
   search?: string;
@@ -75,7 +75,6 @@ const sorters: Record<SortKey, (a: ProductRow, b: ProductRow) => number> = {
   "price-asc": (a, b) => a.price - b.price,
   "price-desc": (a, b) => b.price - a.price,
   "name-asc": (a, b) => a.name.localeCompare(b.name),
-  rating: (a, b) => b.rating_average - a.rating_average || b.rating_count - a.rating_count,
 };
 
 export async function searchProducts(query: ProductQuery = {}) {

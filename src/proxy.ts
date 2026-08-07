@@ -5,7 +5,7 @@ import { updateSession } from "@/lib/supabase/middleware";
 /**
  * Next 16 renamed the `middleware` file convention to `proxy`. Behaviour is
  * unchanged: refresh the Supabase auth cookie on every request, and guard
- * `/account`, `/checkout` and `/admin`.
+ * `/admin` — the only gated area, since the shop has no customer accounts.
  *
  * This is a first line of defence, not the only one. Server Actions are POSTs
  * to whichever route uses them, so a matcher change or a refactor could

@@ -1,5 +1,5 @@
 import { siteConfig } from "@/config/site";
-import type { BlogPostRow, ProductRow } from "@/types/database";
+import type { ProductRow } from "@/types/database";
 
 function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
@@ -74,34 +74,9 @@ export function ProductJsonLd({ product }: { product: ProductRow }) {
               : "https://schema.org/OutOfStock",
           seller: { "@type": "Organization", name: siteConfig.name },
         },
-        ...(product.rating_count > 0
-          ? {
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: product.rating_average,
-                reviewCount: product.rating_count,
-              },
-            }
-          : {}),
-      }}
-    />
-  );
-}
-
-export function ArticleJsonLd({ post }: { post: BlogPostRow }) {
-  return (
-    <JsonLd
-      data={{
-        "@context": "https://schema.org",
-        "@type": "Article",
-        headline: post.title,
-        description: post.excerpt ?? undefined,
-        image: post.cover_image_url ?? undefined,
-        datePublished: post.published_at ?? post.created_at,
-        dateModified: post.updated_at,
-        author: { "@type": "Organization", name: post.author_name },
-        publisher: { "@type": "Organization", name: siteConfig.name },
-        mainEntityOfPage: `${siteConfig.url}/blog/${post.slug}`,
+        // No aggregateRating. The shop has no customer accounts, so it has no
+        // way to collect a review — publishing a rating in structured data
+        // would be asserting something to search engines that nothing backs.
       }}
     />
   );

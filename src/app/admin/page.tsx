@@ -6,7 +6,7 @@ import { getDashboardMetrics } from "@/lib/queries/admin";
 import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/admin/stat-card";
 import { RevenueChart, StatusBreakdown } from "@/components/admin/revenue-chart";
-import { OrderStatusBadge } from "@/components/account/order-list";
+import { OrderStatusBadge } from "@/components/admin/order-status-badge";
 
 export const dynamic = "force-dynamic";
 

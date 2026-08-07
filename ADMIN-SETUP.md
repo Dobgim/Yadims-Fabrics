@@ -99,26 +99,38 @@ read once at boot.
 
 ---
 
-## 4. Make yourself the admin
+## 4. Create the shop's login
 
-1. Start the site and go to **`/sign-up`**. Register with the email address you
-   want to use as the shop's login, and a password of your choosing.
-2. Confirm the address from the email Supabase sends you.
-3. Back in Supabase → **SQL Editor**, open `supabase/make-admin.sql`, change the
-   email on line 16 to the one you just used, and run it.
-4. Sign out and sign in again. The session carries your role, so it needs
-   refreshing once.
+**The site has no sign-up page.** One person runs this shop, so there is nothing
+for a visitor to register — customers order as guests. The single account is
+created by hand, in Supabase.
 
-> **To skip the confirmation email** while you are setting up: Supabase →
-> **Authentication** → **Sign In / Providers** → **Email**, turn off *Confirm
-> email*, and sign-up becomes instant. Turn it back on before you take real
-> customers, or anyone can register under an address they do not own.
+1. Supabase → **Authentication** → **Users** → **Add user** → **Create new user**.
+2. Enter the shop's email address and a password. Tick **Auto Confirm User** so
+   no confirmation email is needed.
+3. Supabase → **SQL Editor**. Open `supabase/make-admin.sql`, change the email on
+   line 16 to the one you just used, and run it.
+4. Go to **`/sign-in`** and sign in. You land straight on the dashboard.
 
-Now **`/admin`** opens, and a **Dashboard** link appears at the top of your
-account page.
+### Close public registration
 
-There is no button anywhere on the site that grants the admin role. That is the
-point — the only way to become an admin is to hold the database password.
+Removing the page stops people finding the form; it does not stop someone
+calling the sign-up API directly. Shut it properly:
+
+**Supabase → Authentication → Sign In / Providers → Email → turn off
+*Allow new users to sign up*.**
+
+Do this once. Your own account already exists, so nothing of yours depends on it.
+
+> There is no button anywhere on the site that grants the admin role, and no way
+> to register. Both are deliberate: the only route to an admin account runs
+> through the Supabase dashboard, which needs your database password.
+
+### If you ever forget the password
+
+`/forgot-password` still works and emails a reset link. You can also set a new
+password directly in Supabase → Authentication → Users → your user → **Reset
+password**.
 
 ---
 
@@ -135,8 +147,7 @@ point — the only way to become an admin is to hold the database password.
   *Active* when you are ready.
 
 Everything else in the dashboard works the same way: **Categories** and
-**Collections** open a panel, **Gallery** takes store photographs, **Journal**
-writes articles.
+**Collections** open a panel, and **Gallery** takes store photographs.
 
 ---
 
@@ -150,19 +161,25 @@ Variables**, with two changes:
 
 Then in Supabase → **Authentication** → **URL Configuration**, set the **Site
 URL** to your domain and add `https://yourdomain.com/**` to the redirect
-allow-list, or the confirmation emails will point at `localhost`.
+allow-list, or a password-reset link will point at `localhost`.
 
 ---
 
 ## Troubleshooting
 
-**`/admin` sends me to my account page.**
-Your profile is still `customer`. Re-run step 4, then sign out and back in.
+**`/admin` sends me back to the shop front.**
+You are signed in, but your profile is still `customer`. Run
+`supabase/make-admin.sql` with your email, then sign out and back in — the
+session carries your role, so it needs refreshing once.
+
+**Someone registered an account even though there is no sign-up page.**
+The API is still open. Supabase → Authentication → Sign In / Providers → Email →
+turn off *Allow new users to sign up*.
 
 **Images upload but do not appear.**
 The `20250101000001_rls.sql` migration creates the storage buckets. Run it if
 you skipped it. Check **Storage** in Supabase — you should see `products`,
-`gallery`, `blog` and `avatars`.
+`gallery` and `blog`.
 
 **"Connect Supabase to make changes."**
 The app cannot see your keys. Check `.env.local` for typos and restart the dev

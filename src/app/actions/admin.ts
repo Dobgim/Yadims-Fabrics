@@ -19,7 +19,6 @@ export async function updateOrderStatus(
 
   revalidatePath("/admin/orders");
   revalidatePath("/admin");
-  revalidatePath("/account/orders");
   return { ok: true, message: `Order marked ${status}.` };
 }
 
@@ -51,28 +50,6 @@ export async function toggleProductStatus(
   revalidatePath("/admin/products");
   revalidatePath("/shop");
   return { ok: true, message: `Product set to ${status}.` };
-}
-
-export async function togglePostStatus(
-  postId: string,
-  status: "draft" | "published",
-): Promise<ActionResult> {
-  const db = await requireStaff();
-  if (!db) return { ok: false, message: NOT_CONFIGURED };
-
-  const { error } = await db
-    .from("blog_posts")
-    .update({
-      status,
-      published_at: status === "published" ? new Date().toISOString() : null,
-    })
-    .eq("id", postId);
-
-  if (error) return { ok: false, message: "Could not update that article." };
-
-  revalidatePath("/admin/blog");
-  revalidatePath("/blog");
-  return { ok: true, message: status === "published" ? "Article published." : "Moved to drafts." };
 }
 
 export async function setSubscriberActive(

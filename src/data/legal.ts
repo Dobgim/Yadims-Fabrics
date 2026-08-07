@@ -27,7 +27,7 @@ export const legalDocuments: Record<string, LegalDocument> = {
         heading: "What we collect",
         body: [
           "When you place an order we collect your name, email address, telephone number and delivery address. We need all four to cut, confirm and deliver an order, and we do not ask for anything beyond them.",
-          "If you create an account, we also store a password hash — never the password itself. If you subscribe to the newsletter, we store your email address and the page you subscribed from.",
+          "The shop does not offer customer accounts, so there is no password of yours for us to store. If you subscribe to the newsletter, we store your email address and the page you subscribed from.",
           "We collect basic, aggregated analytics about how the site is used: which pages are visited and roughly where visitors are. This is not tied to your name or your orders.",
         ],
       },
@@ -62,7 +62,7 @@ export const legalDocuments: Record<string, LegalDocument> = {
         heading: "Your rights",
         body: [
           "You can ask us for a copy of everything we hold about you, ask us to correct it, or ask us to delete it. Write to hello@yadimsfabrics.com and we will respond within thirty days.",
-          "Deleting an account does not delete the order records that tax law requires us to keep, but it does remove everything else.",
+          "Ask us to delete your details and we will, except for the order records that tax law requires us to keep."
         ],
       },
       {
