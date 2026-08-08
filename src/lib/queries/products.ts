@@ -4,7 +4,7 @@ import { cache } from "react";
 
 import { categories, collections, facets, products } from "@/data/catalogue";
 import { paginate } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/server";
+import { createStaticClient } from "@/lib/supabase/server";
 import type { CategoryRow, CollectionRow, ProductRow } from "@/types/database";
 
 export type SortKey = "newest" | "price-asc" | "price-desc" | "name-asc";
@@ -27,9 +27,15 @@ export interface ProductQuery {
  * Reads the live catalogue when Supabase is configured, otherwise the curated
  * fallback. Filtering and sorting are applied identically to both sources so
  * the UI never has to care which one it received.
+ *
+ * Uses the cookie-free client deliberately. Reading `cookies()` marks a route
+ * dynamic, which was quietly defeating the `revalidate` on every storefront
+ * page — they declared an hour's caching and were re-rendered per request
+ * anyway. Nothing here needs a session: the query already filters to the
+ * public rows a logged-out visitor may see.
  */
 async function loadProducts(): Promise<ProductRow[]> {
-  const supabase = await createClient();
+  const supabase = createStaticClient();
   if (!supabase) return products;
 
   const { data, error } = await supabase
@@ -45,7 +51,7 @@ async function loadProducts(): Promise<ProductRow[]> {
 export const getAllProducts = cache(loadProducts);
 
 export const getCategories = cache(async (): Promise<CategoryRow[]> => {
-  const supabase = await createClient();
+  const supabase = createStaticClient();
   if (!supabase) return categories;
 
   const { data, error } = await supabase
@@ -58,7 +64,7 @@ export const getCategories = cache(async (): Promise<CategoryRow[]> => {
 });
 
 export const getCollections = cache(async (): Promise<CollectionRow[]> => {
-  const supabase = await createClient();
+  const supabase = createStaticClient();
   if (!supabase) return collections;
 
   const { data, error } = await supabase

@@ -170,6 +170,11 @@ export async function deleteProduct(productId: string): Promise<ActionResult> {
   return { ok: true, message: "Fabric deleted." };
 }
 
+/**
+ * The storefront pages are cached for an hour, so an edit is invisible until
+ * the paths that render this product are invalidated. Every one of them is
+ * listed here rather than relying on the hour expiring.
+ */
 function revalidateProduct(slug?: string | null) {
   revalidatePath("/admin/products");
   revalidatePath("/admin");

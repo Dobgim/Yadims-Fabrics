@@ -46,12 +46,29 @@ export function stagger(delayChildren = 0.05, staggerChildren = 0.09): Variants 
   };
 }
 
-/** Clip-path reveal used for editorial imagery. */
+/**
+ * Reveal used for editorial imagery.
+ *
+ * This deliberately animates only opacity and transform.
+ *
+ * It used to animate `clip-path`, from `inset(100% 0% 0% 0%)` to `inset(0 …)`,
+ * and it never ran: the browser normalises the computed value to three
+ * components (`inset(100% 0% 0%)`), which does not match the four-component
+ * string in the variant, so the animation was skipped and the element stayed
+ * clipped to nothing. Every image using it was invisible on the live site —
+ * the collection features and all six service photographs.
+ *
+ * Opacity and transform are interpolated numerically and cannot fail this way,
+ * which is why every other variant in this file has always worked. The rule for
+ * anything added here: if a visitor would lose real content when the animation
+ * does not run, do not animate that property.
+ */
 export const revealUp: Variants = {
-  hidden: { clipPath: "inset(100% 0% 0% 0%)", opacity: 0 },
+  hidden: { opacity: 0, y: 28, scale: 0.985 },
   show: {
-    clipPath: "inset(0% 0% 0% 0%)",
     opacity: 1,
+    y: 0,
+    scale: 1,
     transition: { duration: 1.1, ease: luxeEase },
   },
 };
