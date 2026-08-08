@@ -125,7 +125,6 @@ export default async function HomePage() {
             <CollectionFeature
               collection={laceCollection}
               eyebrow="Collection"
-              reversed
               productCount={laceCount}
             />
             {lace.length ? <ProductGrid products={lace} columns={4} /> : null}
