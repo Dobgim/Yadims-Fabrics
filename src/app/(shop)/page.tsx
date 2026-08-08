@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Hero } from "@/components/home/hero";
 import { CategoryShowcase } from "@/components/home/category-showcase";
 import { CollectionFeature } from "@/components/home/collection-feature";
-import { Testimonials } from "@/components/home/testimonials";
 import { ProductCarousel } from "@/components/shop/product-carousel";
 import { ProductGrid } from "@/components/shop/product-grid";
 import { SectionHeading } from "@/components/shared/section-heading";
@@ -166,21 +165,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ------------------------------------------------ Testimonials */}
-      <section className="section bg-secondary/50">
-        <div className="container">
-          <SectionHeading
-            eyebrow="In their words"
-            title="Customers, in their own words"
-            description="Brides, ateliers and procurement managers — the three groups we serve, and the three hardest to satisfy."
-            className="mb-14"
-          />
-          <Testimonials />
-        </div>
-      </section>
-
       {/* -------------------------------------------------- Instagram */}
-      <section className="section">
+      {/* Tinted: the section above it is plain, and the page alternates. */}
+      <section className="section bg-secondary/50">
         <div className="container">
           <SectionHeading
             eyebrow="@yadimsfabrics"
