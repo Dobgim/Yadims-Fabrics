@@ -2,8 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import { FORBIDDEN, NOT_CONFIGURED, requireStaff } from "@/lib/admin-guard";
-import { createAdminClient, createClient } from "@/lib/supabase/server";
+import { NOT_CONFIGURED, requireStaff } from "@/lib/admin-guard";
 import type { ActionResult } from "@/lib/validations";
 import type { MessageStatus, OrderStatus } from "@/types/database";
 
@@ -51,51 +50,4 @@ export async function toggleProductStatus(
   revalidatePath("/admin/products");
   revalidatePath("/shop");
   return { ok: true, message: `Product set to ${status}.` };
-}
-
-export async function setSubscriberActive(
-  subscriberId: string,
-  isActive: boolean,
-): Promise<ActionResult> {
-  const db = await requireStaff();
-  if (!db) return { ok: false, message: NOT_CONFIGURED };
-
-  const { error } = await db
-    .from("newsletter_subscribers")
-    .update({ is_active: isActive })
-    .eq("id", subscriberId);
-
-  if (error) return { ok: false, message: "Could not update that subscriber." };
-
-  revalidatePath("/admin/newsletter");
-  return { ok: true, message: isActive ? "Subscriber reactivated." : "Subscriber unsubscribed." };
-}
-
-export async function updateCustomerRole(
-  userId: string,
-  role: "customer" | "staff" | "admin",
-): Promise<ActionResult> {
-  const supabase = await createClient();
-  if (!supabase) return { ok: false, message: NOT_CONFIGURED };
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { ok: false, message: FORBIDDEN };
-
-  // Role changes are admin-only — staff must not be able to promote themselves.
-  const { data: me } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  if (me?.role !== "admin") return { ok: false, message: FORBIDDEN };
-
-  const db = createAdminClient() ?? supabase;
-  const { error } = await db.from("profiles").update({ role }).eq("id", userId);
-  if (error) return { ok: false, message: "Could not change that role." };
-
-  revalidatePath("/admin/customers");
-  return { ok: true, message: `Role set to ${role}.` };
 }

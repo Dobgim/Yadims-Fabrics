@@ -68,17 +68,19 @@ export const footerNav = {
   ],
 } as const;
 
+/**
+ * Dashboard navigation.
+ *
+ * Deliberately short. This shop is run by one person whose job here is to put
+ * fabric on the website, so Fabrics comes first and `/admin` opens on it.
+ * Orders and Messages stay because customers arrive through them — hiding
+ * either would mean a sale or an enquiry landing where nobody looks.
+ */
 export const adminNav = [
-  { title: "Overview", href: "/admin", icon: "LayoutDashboard" },
-  { title: "Analytics", href: "/admin/analytics", icon: "TrendingUp" },
-  { title: "Products", href: "/admin/products", icon: "Package" },
+  { title: "Fabrics", href: "/admin/products", icon: "Package" },
   { title: "Categories", href: "/admin/categories", icon: "Tags" },
   { title: "Collections", href: "/admin/collections", icon: "Layers" },
-  { title: "Orders", href: "/admin/orders", icon: "ShoppingBag" },
-  { title: "Customers", href: "/admin/customers", icon: "Users" },
   { title: "Gallery", href: "/admin/gallery", icon: "Images" },
+  { title: "Orders", href: "/admin/orders", icon: "ShoppingBag" },
   { title: "Messages", href: "/admin/messages", icon: "MessageSquare" },
-  { title: "Newsletter", href: "/admin/newsletter", icon: "Mail" },
-  { title: "Media Library", href: "/admin/media", icon: "FolderOpen" },
-  { title: "Settings", href: "/admin/settings", icon: "Settings" },
 ] as const;

@@ -33,9 +33,9 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav aria-label="Admin" className="space-y-1">
       {adminNav.map((item) => {
-        // `/admin` must match exactly or every child would light it up.
-        const active =
-          item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
+        // Every entry is a real section now — `/admin` itself just redirects
+        // to the fabrics — so a prefix match is enough.
+        const active = pathname.startsWith(item.href);
 
         return (
           <Link
@@ -114,9 +114,7 @@ export function AdminTopbar({ name, email, role, initials, avatarUrl }: AdminTop
     setMobileOpen(false);
   }
 
-  const current = adminNav.find((item) =>
-    item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href),
-  );
+  const current = adminNav.find((item) => pathname.startsWith(item.href));
 
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center gap-4 border-b border-border bg-background/85 px-5 backdrop-blur sm:px-8 lg:px-10">
@@ -132,7 +130,7 @@ export function AdminTopbar({ name, email, role, initials, avatarUrl }: AdminTop
         </SheetContent>
       </Sheet>
 
-      <h1 className="font-display text-xl">{current?.title ?? "Overview"}</h1>
+      <h1 className="font-display text-xl">{current?.title ?? "Fabrics"}</h1>
 
       <div className="ml-auto flex items-center gap-2">
         <Button variant="ghost" size="icon" aria-label="Search" className="hidden sm:inline-flex">
@@ -163,10 +161,6 @@ export function AdminTopbar({ name, email, role, initials, avatarUrl }: AdminTop
               <span className="block text-sm font-medium">{name}</span>
               <span className="block truncate text-xs text-muted-foreground">{email}</span>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/admin/settings">Store settings</Link>
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild className="text-destructive focus:text-destructive">
               <form action={signOut} className="w-full">
