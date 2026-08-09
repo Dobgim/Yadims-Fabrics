@@ -1,9 +1,7 @@
-import { SafeImage as Image } from "@/components/shared/safe-image";
 import Link from "next/link";
-import { ArrowRight, Instagram } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-import { siteConfig } from "@/config/site";
-import { instagramGrid, whyChooseUs } from "@/data/company";
+import { whyChooseUs } from "@/data/company";
 import {
   getCategories,
   getCollections,
@@ -18,7 +16,6 @@ import { CollectionFeature } from "@/components/home/collection-feature";
 import { ProductCarousel } from "@/components/shop/product-carousel";
 import { ProductGrid } from "@/components/shop/product-grid";
 import { SectionHeading } from "@/components/shared/section-heading";
-import { Reveal } from "@/components/shared/reveal";
 import { WhyChooseUs } from "@/components/shared/why-choose-us";
 import { ContactBanner } from "@/components/shared/contact-banner";
 
@@ -51,12 +48,16 @@ export default async function HomePage() {
       <Hero />
 
       {/* -------------------------------------------------- Categories */}
+      {/* Every band below is conditional. A shop that has not been filled in
+          yet should look unfinished, not broken: an empty heading over an
+          empty grid reads as a fault. */}
+      {categories.length ? (
       <section className="section">
         <div className="container">
           <SectionHeading
             eyebrow="Browse by cloth"
             title="Featured categories"
-            description="Nine house categories, each chosen because we could source it well — not because the shelf needed filling."
+            description="Each one chosen because we could source it well — not because the shelf needed filling."
             action={
               <Button asChild variant="outline">
                 <Link href="/shop">
@@ -69,8 +70,10 @@ export default async function HomePage() {
           <CategoryShowcase categories={categories} />
         </div>
       </section>
+      ) : null}
 
       {/* ---------------------------------------------- Featured fabrics */}
+      {featured.length ? (
       <section className="section bg-secondary/50">
         <div className="container">
           <SectionHeading
@@ -82,8 +85,10 @@ export default async function HomePage() {
           <ProductCarousel products={featured} />
         </div>
       </section>
+      ) : null}
 
       {/* ------------------------------------------------ New arrivals */}
+      {newArrivals.length ? (
       <section className="section">
         <div className="container">
           <SectionHeading
@@ -102,9 +107,10 @@ export default async function HomePage() {
           <ProductGrid products={newArrivals.slice(0, 4)} columns={4} />
         </div>
       </section>
+      ) : null}
 
       {/* -------------------------------------------- Wedding collection */}
-      {weddingCollection ? (
+      {weddingCollection && wedding.length ? (
         <section className="section bg-brand-900 text-white">
           <div className="container space-y-16">
             <CollectionFeature
@@ -119,7 +125,7 @@ export default async function HomePage() {
       ) : null}
 
       {/* --------------------------------------------- Luxury lace */}
-      {laceCollection ? (
+      {laceCollection && lace.length ? (
         <section className="section">
           <div className="container space-y-16">
             <CollectionFeature
@@ -133,6 +139,7 @@ export default async function HomePage() {
       ) : null}
 
       {/* ------------------------------------------- Premium fabrics */}
+      {premium.length ? (
       <section className="section bg-secondary/50">
         <div className="container">
           <SectionHeading
@@ -151,6 +158,7 @@ export default async function HomePage() {
           <ProductGrid products={premium} columns={3} />
         </div>
       </section>
+      ) : null}
 
       {/* --------------------------------------------- Why choose us */}
       <section className="section">
@@ -161,44 +169,6 @@ export default async function HomePage() {
             className="mb-16"
           />
           <WhyChooseUs items={whyChooseUs} />
-        </div>
-      </section>
-
-      {/* -------------------------------------------------- Instagram */}
-      {/* Tinted: the section above it is plain, and the page alternates. */}
-      <section className="section bg-secondary/50">
-        <div className="container">
-          <SectionHeading
-            eyebrow="@yadimsfabrics"
-            title="From the shop floor"
-            description="New stock, fittings and the occasional very good delivery day."
-            className="mb-14"
-          />
-
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            {instagramGrid.map((src, i) => (
-              <Reveal key={src + i} delay={i * 0.05}>
-                <a
-                  href={siteConfig.social.instagram}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="group relative block aspect-square overflow-hidden rounded-3xl bg-muted"
-                >
-                  <Image
-                    src={src}
-                    alt=""
-                    fill
-                    sizes="(min-width: 1024px) 16vw, 45vw"
-                    className="object-cover transition-transform duration-1000 ease-luxe group-hover:scale-110"
-                  />
-                  <span className="absolute inset-0 grid place-items-center bg-brand-900/0 text-white opacity-0 transition-all duration-500 group-hover:bg-brand-900/45 group-hover:opacity-100">
-                    <Instagram className="h-6 w-6" aria-hidden />
-                    <span className="sr-only">View on Instagram</span>
-                  </span>
-                </a>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

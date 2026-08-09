@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { SafeImage as Image } from "@/components/shared/safe-image";
 import Link from "next/link";
 import { ArrowRight, Check, MessageCircle } from "lucide-react";
 import * as Icons from "lucide-react";
 
 import { services, whyChooseUs } from "@/data/company";
-import { sceneImages as S } from "@/data/images";
 import { siteConfig } from "@/config/site";
 import { cn, whatsappLink } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -35,7 +33,6 @@ export default function ServicesPage() {
         title="Services"
         description="Six ways we work with customers — from a single yard cut over the counter to a five-hundred-metre uniform contract. All of them start with the same conversation about what the cloth has to do."
         breadcrumbs={[{ name: "Services", href: "/services" }]}
-        image={S.shop2}
       />
 
       {/* Overview cards */}
@@ -61,22 +58,8 @@ export default function ServicesPage() {
                 */}
                 <a
                   href={`#${service.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-4xl border border-border/70 bg-card transition-all duration-500 ease-luxe hover:-translate-y-1 hover:shadow-lift sm:flex-row"
+                  className="group flex h-full flex-col overflow-hidden rounded-4xl border border-border/70 bg-card transition-all duration-500 ease-luxe hover:-translate-y-1 hover:shadow-lift"
                 >
-                  <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden bg-muted sm:aspect-auto sm:w-2/5">
-                    <Image
-                      src={service.image}
-                      alt=""
-                      fill
-                      sizes="(min-width: 1024px) 16rem, (min-width: 640px) 40vw, 100vw"
-                      className="object-cover transition-transform duration-1000 ease-luxe group-hover:scale-105"
-                    />
-                    <span
-                      className="absolute inset-0 bg-gradient-to-r from-transparent to-card/25"
-                      aria-hidden
-                    />
-                  </div>
-
                   <div className="flex flex-1 flex-col p-6 sm:p-7">
                     <span className="grid h-11 w-11 place-items-center rounded-2xl bg-brand-50 text-brand-600 transition-colors duration-500 group-hover:bg-brand-500 group-hover:text-white dark:bg-brand-800/60 dark:text-brand-200">
                       <ServiceIcon name={service.icon} />
@@ -109,24 +92,9 @@ export default function ServicesPage() {
           >
             <div className="container">
               <div
-                className={cn(
-                  "grid items-center gap-12 lg:grid-cols-2 lg:gap-20",
-                  i % 2 === 1 && "lg:[&>*:first-child]:order-2",
-                )}
+                className="mx-auto max-w-3xl"
               >
-                <Reveal preset="reveal">
-                  <div className="relative aspect-[5/4] overflow-hidden rounded-[2rem] bg-muted">
-                    <Image
-                      src={service.image}
-                      alt=""
-                      fill
-                      sizes="(min-width: 1024px) 45vw, 92vw"
-                      className="object-cover"
-                    />
-                  </div>
-                </Reveal>
-
-                <Reveal preset={i % 2 === 1 ? "left" : "right"}>
+                <Reveal preset="up">
                   <p className="eyebrow">Service {String(i + 1).padStart(2, "0")}</p>
                   <h2 className="mt-4 text-display-sm">{service.title}</h2>
                   <span className="rule-gold mt-6 block" aria-hidden />

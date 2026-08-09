@@ -1,46 +1,10 @@
-import { productImages as P, sceneImages as S, shopPhotos } from "@/data/images";
-import type { GalleryItemRow } from "@/types/database";
-
-/* ------------------------------------------------------------------ */
-/* Gallery                                                             */
-/* ------------------------------------------------------------------ */
-
-type GallerySeed = [string, string, string, GalleryItemRow["category"], GalleryItemRow["aspect"]];
-
-/** The owner's own photographs lead the gallery once they are supplied. */
-const realSeeds: GallerySeed[] = [
-  [shopPhotos.boltWall, "The Shelves", "Cottons, crepes and metallic jacquards, sorted by hand every Monday morning.", "Store", "portrait"],
-  [shopPhotos.laceShelves, "The Lace Corner", "Sequin, beaded and embroidered lace — where every bridal decision actually gets made.", "Fabric Displays", "portrait"],
-  [shopPhotos.mannequin, "Draped and Measured", "Black embroidered lace on the stand, tape alongside. A photograph cannot tell you how it falls.", "Customer Showcase", "portrait"],
-  [shopPhotos.displayWall, "Front of House", "Packaged lengths held for collection, against the full display wall.", "Store", "portrait"],
-];
-
-const stockSeeds: GallerySeed[] = [
-  [S.shop2, "The Bolt Wall", "Floor to ceiling, sorted by weight rather than colour.", "Store", "portrait"],
-  [S.shelfSilk, "Silk Shelf", "Charmeuse and duchess satin, folded on the bias.", "Fabric Displays", "portrait"],
-  [S.laceTable, "The Lace Table", "Where every bridal decision actually gets made.", "Fabric Displays", "landscape"],
-  [S.cottonRolls, "Cotton Rolls", "Solid cottons and poplins in forty shades.", "New Stock", "portrait"],
-  [P.velvetEmerald, "Velvet Corner", "Silk-blend velvet in the house green.", "Fabric Displays", "square"],
-  [P.wax1, "Wax, Worn", "A six-yard piece, cut and sewn by a customer.", "Customer Showcase", "portrait"],
-  [S.tailor1, "At the Machine", "The part nobody photographs and everybody feels.", "Events", "landscape"],
-  [S.tailor2, "Finishing", "A hem pressed before it leaves the counter.", "Customer Showcase", "portrait"],
-  [S.sequinDetail, "Sequin, Under Light", "Matte sequin on a stretch mesh ground.", "New Stock", "square"],
-  [S.shop3, "Opening Up", "The shop at eight in the morning.", "Events", "landscape"],
-];
-
-export const galleryItems: GalleryItemRow[] = [...realSeeds, ...stockSeeds].map(
-  ([image_url, title, caption, category, aspect], i) => ({
-    id: `gal-${i + 1}`,
-    title,
-    caption,
-    image_url,
-    category,
-    aspect,
-    position: i,
-    is_published: true,
-    created_at: new Date(Date.UTC(2025, 2, 1 + i)).toISOString(),
-  }),
-);
+/**
+ * Storefront copy that is not stored in the database.
+ *
+ * There is no bundled gallery here any more. Gallery photographs are uploaded
+ * through the dashboard and read from Supabase, so the site only ever shows
+ * pictures the shop actually took.
+ */
 
 export const galleryCategories = [
   "All",

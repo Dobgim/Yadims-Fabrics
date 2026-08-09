@@ -13,9 +13,10 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useStore } from "@/components/providers/store-provider";
 import { SearchCommand } from "@/components/layout/search-command";
+import type { SearchIndexEntry } from "@/lib/queries/products";
 import { Wordmark } from "@/components/layout/wordmark";
 
-export function Navbar() {
+export function Navbar({ searchIndex = [] }: { searchIndex?: SearchIndexEntry[] }) {
   const pathname = usePathname();
   const { itemCount, wishlist, setCartOpen, hydrated } = useStore();
   const { scrollY } = useScroll();
@@ -110,7 +111,7 @@ export function Navbar() {
         </div>
       </header>
 
-      <SearchCommand open={searchOpen} onOpenChange={setSearchOpen} />
+      <SearchCommand open={searchOpen} onOpenChange={setSearchOpen} index={searchIndex} />
     </>
   );
 }

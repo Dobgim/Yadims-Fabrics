@@ -2,7 +2,6 @@ import "server-only";
 
 import { cache } from "react";
 
-import { galleryItems } from "@/data/content";
 import { createStaticClient } from "@/lib/supabase/server";
 import type { GalleryItemRow } from "@/types/database";
 
@@ -17,7 +16,7 @@ import type { GalleryItemRow } from "@/types/database";
  */
 export const getGalleryItems = cache(async (): Promise<GalleryItemRow[]> => {
   const supabase = createStaticClient();
-  if (!supabase) return galleryItems;
+  if (!supabase) return [];
 
   const { data, error } = await supabase
     .from("gallery_items")
@@ -25,6 +24,6 @@ export const getGalleryItems = cache(async (): Promise<GalleryItemRow[]> => {
     .eq("is_published", true)
     .order("position", { ascending: true });
 
-  if (error || !data?.length) return galleryItems;
-  return data as GalleryItemRow[];
+  if (error) return [];
+  return (data as GalleryItemRow[]) ?? [];
 });

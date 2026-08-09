@@ -1,4 +1,3 @@
-import { productImages as P, sceneImages as S } from "@/data/images";
 
 export const services = [
   {
@@ -14,7 +13,6 @@ export const services = [
       "Weight, width and fibre content published for every bolt",
       "Swatch service before you commit",
     ],
-    image: S.shop2,
   },
   {
     slug: "wholesale-supply",
@@ -29,7 +27,6 @@ export const services = [
       "30-day terms after three settled orders",
       "First look at incoming stock",
     ],
-    image: S.cottonRolls,
   },
   {
     slug: "bulk-orders",
@@ -44,7 +41,6 @@ export const services = [
       "One consolidated delivery across Yaoundé",
       "No surcharge for the coordination",
     ],
-    image: S.shelfSilk,
   },
   {
     slug: "fashion-consultation",
@@ -59,7 +55,6 @@ export const services = [
       "Yardage calculated against your pattern layout",
       "Fee credited against your order",
     ],
-    image: S.laceTable,
   },
   {
     slug: "fabric-recommendations",
@@ -74,7 +69,6 @@ export const services = [
       "Honest about when the cheaper bolt is the right one",
       "Swatches posted anywhere in Cameroon",
     ],
-    image: P.chiffonBlue,
   },
   {
     slug: "special-orders",
@@ -89,7 +83,6 @@ export const services = [
       "Typical lead time four to eight weeks",
       "We say no when the answer is no",
     ],
-    image: P.brocadeGold,
   },
 ] as const;
 
@@ -175,11 +168,3 @@ export const storeStats = [
   { value: "Same-day", label: "Yaoundé delivery" },
 ] as const;
 
-export const instagramGrid = [
-  S.shop3,
-  P.velvetEmerald,
-  P.wax1,
-  P.sequinGold,
-  S.laceTable,
-  P.silkTeal,
-] as const;

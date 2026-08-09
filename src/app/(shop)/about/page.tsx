@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { SafeImage as Image } from "@/components/shared/safe-image";
 import { Compass, Eye, Target } from "lucide-react";
 
 import { coreValues, storeStats, timeline, whyChooseUs } from "@/data/company";
-import { sceneImages as S } from "@/data/images";
 import { PageHeader } from "@/components/shared/page-header";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
@@ -17,13 +15,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
-const storePhotos = [
-  { src: S.shop2, caption: "The bolt wall, sorted every Monday" },
-  { src: S.laceTable, caption: "The lace table" },
-  { src: S.shelfSilk, caption: "Silk, folded on the bias" },
-  { src: S.cottonRolls, caption: "Cotton rolls in forty shades" },
-];
-
 export default function AboutPage() {
   return (
     <>
@@ -32,25 +23,12 @@ export default function AboutPage() {
         title="A family shop that never wanted to be a warehouse"
         description="We opened on a single rule: only sell fabric we would sew with ourselves, and publish the numbers that let you check."
         breadcrumbs={[{ name: "About", href: "/about" }]}
-        image={S.shop2}
       />
 
       {/* Story */}
       <section className="section">
-        <div className="container grid gap-14 lg:grid-cols-2 lg:gap-20">
-          <Reveal preset="reveal">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-muted">
-              <Image
-                src={S.shop2}
-                alt="The YADIMS shop at Tam-Tam, opposite Bali Hotel"
-                fill
-                sizes="(min-width: 1024px) 45vw, 92vw"
-                className="object-cover"
-              />
-            </div>
-          </Reveal>
-
-          <Reveal preset="right" className="flex flex-col justify-center">
+        <div className="container">
+          <Reveal preset="up" className="mx-auto flex max-w-3xl flex-col justify-center">
             <p className="eyebrow">Our story</p>
             <h2 className="mt-4 text-display-md">
               Why we opened
@@ -194,38 +172,6 @@ export default function AboutPage() {
                   <h3 className="mt-5 font-display text-2xl">{value.title}</h3>
                   <p className="mt-4 leading-relaxed text-muted-foreground">{value.body}</p>
                 </article>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Store photos */}
-      <section className="section">
-        <div className="container">
-          <SectionHeading
-            eyebrow="The shop"
-            title="Where all of this happens"
-            className="mb-14"
-          />
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {storePhotos.map((photo, i) => (
-              <Reveal key={photo.src} delay={i * 0.06}>
-                <figure className="group">
-                  <div className="relative aspect-[3/4] overflow-hidden rounded-3xl bg-muted">
-                    <Image
-                      src={photo.src}
-                      alt={photo.caption}
-                      fill
-                      sizes="(min-width: 1024px) 24vw, 45vw"
-                      className="object-cover transition-transform duration-1000 ease-luxe group-hover:scale-105"
-                    />
-                  </div>
-                  <figcaption className="mt-3 text-sm text-muted-foreground">
-                    {photo.caption}
-                  </figcaption>
-                </figure>
               </Reveal>
             ))}
           </div>

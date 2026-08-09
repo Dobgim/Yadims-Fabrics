@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight, ChevronDown } from "lucide-react";
@@ -21,7 +20,6 @@ import { Button } from "@/components/ui/button";
  * Each is optional above the first, so the hero looks finished at every stage.
  */
 const BACKDROP = brand.backdrop;
-const FABRIC = brand.heroFabric;
 const PHOTO = shopPhotos.laceShelves;
 
 /**
@@ -54,33 +52,13 @@ export function Hero() {
         />
 
         {/*
-          2 — photographed silk. `next/image` with `priority` so it is
-          preloaded and served as AVIF; the white original is tinted to house
-          green by the scrims below rather than by a filter, which keeps the
-          highlights on each fold crest intact.
-        */}
-        <Image
-          src={FABRIC}
-          alt=""
-          aria-hidden
-          fill
-          priority
-          quality={72}
-          sizes="100vw"
-          className="object-cover"
-        />
-
-        {/*
-          Green tint, multiplied rather than overlaid. Multiply darkens toward
-          the tint where the cloth is shadowed and leaves the crest highlights
-          bright, so white silk reads as green silk rather than a flat wash.
-          Kept at brand-600 with the flat scrim removed — anything heavier
-          buries the folds entirely and the hero looks like plain colour.
+          Green wash over the vector drape. Multiply keeps the drawn folds
+          reading through it instead of flattening them.
         */}
         <div className="absolute inset-0 bg-brand-600 mix-blend-multiply" aria-hidden />
 
         {/*
-          3 — the owner's own shelves, if supplied. A plain <img>: routing a
+          2 — the owner's own shelves, if supplied. A plain <img>: routing a
           not-yet-uploaded file through the optimiser answers 400 and fills the
           console with noise, whereas a native <img> fails silently.
         */}

@@ -17,10 +17,10 @@ npm run dev
 
 Open <http://localhost:3000>.
 
-**The storefront runs with no configuration at all.** Every query falls back to a curated
-catalogue in `src/data/`, so the full site — fabrics, collections and gallery — renders, filters,
-sorts and paginates before Supabase exists. Order persistence and the admin dashboard are the only
-things that need a database.
+**Every photograph on the site is uploaded by the shop.** There is no stock photography and no
+bundled demo catalogue: fabrics, categories, collections and gallery images all come from Supabase,
+so a picture on the storefront is always cloth the shop actually has. With no database connected the
+storefront renders as an empty shop rather than inventing stock.
 
 The shop has **no customer accounts**. One person runs it: orders are placed as a guest, and the
 single sign-in belongs to the owner, on her way to the dashboard.
@@ -71,8 +71,8 @@ Plus a custom 404, route-level loading UI and an error boundary.
 
 1. Create a project at [supabase.com](https://supabase.com) and copy the URL, anon key and
    service-role key into `.env.local`.
-2. In the SQL editor, paste and run `supabase/setup.sql` — schema, RLS policies, storage
-   buckets and the starter catalogue, in one go.
+2. In the SQL editor, paste and run `supabase/setup.sql` — schema, RLS policies and storage
+   buckets, in one go. It seeds no content; the shop starts empty and is filled from `/admin`.
 3. Create the owner's user in Supabase → Authentication → Users → Add user, then promote it:
    ```sql
    update public.profiles set role = 'admin' where email = 'you@example.com';

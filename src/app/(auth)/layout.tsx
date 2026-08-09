@@ -1,16 +1,12 @@
-import { SafeImage as Image } from "@/components/shared/safe-image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
-import { sceneImages as S } from "@/data/images";
 import { Wordmark } from "@/components/layout/wordmark";
 
-const AUTH_IMAGE = S.laceTable;
-
 /**
- * Split-screen auth shell: form on the left, editorial imagery on the right.
- * The imagery is decorative and drops away entirely below `lg`.
+ * Split-screen auth shell: form on the left, a brand panel on the right.
+ * The panel is decorative and drops away entirely below `lg`.
  */
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -37,19 +33,26 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </p>
       </div>
 
+      {/*
+        A brand panel rather than a photograph. It previously carried a stock
+        image and a customer quote; the quote was written, not given, and the
+        photograph was not the shop's.
+      */}
       <aside className="relative hidden overflow-hidden bg-brand-900 lg:block" aria-hidden>
-        <Image src={AUTH_IMAGE} alt="" fill sizes="50vw" className="object-cover" priority />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-brand-900 via-brand-900/40 to-brand-900/20"
+          className="absolute inset-0 bg-[url('/brand/fabric-backdrop.svg')] bg-cover bg-center opacity-40"
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-brand-900 via-brand-900/60 to-brand-900/30"
           aria-hidden
         />
         <div className="absolute inset-x-0 bottom-0 p-14">
           <p className="text-eyebrow font-medium uppercase text-gold-400">The Art of Fine Fabrics</p>
           <p className="mt-5 max-w-md font-display text-3xl leading-snug text-white">
-            &ldquo;They talked me out of the expensive bolt and into the right one. That is the
-            I did not expect that from anybody selling fabric.&rdquo;
+            Cut to the length you need, by people who have sewn with it.
           </p>
-          <p className="mt-5 text-sm text-white/55">Grace Etonde — Fashion Student</p>
+          <p className="mt-5 text-sm text-white/55">Tam-Tam, opposite Bali Hotel — Yaoundé</p>
         </div>
       </aside>
     </div>

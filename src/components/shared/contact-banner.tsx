@@ -1,26 +1,20 @@
-import { SafeImage as Image } from "@/components/shared/safe-image";
 import Link from "next/link";
 import { ArrowRight, MessageCircle, Phone } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { whatsappLink } from "@/lib/utils";
-import { sceneImages as S } from "@/data/images";
 import { Button } from "@/components/ui/button";
-
-const BANNER_IMAGE = S.shop2;
 
 export function ContactBanner() {
   return (
     <section className="relative isolate overflow-hidden">
-      <Image
-        src={BANNER_IMAGE}
-        alt=""
-        fill
-        sizes="100vw"
-        className="-z-10 object-cover"
+      {/* House green over the drawn drape — no photograph, since the only
+          photographs on this site are ones the shop took itself. */}
+      <div className="absolute inset-0 -z-10 bg-brand-900" aria-hidden />
+      <div
+        className="absolute inset-0 -z-10 bg-[url('/brand/fabric-backdrop.svg')] bg-cover bg-center opacity-25"
         aria-hidden
       />
-      <div className="absolute inset-0 -z-10 bg-brand-900/88" aria-hidden />
 
       <div className="container flex flex-col items-center gap-9 py-24 text-center text-white md:py-32">
         <p className="eyebrow text-gold-400">Come and feel the cloth</p>

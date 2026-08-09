@@ -7,20 +7,26 @@ import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 
 import { formatPrice } from "@/lib/utils";
-import { products } from "@/data/catalogue";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import type { SearchIndexEntry } from "@/lib/queries/products";
 
 interface SearchCommandProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Live catalogue index, built on the server. */
+  index: SearchIndexEntry[];
 }
 
 /**
- * Type-ahead over the catalogue. Matching runs against the bundled index so
- * results appear instantly; pressing Enter hands off to the full shop search.
+ * Type-ahead over the catalogue. Matching runs in the browser so results
+ * appear instantly; pressing Enter hands off to the full shop search.
+ *
+ * The index is passed in from the server rather than imported. It used to
+ * filter the bundled demo catalogue, which meant the search box offered
+ * fabrics the shop does not stock and linked to pages that 404.
  */
-export function SearchCommand({ open, onOpenChange }: SearchCommandProps) {
+export function SearchCommand({ open, onOpenChange, index }: SearchCommandProps) {
   const router = useRouter();
   const [term, setTerm] = React.useState("");
 
@@ -46,12 +52,8 @@ export function SearchCommand({ open, onOpenChange }: SearchCommandProps) {
   const results = React.useMemo(() => {
     const q = term.trim().toLowerCase();
     if (!q) return [];
-    return products
-      .filter((p) =>
-        [p.name, p.material ?? "", ...p.tags, ...p.colors].join(" ").toLowerCase().includes(q),
-      )
-      .slice(0, 6);
-  }, [term]);
+    return index.filter((p) => p.haystack.includes(q)).slice(0, 6);
+  }, [term, index]);
 
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -109,9 +111,9 @@ export function SearchCommand({ open, onOpenChange }: SearchCommandProps) {
                   className="flex items-center gap-4 rounded-2xl px-3 py-3 transition-colors hover:bg-secondary"
                 >
                   <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-muted">
-                    {product.images[0] ? (
+                    {product.image ? (
                       <Image
-                        src={product.images[0]}
+                        src={product.image}
                         alt=""
                         fill
                         sizes="56px"

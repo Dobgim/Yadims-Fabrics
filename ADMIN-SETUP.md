@@ -1,8 +1,8 @@
 # Setting up the YADIMS dashboard
 
-The storefront runs on its own — the fabrics you see now are bundled with the
-site. The **dashboard** is different: it needs a database, because that is where
-the fabrics you add have to live.
+Everything a customer sees on this site comes out of your database — every
+fabric, every photograph. Nothing is bundled with the site, so the shop is
+empty until you fill it from the dashboard.
 
 This is a one-time setup. Budget about fifteen minutes. It is free.
 
@@ -27,15 +27,17 @@ In the Supabase dashboard, open **SQL Editor** → **New query**.
 Open **`supabase/setup.sql`**, copy the whole file, paste it into the editor and
 click **Run**. That is the entire database — one paste.
 
-It contains three parts, in the order they have to run:
+It contains two parts, in the order they have to run:
 
 1. **Schema** — 14 tables, enums, indexes, triggers
-2. **Security** — Row Level Security policies and the four storage buckets
-3. **Starter catalogue** — the fabrics, categories and collections the site
-   currently shows, so the shop is not empty on the first load
+2. **Security** — Row Level Security policies and the storage buckets
 
 Part 2 is not optional. It is what stops a customer reading another customer's
 orders, and what allows you — and only you — to upload images.
+
+**It adds no fabrics.** The shop starts empty on purpose: every fabric,
+category and photograph is added by you through the dashboard, so anything a
+customer sees on the site is cloth you actually have.
 
 The whole file is safe to run again. If a step fails halfway, fix it and re-run
 the lot; nothing is duplicated.
@@ -49,8 +51,8 @@ where table_schema = 'public' order by table_name;
 
 You should get 14 rows, from `addresses` through to `wishlist_items`.
 
-> The individual files in `supabase/migrations/` and `supabase/seed.sql` are the
-> same SQL, split up. Use `setup.sql` unless you have a reason not to.
+> The files in `supabase/migrations/` are the same SQL, split in two. Use
+> `setup.sql` unless you have a reason not to.
 
 ---
 
@@ -187,6 +189,19 @@ server.
 
 **Upload fails with a permissions error.**
 Storage writes are limited to staff and admin. Same fix as the first item.
+
+**I added a fabric but it is not on the website.**
+Almost always because it is still a **draft**. New products save as *Draft*,
+which is deliberately invisible to customers. Open it in **Admin → Products**,
+set **Status** to *Active*, and save. Give the page a few seconds and a hard
+refresh (Ctrl+Shift+R).
+
+Two other things to check on that screen: **Price** must not be left at 0, and
+**Stock on hand** at 0 shows the fabric as sold out.
+
+**The shop looks empty.**
+It is. There is no demo content — if you have not added an active fabric yet,
+the storefront correctly shows nothing rather than inventing stock.
 
 **I want to remove a fabric that has been ordered.**
 You cannot, and you should not — it would tear a hole in the order history.

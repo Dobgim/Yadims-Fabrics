@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import { getAllProducts, getCollections } from "@/lib/queries/products";
-import { sceneImages as S } from "@/data/images";
 import { PageHeader } from "@/components/shared/page-header";
 import { Reveal } from "@/components/shared/reveal";
 import { ContactBanner } from "@/components/shared/contact-banner";
@@ -31,7 +30,6 @@ export default async function CollectionsPage() {
         title="The collections"
         description="We group fabric by what it is for, not by what it is made of. A bride does not need a fibre taxonomy — she needs the eleven bolts that will actually work for her gown."
         breadcrumbs={[{ name: "Collections", href: "/collections" }]}
-        image={S.laceTable}
       />
 
       <section className="section">

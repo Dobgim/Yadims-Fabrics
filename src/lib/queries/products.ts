@@ -2,7 +2,6 @@ import "server-only";
 
 import { cache } from "react";
 
-import { categories, collections, facets, products } from "@/data/catalogue";
 import { paginate } from "@/lib/utils";
 import { createStaticClient } from "@/lib/supabase/server";
 import type { CategoryRow, CollectionRow, ProductRow } from "@/types/database";
@@ -36,7 +35,11 @@ export interface ProductQuery {
  */
 async function loadProducts(): Promise<ProductRow[]> {
   const supabase = createStaticClient();
-  if (!supabase) return products;
+
+  // No database means no catalogue. There is no bundled stand-in any more:
+  // showing fabrics the shop does not own, at prices it never set, is worse
+  // than showing an empty shop.
+  if (!supabase) return [];
 
   const { data, error } = await supabase
     .from("products")
@@ -44,36 +47,39 @@ async function loadProducts(): Promise<ProductRow[]> {
     .eq("status", "active")
     .order("created_at", { ascending: false });
 
-  if (error || !data?.length) return products;
-  return data as ProductRow[];
+  // An empty catalogue is a real answer, not a reason to invent stock.
+  // Substituting the demo fabrics here put nine fabrics the shop does not
+  // own, at prices it never set, in front of customers.
+  if (error) return [];
+  return (data as ProductRow[]) ?? [];
 }
 
 export const getAllProducts = cache(loadProducts);
 
 export const getCategories = cache(async (): Promise<CategoryRow[]> => {
   const supabase = createStaticClient();
-  if (!supabase) return categories;
+  if (!supabase) return [];
 
   const { data, error } = await supabase
     .from("categories")
     .select("*")
     .order("position", { ascending: true });
 
-  if (error || !data?.length) return categories;
-  return data as CategoryRow[];
+  if (error) return [];
+  return (data as CategoryRow[]) ?? [];
 });
 
 export const getCollections = cache(async (): Promise<CollectionRow[]> => {
   const supabase = createStaticClient();
-  if (!supabase) return collections;
+  if (!supabase) return [];
 
   const { data, error } = await supabase
     .from("collections")
     .select("*")
     .order("position", { ascending: true });
 
-  if (error || !data?.length) return collections;
-  return data as CollectionRow[];
+  if (error) return [];
+  return (data as CollectionRow[]) ?? [];
 });
 
 const sorters: Record<SortKey, (a: ProductRow, b: ProductRow) => number> = {
@@ -176,14 +182,49 @@ export async function getProductsByIds(ids: string[]) {
 
 export async function getFacets() {
   const all = await getAllProducts();
-  if (all === products) return facets;
+
+  // `Math.min()` of an empty list is Infinity, which would render as a broken
+  // price filter on a shop with nothing in it yet.
+  const prices = all.map((p) => p.price);
 
   return {
     materials: Array.from(new Set(all.map((p) => p.material).filter(Boolean) as string[])).sort(),
     colors: Array.from(new Set(all.flatMap((p) => p.colors))).sort(),
     priceRange: {
-      min: Math.min(...all.map((p) => p.price)),
-      max: Math.max(...all.map((p) => p.price)),
+      min: prices.length ? Math.min(...prices) : 0,
+      max: prices.length ? Math.max(...prices) : 0,
     },
   };
+}
+
+export interface SearchIndexEntry {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  currency: string;
+  material: string | null;
+  image: string | null;
+  haystack: string;
+}
+
+/**
+ * Lightweight index for the header's type-ahead.
+ *
+ * The dialog is a client component and used to filter the bundled demo
+ * catalogue, so it offered fabrics the shop does not stock. It now searches
+ * this, built from the same live data every other page reads.
+ */
+export async function getSearchIndex(): Promise<SearchIndexEntry[]> {
+  const all = await getAllProducts();
+  return all.map((p) => ({
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    price: p.price,
+    currency: p.currency,
+    material: p.material,
+    image: p.images[0] ?? null,
+    haystack: [p.name, p.material ?? "", ...p.tags, ...p.colors].join(" ").toLowerCase(),
+  }));
 }
