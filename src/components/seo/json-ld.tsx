@@ -1,12 +1,41 @@
 import { siteConfig } from "@/config/site";
 import type { ProductRow } from "@/types/database";
 
+// Characters that can break out of a <script> tag. The two separators are
+// built from their code points so no literal U+2028/U+2029 byte ever appears
+// in this source file (such a byte would itself break the parser).
+const LINE_SEP = String.fromCharCode(0x2028);
+const PARA_SEP = String.fromCharCode(0x2029);
+
+const JSONLD_ESCAPES: Record<string, string> = {
+  "<": "\u003c",
+  ">": "\u003e",
+  "&": "\u0026",
+  [LINE_SEP]: "\u2028",
+  [PARA_SEP]: "\u2029",
+};
+
+const JSONLD_UNSAFE = new RegExp(`[<>&${LINE_SEP}${PARA_SEP}]`, "g");
+
+/**
+ * Serialises JSON-LD safely for embedding in a `<script>` tag.
+ *
+ * `JSON.stringify` does not escape `<`, `>` or `&`, so a product name or
+ * description containing `</script>` would close the tag and let anything
+ * after it run as markup. The fields here are admin-authored, but "trusted
+ * input" is the assumption that becomes stored XSS the day a second person can
+ * edit the catalogue — so the breakout characters are replaced with their JSON
+ * unicode escapes, which are still valid JSON and parse back identically.
+ */
+function serializeJsonLd(data: Record<string, unknown>): string {
+  return JSON.stringify(data).replace(JSONLD_UNSAFE, (ch) => JSONLD_ESCAPES[ch]);
+}
+
 function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script
       type="application/ld+json"
-      // Structured data is authored here, not user input.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(data) }}
     />
   );
 }

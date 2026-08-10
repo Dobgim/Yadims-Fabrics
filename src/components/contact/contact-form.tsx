@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Honeypot } from "@/components/shared/honeypot";
 import type { ActionResult } from "@/lib/validations";
 
 const subjects = [
@@ -44,6 +45,7 @@ export function ContactForm() {
 
   return (
     <form ref={formRef} action={formAction} className="space-y-5" noValidate>
+      <Honeypot />
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Your name" name="name" required error={errorFor("name")}>
           <Input id="name" name="name" autoComplete="name" placeholder="Ada Kounde" required />

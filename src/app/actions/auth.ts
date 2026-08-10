@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { publicEnv } from "@/lib/env";
+import { safeNextPath } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server";
 import {
   resetRequestSchema,
@@ -41,7 +42,7 @@ export async function signIn(
     return { ok: false, message: "That email and password do not match an account." };
   }
 
-  const next = String(formData.get("next") || "/admin");
+  const next = safeNextPath(String(formData.get("next") || ""));
 
   // The signed-in header and the dashboard both read the session, so the
   // cached layout has to go.

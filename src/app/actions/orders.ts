@@ -43,6 +43,15 @@ export async function placeOrder(
     return { ok: false, message: "Your cart is empty." };
   }
 
+  // Bounds on a request that comes straight from the browser. Without them a
+  // tampered payload could ship tens of thousands of line items, or a single
+  // line with quantity Infinity/NaN, into the orders table and the totals.
+  const MAX_LINES = 100;
+  const MAX_QUANTITY = 10_000;
+  if (lines.length > MAX_LINES) {
+    return { ok: false, message: "That is more items than one order can hold. Please split it, or contact us for a bulk quote." };
+  }
+
   const input = parsed.data;
   const products = await getProductsByIds(lines.map((l) => l.productId));
   const byId = new Map(products.map((p) => [p.id, p]));
@@ -50,7 +59,10 @@ export async function placeOrder(
   const items = lines.flatMap((line) => {
     const product = byId.get(line.productId);
     if (!product) return [];
-    const quantity = Math.max(1, Math.floor(line.quantity));
+    // Reject anything that is not a real positive number before clamping, so
+    // Infinity and NaN cannot reach the arithmetic below.
+    if (!Number.isFinite(line.quantity) || line.quantity < 1) return [];
+    const quantity = Math.min(MAX_QUANTITY, Math.max(1, Math.floor(line.quantity)));
     return [
       {
         product_id: product.id,

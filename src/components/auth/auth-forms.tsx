@@ -12,6 +12,7 @@ import { requestPasswordReset, signIn } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { safeNextPath } from "@/lib/utils";
 import type { ActionResult } from "@/lib/validations";
 
 /* ------------------------------------------------------------------ */
@@ -103,7 +104,7 @@ function useActionFeedback<T>(state: ActionResult<T> | null, onSuccess?: () => v
 export function SignInForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const next = searchParams.get("next") ?? "/admin";
+  const next = safeNextPath(searchParams.get("next"));
 
   const [state, formAction] = useActionState<ActionResult<{ next: string }> | null, FormData>(
     signIn,
@@ -114,7 +115,7 @@ export function SignInForm() {
   // happens here. `refresh` afterwards so the server re-renders the layout with
   // the new session rather than serving the signed-out one from cache.
   const errorFor = useActionFeedback(state, () => {
-    router.replace(state?.ok ? (state.data?.next ?? "/admin") : "/admin");
+    router.replace(safeNextPath(state?.ok ? state.data?.next : null));
     router.refresh();
   });
 

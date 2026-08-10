@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { subscribeToNewsletter } from "@/app/actions/marketing";
 import { Button } from "@/components/ui/button";
+import { Honeypot } from "@/components/shared/honeypot";
 import type { ActionResult } from "@/lib/validations";
 
 interface NewsletterFormProps {
@@ -42,6 +43,7 @@ export function NewsletterForm({
 
   return (
     <form ref={formRef} action={formAction} className={cn("w-full", className)}>
+      <Honeypot />
       <input type="hidden" name="source" value={source} />
 
       <div

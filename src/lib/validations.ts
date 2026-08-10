@@ -1,21 +1,40 @@
 import { z } from "zod";
 
+/**
+ * Honeypot. A hidden field no human fills in; a bot that fills every input
+ * trips it. The forms render it off-screen with autocomplete off, and the
+ * server rejects any submission where it is non-empty. Cheap, dependency-free
+ * spam suppression — not a substitute for a real CAPTCHA under determined
+ * abuse, but it stops the drive-by bots that submit every form they find.
+ */
+export const HONEYPOT_FIELD = "company_website";
+// Must be empty. A real person never sees or fills this; a bot that fills every
+// field submits a value, and `.max(0)` then rejects the whole submission.
+const honeypot = z.string().max(0, "Rejected").optional().or(z.literal(""));
+
 export const newsletterSchema = z.object({
-  email: z.string().email("Enter a valid email address"),
-  source: z.string().default("footer"),
+  // Every public field is bounded so a single request cannot ship megabytes
+  // into the database. An email is never longer than this.
+  email: z.string().email("Enter a valid email address").max(200),
+  source: z.string().max(60).default("footer"),
+  [HONEYPOT_FIELD]: honeypot,
 });
 export type NewsletterInput = z.infer<typeof newsletterSchema>;
 
 export const contactSchema = z.object({
-  name: z.string().min(2, "Please tell us your name"),
-  email: z.string().email("Enter a valid email address"),
+  name: z.string().min(2, "Please tell us your name").max(120),
+  email: z.string().email("Enter a valid email address").max(200),
   phone: z
     .string()
-    .max(24)
+    .max(40)
     .optional()
     .or(z.literal("")),
-  subject: z.string().min(3, "A short subject helps us route your message"),
-  message: z.string().min(20, "Please give us a little more detail (20 characters minimum)"),
+  subject: z.string().min(3, "A short subject helps us route your message").max(200),
+  message: z
+    .string()
+    .min(20, "Please give us a little more detail (20 characters minimum)")
+    .max(4000, "That is longer than our form accepts — please trim it or use WhatsApp"),
+  [HONEYPOT_FIELD]: honeypot,
 });
 export type ContactInput = z.infer<typeof contactSchema>;
 

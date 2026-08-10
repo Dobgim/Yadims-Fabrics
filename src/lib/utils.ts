@@ -49,6 +49,24 @@ export function absoluteUrl(path: string, base: string) {
   return new URL(path, base).toString();
 }
 
+/**
+ * Constrains a post-auth `next` destination to a same-site path.
+ *
+ * The sign-in form and the auth callback both take `next` from the URL and then
+ * navigate to it. Left unchecked, a value like `@evil.com`, `//evil.com` or a
+ * full `https://evil.com` sends the visitor off-site after login — an open
+ * redirect, useful for phishing. Anything that is not a single-slash-rooted
+ * path falls back to the dashboard.
+ */
+export function safeNextPath(next: string | null | undefined, fallback = "/admin") {
+  if (!next) return fallback;
+  // Must start with exactly one "/", ruling out "//host" and "/\\host", and
+  // must not smuggle in a scheme or credentials.
+  if (!next.startsWith("/") || next.startsWith("//") || next.startsWith("/\\")) return fallback;
+  if (next.includes("://") || next.includes("\\") || next.includes("@")) return fallback;
+  return next;
+}
+
 /** Builds a wa.me deep link with a pre-filled message. */
 export function whatsappLink(number: string, message: string) {
   return `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from "@/lib/supabase/server";
 import {
+  HONEYPOT_FIELD,
   contactSchema,
   newsletterSchema,
   type ActionResult,
@@ -13,9 +14,16 @@ export async function subscribeToNewsletter(
   _prev: ActionResult | null,
   formData: FormData,
 ): Promise<ActionResult> {
+  // Honeypot: a bot filled the hidden field. Answer as if it worked so it does
+  // not retry, and write nothing.
+  if (formData.get(HONEYPOT_FIELD)) {
+    return { ok: true, message: "You are on the list. Welcome to the house." };
+  }
+
   const parsed = newsletterSchema.safeParse({
     email: formData.get("email"),
     source: formData.get("source") ?? "footer",
+    [HONEYPOT_FIELD]: formData.get(HONEYPOT_FIELD) ?? "",
   });
 
   if (!parsed.success) {
@@ -50,12 +58,17 @@ export async function submitContactMessage(
   _prev: ActionResult | null,
   formData: FormData,
 ): Promise<ActionResult> {
+  if (formData.get(HONEYPOT_FIELD)) {
+    return { ok: true, message: "Message received. We reply within one working day." };
+  }
+
   const parsed = contactSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
     phone: formData.get("phone") ?? "",
     subject: formData.get("subject"),
     message: formData.get("message"),
+    [HONEYPOT_FIELD]: formData.get(HONEYPOT_FIELD) ?? "",
   });
 
   if (!parsed.success) {
