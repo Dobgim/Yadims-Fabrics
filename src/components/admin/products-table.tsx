@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 
-import { cn, formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { deleteProduct } from "@/app/actions/catalogue";
 import { Button } from "@/components/ui/button";
 import { DataTable, type Column } from "@/components/admin/data-table";
@@ -42,15 +42,6 @@ export function ProductsTable({ products }: { products: ProductRow[] }) {
       ),
     },
     { key: "material", header: "Material", value: (p) => p.material ?? "" },
-    {
-      key: "price",
-      header: "Price",
-      align: "right",
-      value: (p) => p.price,
-      cell: (p) => (
-        <span className="tabular-nums">{formatPrice(p.price, p.currency)}</span>
-      ),
-    },
     {
       key: "stock",
       header: "Stock",

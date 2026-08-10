@@ -6,8 +6,6 @@ import type {
   CollectionRow,
   ContactMessageRow,
   GalleryItemRow,
-  OrderItemRow,
-  OrderRow,
   ProductRow,
 } from "@/types/database";
 
@@ -18,18 +16,6 @@ import type {
  */
 async function adminDb() {
   return createAdminClient() ?? (await createClient());
-}
-
-export type AdminOrder = OrderRow & { order_items: OrderItemRow[] };
-
-export async function getAdminOrders(): Promise<AdminOrder[]> {
-  const db = await adminDb();
-  if (!db) return [];
-  const { data } = await db
-    .from("orders")
-    .select("*, order_items(*)")
-    .order("created_at", { ascending: false });
-  return (data as AdminOrder[]) ?? [];
 }
 
 export async function getAdminProducts(): Promise<ProductRow[]> {

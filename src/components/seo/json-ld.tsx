@@ -95,17 +95,17 @@ export function ProductJsonLd({ product }: { product: ProductRow }) {
         offers: {
           "@type": "Offer",
           url: `${siteConfig.url}/shop/${product.slug}`,
-          priceCurrency: product.currency,
-          price: product.price,
+          // No price. It is agreed per customer on WhatsApp and is not
+          // published, so none is asserted here. Availability still tells
+          // search engines the fabric is in stock and enquirable.
           availability:
             product.stock_quantity > 0
               ? "https://schema.org/InStock"
               : "https://schema.org/OutOfStock",
           seller: { "@type": "Organization", name: siteConfig.name },
         },
-        // No aggregateRating. The shop has no customer accounts, so it has no
-        // way to collect a review — publishing a rating in structured data
-        // would be asserting something to search engines that nothing backs.
+        // No aggregateRating either — the shop has no reviews to cite, and
+        // publishing one would assert something to search engines nothing backs.
       }}
     />
   );

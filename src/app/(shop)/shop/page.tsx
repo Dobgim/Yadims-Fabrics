@@ -63,8 +63,6 @@ export default async function ShopPage({
     collection: collectionId,
     materials: toArray(params.material),
     colors: toArray(params.color),
-    minPrice: toNumber(params.minPrice),
-    maxPrice: toNumber(params.maxPrice),
     onlyNew: toArray(params.new)[0] === "1",
     sort: (toArray(params.sort)[0] as SortKey) || "newest",
     page: toNumber(params.page) ?? 1,
@@ -76,7 +74,6 @@ export default async function ShopPage({
     collections,
     materials: facets.materials,
     colors: facets.colors,
-    priceRange: facets.priceRange,
   };
 
   return (

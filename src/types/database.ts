@@ -77,6 +77,7 @@ export type ProductRow = {
   colors: string[];
   tags: string[];
   images: string[];
+  videos: string[];
   stock_quantity: number;
   min_order_quantity: number;
   category_id: string | null;

@@ -4,11 +4,10 @@ import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { SlidersHorizontal, X } from "lucide-react";
 
-import { cn, formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -25,7 +24,6 @@ export interface FilterOptions {
   collections: CollectionRow[];
   materials: string[];
   colors: string[];
-  priceRange: { min: number; max: number };
 }
 
 /**
@@ -67,17 +65,6 @@ function useFilterParams() {
     [apply],
   );
 
-  const setRange = React.useCallback(
-    (min: number, max: number, bounds: { min: number; max: number }) => {
-      apply((params) => {
-        if (min > bounds.min) params.set("minPrice", String(min));
-        else params.delete("minPrice");
-        if (max < bounds.max) params.set("maxPrice", String(max));
-        else params.delete("maxPrice");
-      });
-    },
-    [apply],
-  );
 
   const clearAll = React.useCallback(() => {
     apply((params) => {
@@ -87,7 +74,7 @@ function useFilterParams() {
     });
   }, [apply]);
 
-  return { getAll, toggle, setRange, clearAll, searchParams };
+  return { getAll, toggle, clearAll, searchParams };
 }
 
 /** Persistent rail, large screens only. */
@@ -123,20 +110,7 @@ export function FilterDrawer({ options }: { options: FilterOptions }) {
 }
 
 function FilterPanel({ options }: { options: FilterOptions }) {
-  const { getAll, toggle, setRange, clearAll, searchParams } = useFilterParams();
-  const { priceRange } = options;
-
-  const activeMin = Number(searchParams.get("minPrice") ?? priceRange.min);
-  const activeMax = Number(searchParams.get("maxPrice") ?? priceRange.max);
-  const [draft, setDraft] = React.useState<[number, number]>([activeMin, activeMax]);
-  const [prevRange, setPrevRange] = React.useState(`${activeMin}-${activeMax}`);
-
-  // Keep the slider in step with browser navigation and "clear all", adjusted
-  // during render so the thumbs never paint at a stale position first.
-  if (prevRange !== `${activeMin}-${activeMax}`) {
-    setPrevRange(`${activeMin}-${activeMax}`);
-    setDraft([activeMin, activeMax]);
-  }
+  const { getAll, toggle, clearAll, searchParams } = useFilterParams();
 
   const selectedCategories = getAll("category");
   const selectedCollections = getAll("collection");
@@ -148,7 +122,6 @@ function FilterPanel({ options }: { options: FilterOptions }) {
     selectedCollections.length +
     selectedMaterials.length +
     selectedColors.length +
-    (searchParams.has("minPrice") || searchParams.has("maxPrice") ? 1 : 0) +
     (searchParams.get("new") === "1" ? 1 : 0);
 
   return (
@@ -175,7 +148,7 @@ function FilterPanel({ options }: { options: FilterOptions }) {
 
       <Accordion
         type="multiple"
-        defaultValue={["category", "collection", "price", "material", "color"]}
+        defaultValue={["category", "collection", "material", "color"]}
         className="space-y-1"
       >
         <FilterGroup value="category" label="Category">
@@ -202,24 +175,6 @@ function FilterPanel({ options }: { options: FilterOptions }) {
           ))}
         </FilterGroup>
 
-        <FilterGroup value="price" label="Price">
-          <div className="px-1 pt-2">
-            <Slider
-              value={draft}
-              min={priceRange.min}
-              max={priceRange.max}
-              step={500}
-              minStepsBetweenThumbs={1}
-              onValueChange={(v) => setDraft([v[0], v[1]])}
-              onValueCommit={(v) => setRange(v[0], v[1], priceRange)}
-              aria-label="Price range"
-            />
-            <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-              <span>{formatPrice(draft[0])}</span>
-              <span>{formatPrice(draft[1])}</span>
-            </div>
-          </div>
-        </FilterGroup>
 
         <FilterGroup value="material" label="Material">
           {options.materials.map((material) => (

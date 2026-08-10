@@ -48,7 +48,7 @@ export const services = [
     icon: "Sparkles",
     summary: "Sit down with your sketch and work out what the garment actually needs.",
     detail:
-      "A forty-five minute appointment, in shop or over video, with the sketch or reference image in front of us. We work backwards from the silhouette to the fabric — weight first, then hand, then colour. Free for orders above 100,000 XAF, otherwise 10,000 XAF, credited against whatever you buy.",
+      "A forty-five minute appointment, in shop or over video, with the sketch or reference image in front of us. We work backwards from the silhouette to the fabric — weight first, then hand, then colour. Ask us about it on WhatsApp; it is free with a fabric order, and any fee is credited against whatever you buy.",
     points: [
       "45 minutes, in shop or by video call",
       "Silhouette-first, not swatch-first",
@@ -158,7 +158,7 @@ export const coreValues = [
 
 /**
  * Every figure here is verifiable from the shop's own policies — the minimum
- * order and delivery window are set in `src/lib/pricing.ts` and the shipping
+ * order and delivery window are described on the shipping policy page and the
  * policy. Do not add a claim that cannot be pointed at.
  */
 export const storeStats = [

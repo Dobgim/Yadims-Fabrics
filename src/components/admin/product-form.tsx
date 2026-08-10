@@ -22,6 +22,7 @@ import {
   fieldErrorFrom,
 } from "@/components/admin/form-kit";
 import { ImageUploader } from "@/components/admin/image-uploader";
+import { VideoUploader } from "@/components/admin/video-uploader";
 import type { ActionResult } from "@/lib/validations";
 import type { CategoryRow, CollectionRow, ProductRow } from "@/types/database";
 
@@ -154,49 +155,17 @@ export function ProductForm({
       </FormSection>
 
       <FormSection
-        title="Price and stock"
-        description="Price is per unit. Customers buy on these numbers, so keep the stock figure honest — it is what the storefront calls sold out."
+        title="Videos"
+        description="Short clips of the cloth moving — how it drapes, catches light, falls off the bolt. A phone video in daylight is exactly right. Shown after the photographs on the product page."
+      >
+        <VideoUploader name="videos" max={6} defaultValue={product?.videos ?? []} label="Product videos" />
+      </FormSection>
+
+      <FormSection
+        title="Stock"
+        description="Prices are agreed with each customer on WhatsApp, so there is no price here. Keep the stock figure honest — it is what the storefront calls sold out."
       >
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <Field label="Price" htmlFor="price" required error={err("price")}>
-            <Input
-              id="price"
-              name="price"
-              type="number"
-              min={0}
-              step="0.01"
-              required
-              defaultValue={product?.price ?? ""}
-              inputMode="decimal"
-            />
-          </Field>
-
-          <Field
-            label="Was price"
-            htmlFor="compare_at_price"
-            error={err("compare_at_price")}
-            hint="Optional. Shows as a strike-through."
-          >
-            <Input
-              id="compare_at_price"
-              name="compare_at_price"
-              type="number"
-              min={0}
-              step="0.01"
-              defaultValue={product?.compare_at_price ?? ""}
-              inputMode="decimal"
-            />
-          </Field>
-
-          <Field label="Currency" htmlFor="currency" error={err("currency")}>
-            <SelectField id="currency" name="currency" defaultValue={product?.currency ?? "XAF"}>
-              <option value="XAF">XAF — CFA franc</option>
-              <option value="USD">USD — US dollar</option>
-              <option value="EUR">EUR — Euro</option>
-              <option value="GBP">GBP — Pound sterling</option>
-            </SelectField>
-          </Field>
-
           <Field label="Sold by" htmlFor="unit" error={err("unit")}>
             <SelectField id="unit" name="unit" defaultValue={product?.unit ?? "yard"}>
               {UNITS.map((unit) => (
@@ -206,9 +175,7 @@ export function ProductForm({
               ))}
             </SelectField>
           </Field>
-        </div>
 
-        <div className="grid gap-5 sm:grid-cols-3">
           <Field label="Stock on hand" htmlFor="stock_quantity" error={err("stock_quantity")}>
             <Input
               id="stock_quantity"

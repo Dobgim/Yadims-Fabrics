@@ -1,5 +1,5 @@
 const messages = [
-  "Free delivery within Yaoundé on orders over 50,000 XAF",
+  "Same-day delivery within Yaoundé",
   "Swatch service — five samples, refunded against your order",
   "Matched dye lots held for aso-ebi parties",
   "Wholesale pricing from 50 metres",

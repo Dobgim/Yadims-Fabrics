@@ -1,10 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import { Heart, MessageCircle, ShoppingBag, Truck, Zap } from "lucide-react";
+import { Heart, MessageCircle, Ruler, Truck } from "lucide-react";
 
-import { cn, formatPrice, whatsappLink } from "@/lib/utils";
+import { cn, fabricEnquiryLink } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -13,9 +12,13 @@ import { QuantityStepper } from "@/components/shop/quantity-stepper";
 import { useStore } from "@/components/providers/store-provider";
 import type { ProductRow } from "@/types/database";
 
+/**
+ * The panel beside a fabric. The shop sells by enquiry — the customer picks a
+ * colour and a rough quantity, then taps through to WhatsApp where the price is
+ * agreed. There is no price, no cart and no checkout here by design.
+ */
 export function ProductPurchasePanel({ product }: { product: ProductRow }) {
-  const router = useRouter();
-  const { addToCart, toggleWishlist, isWishlisted, setCartOpen, hydrated } = useStore();
+  const { toggleWishlist, isWishlisted, hydrated } = useStore();
 
   const [color, setColor] = React.useState(product.colors[0] ?? null);
   const [quantity, setQuantity] = React.useState(product.min_order_quantity);
@@ -23,37 +26,18 @@ export function ProductPurchasePanel({ product }: { product: ProductRow }) {
   const saved = hydrated && isWishlisted(product.id);
   const inStock = product.stock_quantity > 0;
 
-  const line = {
-    productId: product.id,
-    slug: product.slug,
+  const enquiry = fabricEnquiryLink({
+    number: siteConfig.contact.whatsapp,
+    siteUrl: siteConfig.url,
     name: product.name,
-    image: product.images[0] ?? null,
+    slug: product.slug,
     color,
-    unitPrice: product.price,
-    currency: product.currency,
-    unit: product.unit,
     quantity,
-  };
-
-  const buyNow = () => {
-    addToCart(line);
-    router.push("/checkout");
-  };
+    unit: product.unit,
+  });
 
   return (
     <div className="space-y-7">
-      <div className="flex flex-wrap items-baseline gap-3">
-        <span className="font-display text-4xl">
-          {formatPrice(product.price, product.currency)}
-        </span>
-        {product.compare_at_price && product.compare_at_price > product.price ? (
-          <span className="text-lg text-muted-foreground line-through">
-            {formatPrice(product.compare_at_price, product.currency)}
-          </span>
-        ) : null}
-        <span className="text-sm text-muted-foreground">per {product.unit}</span>
-      </div>
-
       <p
         className={cn(
           "inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-medium",
@@ -71,13 +55,21 @@ export function ProductPurchasePanel({ product }: { product: ProductRow }) {
           : "Currently off the shelf — ask us to reorder"}
       </p>
 
+      <div className="flex items-start gap-3 rounded-2xl bg-secondary/60 p-4 text-sm">
+        <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" aria-hidden />
+        <p className="leading-relaxed text-muted-foreground">
+          Price is agreed on WhatsApp — tell us how much you need and we will quote you, often below
+          what you would pay to import it yourself.
+        </p>
+      </div>
+
       <Separator />
 
       {product.colors.length ? (
         <ColorPicker colors={product.colors} value={color} onChange={setColor} />
       ) : null}
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         <div className="flex items-center gap-3">
           <QuantityStepper
             value={quantity}
@@ -87,65 +79,42 @@ export function ProductPurchasePanel({ product }: { product: ProductRow }) {
             unit={product.unit}
           />
           <p className="text-sm text-muted-foreground">
-            Total{" "}
-            <span className="font-medium text-foreground tabular-nums">
-              {formatPrice(product.price * quantity, product.currency)}
-            </span>
+            How much you are after, roughly — you can change your mind in the chat.
           </p>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Button
-            variant="luxe"
-            size="lg"
-            disabled={!inStock}
-            onClick={() => {
-              addToCart(line);
-              setCartOpen(true);
-            }}
-          >
-            <ShoppingBag /> Add to cart
-          </Button>
-          <Button variant="gold" size="lg" disabled={!inStock} onClick={buyNow}>
-            <Zap /> Buy now
-          </Button>
-        </div>
+        <Button asChild variant="luxe" size="xl" className="w-full">
+          <a href={enquiry} target="_blank" rel="noreferrer noopener">
+            <MessageCircle /> Enquire on WhatsApp
+          </a>
+        </Button>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => toggleWishlist(product.id, product.name)}
-            aria-pressed={saved}
-          >
-            <Heart className={cn(saved && "fill-brand-500 text-brand-500")} />
-            {saved ? "Saved" : "Save to wishlist"}
-          </Button>
-
-          <Button asChild variant="outline" size="lg">
-            <a
-              href={whatsappLink(
-                siteConfig.contact.whatsapp,
-                `Hello YADIMS — I would like to ask about ${product.name}${color ? ` in ${color}` : ""}.`,
-              )}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <MessageCircle /> Ask on WhatsApp
-            </a>
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="lg"
+          className="w-full"
+          onClick={() => toggleWishlist(product.id, product.name)}
+          aria-pressed={saved}
+        >
+          <Heart className={cn(saved && "fill-brand-500 text-brand-500")} />
+          {saved ? "Saved" : "Save to my fabrics"}
+        </Button>
       </div>
 
-      <div className="flex items-start gap-3 rounded-3xl bg-secondary/60 p-5 text-sm">
-        <Truck className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" aria-hidden />
-        <p className="leading-relaxed text-muted-foreground">
-          Free delivery within Yaoundé over {formatPrice(50000, product.currency)}. Same-day in
-          Yaoundé, next-day in Douala, two to four days elsewhere in Cameroon.{" "}
-          <strong className="font-medium text-foreground">
-            Order a swatch first if colour is critical.
-          </strong>
-        </p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="flex items-start gap-3 rounded-3xl bg-secondary/60 p-5 text-sm">
+          <Ruler className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" aria-hidden />
+          <p className="leading-relaxed text-muted-foreground">
+            Ask for a swatch first if the exact colour matters — a screen never gets white quite
+            right.
+          </p>
+        </div>
+        <div className="flex items-start gap-3 rounded-3xl bg-secondary/60 p-5 text-sm">
+          <Truck className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" aria-hidden />
+          <p className="leading-relaxed text-muted-foreground">
+            Same-day in Yaoundé, next-day in Douala, two to four days elsewhere in Cameroon.
+          </p>
+        </div>
       </div>
     </div>
   );

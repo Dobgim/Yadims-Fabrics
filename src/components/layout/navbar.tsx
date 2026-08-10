@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
+import { Heart, Menu, Search, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { luxeEase } from "@/lib/motion";
@@ -18,7 +18,7 @@ import { Wordmark } from "@/components/layout/wordmark";
 
 export function Navbar({ searchIndex = [] }: { searchIndex?: SearchIndexEntry[] }) {
   const pathname = usePathname();
-  const { itemCount, wishlist, setCartOpen, hydrated } = useStore();
+  const { wishlist, hydrated } = useStore();
   const { scrollY } = useScroll();
 
   const [scrolled, setScrolled] = React.useState(false);
@@ -90,22 +90,11 @@ export function Navbar({ searchIndex = [] }: { searchIndex?: SearchIndexEntry[] 
               <Search />
             </Button>
 
-            <Button variant="ghost" size="icon" asChild className="relative hidden sm:inline-flex">
-              <Link href="/wishlist" aria-label="Wishlist">
+            <Button variant="ghost" size="icon" asChild className="relative">
+              <Link href="/wishlist" aria-label="Saved fabrics">
                 <Heart />
                 <CountBadge count={hydrated ? wishlist.length : 0} />
               </Link>
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative"
-              onClick={() => setCartOpen(true)}
-              aria-label={`Cart, ${hydrated ? itemCount : 0} items`}
-            >
-              <ShoppingBag />
-              <CountBadge count={hydrated ? itemCount : 0} />
             </Button>
           </div>
         </div>

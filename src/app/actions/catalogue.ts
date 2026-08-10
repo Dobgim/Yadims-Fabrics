@@ -127,9 +127,22 @@ export async function saveProduct(_prev: SaveResult | null, formData: FormData):
 
   const row = { ...values, slug };
 
-  const { data, error } = id
-    ? await db.from("products").update(row).eq("id", id).select("id, slug").single()
-    : await db.from("products").insert(row).select("id, slug").single();
+  const write = (payload: typeof row | Omit<typeof row, "videos">) =>
+    id
+      ? db.from("products").update(payload).eq("id", id).select("id, slug").single()
+      : db.from("products").insert(payload).select("id, slug").single();
+
+  let { data, error } = await write(row);
+
+  // The `videos` column is added by a separate migration. If a deploy lands
+  // before that migration is run, Postgres rejects the unknown column
+  // (42703 / PostgREST PGRST204). Rather than block the shopkeeper, retry the
+  // save without videos so the rest of the fabric still saves.
+  if (error && (error.code === "42703" || error.code === "PGRST204")) {
+    const { videos: _dropped, ...withoutVideos } = row;
+    void _dropped;
+    ({ data, error } = await write(withoutVideos));
+  }
 
   if (error || !data) {
     return { ok: false, ...describeDbError(error, "Could not save that fabric.") };

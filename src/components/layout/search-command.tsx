@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 
-import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import type { SearchIndexEntry } from "@/lib/queries/products";
@@ -126,9 +125,6 @@ export function SearchCommand({ open, onOpenChange, index }: SearchCommandProps)
                     <span className="block truncate text-sm text-muted-foreground">
                       {product.material}
                     </span>
-                  </span>
-                  <span className="shrink-0 text-sm tabular-nums">
-                    {formatPrice(product.price, product.currency)}
                   </span>
                 </Link>
               </li>

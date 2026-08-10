@@ -72,6 +72,30 @@ export function whatsappLink(number: string, message: string) {
   return `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
 }
 
+/**
+ * A WhatsApp enquiry about a specific fabric, pre-filled with its name, a link
+ * to its page, and optionally a colour and quantity the customer has chosen.
+ * This is how the shop takes orders now — price is agreed in the chat.
+ */
+export function fabricEnquiryLink(opts: {
+  number: string;
+  siteUrl: string;
+  name: string;
+  slug: string;
+  color?: string | null;
+  quantity?: number;
+  unit?: string;
+}) {
+  const url = `${opts.siteUrl.replace(/\/$/, "")}/shop/${opts.slug}`;
+  const wants =
+    opts.quantity && opts.unit
+      ? ` I would like about ${opts.quantity} ${opts.unit}${opts.quantity > 1 ? "s" : ""}.`
+      : "";
+  const colour = opts.color ? ` in ${opts.color}` : "";
+  const message = `Hello YADIMS, I'm interested in ${opts.name}${colour}.${wants}\n${url}`;
+  return whatsappLink(opts.number, message);
+}
+
 export function initialsOf(name: string | null | undefined) {
   if (!name) return "YF";
   return name

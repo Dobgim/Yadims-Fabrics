@@ -4,9 +4,9 @@ import * as React from "react";
 import { SafeImage as Image } from "@/components/shared/safe-image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Eye, Heart, ShoppingBag } from "lucide-react";
+import { Eye, Heart } from "lucide-react";
 
-import { cn, formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { fadeUp } from "@/lib/motion";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/components/providers/store-provider";
@@ -21,28 +21,12 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, view = "grid", priority, className }: ProductCardProps) {
-  const { addToCart, toggleWishlist, isWishlisted, hydrated } = useStore();
+  const { toggleWishlist, isWishlisted, hydrated } = useStore();
   const [quickViewOpen, setQuickViewOpen] = React.useState(false);
 
   const saved = hydrated && isWishlisted(product.id);
   const cover = product.images[0] ?? null;
   const hoverImage = product.images[1] ?? null;
-  const discounted =
-    product.compare_at_price !== null && product.compare_at_price > product.price;
-
-  const handleAdd = () => {
-    addToCart({
-      productId: product.id,
-      slug: product.slug,
-      name: product.name,
-      image: cover,
-      color: product.colors[0] ?? null,
-      unitPrice: product.price,
-      currency: product.currency,
-      unit: product.unit,
-      quantity: product.min_order_quantity,
-    });
-  };
 
   if (view === "list") {
     return (
@@ -83,16 +67,13 @@ export function ProductCard({ product, view = "grid", priority, className }: Pro
               <ColorDots colors={product.colors} />
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <PriceBlock product={product} />
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={() => setQuickViewOpen(true)}>
-                  Quick view
-                </Button>
-                <Button size="sm" onClick={handleAdd}>
-                  <ShoppingBag /> Add
-                </Button>
-              </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button variant="outline" size="sm" onClick={() => setQuickViewOpen(true)}>
+                Quick view
+              </Button>
+              <Button asChild size="sm">
+                <Link href={`/shop/${product.slug}`}>View fabric</Link>
+              </Button>
             </div>
           </div>
         </motion.article>
@@ -138,7 +119,6 @@ export function ProductCard({ product, view = "grid", priority, className }: Pro
           {/* Badges */}
           <div className="pointer-events-none absolute left-4 top-4 z-20 flex flex-col items-start gap-2">
             {product.is_new_arrival ? <Badge>New</Badge> : null}
-            {discounted ? <Badge tone="gold">Reduced</Badge> : null}
             {product.stock_quantity === 0 ? <Badge tone="muted">Out of stock</Badge> : null}
           </div>
 
@@ -156,23 +136,14 @@ export function ProductCard({ product, view = "grid", priority, className }: Pro
           </button>
 
           {/* Hover actions */}
-          <div className="absolute inset-x-3 bottom-3 z-20 flex translate-y-3 gap-2 opacity-0 transition-all duration-500 ease-luxe group-hover:translate-y-0 group-hover:opacity-100 focus-within:translate-y-0 focus-within:opacity-100">
+          <div className="absolute inset-x-3 bottom-3 z-20 flex translate-y-3 opacity-0 transition-all duration-500 ease-luxe group-hover:translate-y-0 group-hover:opacity-100 focus-within:translate-y-0 focus-within:opacity-100">
             <Button
               variant="glass"
               size="sm"
-              className="flex-1"
+              className="w-full"
               onClick={() => setQuickViewOpen(true)}
             >
               <Eye /> Quick view
-            </Button>
-            <Button
-              variant="luxe"
-              size="icon-sm"
-              onClick={handleAdd}
-              disabled={product.stock_quantity === 0}
-              aria-label={`Add ${product.name} to cart`}
-            >
-              <ShoppingBag />
             </Button>
           </div>
         </div>
@@ -185,9 +156,11 @@ export function ProductCard({ product, view = "grid", priority, className }: Pro
             </Link>
           </h3>
           <ColorDots colors={product.colors} />
-          <div className="mt-auto pt-2">
-            <PriceBlock product={product} />
-          </div>
+          {product.short_description ? (
+            <p className="mt-auto line-clamp-2 pt-2 text-sm leading-relaxed text-muted-foreground">
+              {product.short_description}
+            </p>
+          ) : null}
         </div>
       </motion.article>
 
@@ -211,21 +184,6 @@ function Badge({ children, tone = "brand" }: { children: React.ReactNode; tone?:
   );
 }
 
-function PriceBlock({ product }: { product: ProductRow }) {
-  return (
-    <p className="flex items-baseline gap-2">
-      <span className="font-display text-lg text-foreground">
-        {formatPrice(product.price, product.currency)}
-      </span>
-      {product.compare_at_price && product.compare_at_price > product.price ? (
-        <span className="text-sm text-muted-foreground line-through">
-          {formatPrice(product.compare_at_price, product.currency)}
-        </span>
-      ) : null}
-      <span className="text-xs text-muted-foreground">/ {product.unit}</span>
-    </p>
-  );
-}
 
 function ColorDots({ colors }: { colors: string[] }) {
   if (!colors.length) return null;

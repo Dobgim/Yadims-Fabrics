@@ -172,6 +172,7 @@ create table if not exists public.products (
   colors text[] not null default '{}',
   tags text[] not null default '{}',
   images text[] not null default '{}',
+  videos text[] not null default '{}',
   stock_quantity int not null default 0 check (stock_quantity >= 0),
   min_order_quantity int not null default 1 check (min_order_quantity >= 1),
   category_id uuid references public.categories(id) on delete set null,

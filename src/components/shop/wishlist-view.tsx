@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,7 +10,7 @@ import { useStore } from "@/components/providers/store-provider";
 import type { ProductRow } from "@/types/database";
 
 export function WishlistView({ products }: { products: ProductRow[] }) {
-  const { wishlist, hydrated, addToCart, setCartOpen } = useStore();
+  const { wishlist, hydrated } = useStore();
 
   if (!hydrated) {
     return (
@@ -44,34 +44,16 @@ export function WishlistView({ products }: { products: ProductRow[] }) {
     );
   }
 
-  const addAll = () => {
-    saved
-      .filter((product) => product.stock_quantity > 0)
-      .forEach((product) =>
-        addToCart({
-          productId: product.id,
-          slug: product.slug,
-          name: product.name,
-          image: product.images[0] ?? null,
-          color: product.colors[0] ?? null,
-          unitPrice: product.price,
-          currency: product.currency,
-          unit: product.unit,
-          quantity: product.min_order_quantity,
-        }),
-      );
-    setCartOpen(true);
-  };
 
   return (
     <div className="space-y-10">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-6">
         <p className="text-sm text-muted-foreground">
           <span className="font-medium text-foreground tabular-nums">{saved.length}</span>{" "}
-          {saved.length === 1 ? "fabric" : "fabrics"} saved
+          {saved.length === 1 ? "fabric" : "fabrics"} saved. Open any one to enquire on WhatsApp.
         </p>
-        <Button variant="luxe" size="sm" onClick={addAll}>
-          <ShoppingBag /> Add all to cart
+        <Button asChild variant="outline" size="sm">
+          <Link href="/shop">Browse more</Link>
         </Button>
       </div>
 

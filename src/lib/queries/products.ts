@@ -6,7 +6,7 @@ import { paginate } from "@/lib/utils";
 import { createStaticClient } from "@/lib/supabase/server";
 import type { CategoryRow, CollectionRow, ProductRow } from "@/types/database";
 
-export type SortKey = "newest" | "price-asc" | "price-desc" | "name-asc";
+export type SortKey = "newest" | "name-asc";
 
 export interface ProductQuery {
   search?: string;
@@ -14,8 +14,6 @@ export interface ProductQuery {
   collection?: string;
   materials?: string[];
   colors?: string[];
-  minPrice?: number;
-  maxPrice?: number;
   onlyNew?: boolean;
   sort?: SortKey;
   page?: number;
@@ -84,8 +82,6 @@ export const getCollections = cache(async (): Promise<CollectionRow[]> => {
 
 const sorters: Record<SortKey, (a: ProductRow, b: ProductRow) => number> = {
   newest: (a, b) => b.created_at.localeCompare(a.created_at),
-  "price-asc": (a, b) => a.price - b.price,
-  "price-desc": (a, b) => b.price - a.price,
   "name-asc": (a, b) => a.name.localeCompare(b.name),
 };
 
@@ -96,8 +92,6 @@ export async function searchProducts(query: ProductQuery = {}) {
     collection,
     materials,
     colors,
-    minPrice,
-    maxPrice,
     onlyNew,
     sort = "newest",
     page = 1,
@@ -124,8 +118,6 @@ export async function searchProducts(query: ProductQuery = {}) {
     if (collection && product.collection_id !== collection) return false;
     if (materials?.length && !materials.includes(product.material ?? "")) return false;
     if (colors?.length && !colors.some((c) => product.colors.includes(c))) return false;
-    if (minPrice !== undefined && product.price < minPrice) return false;
-    if (maxPrice !== undefined && product.price > maxPrice) return false;
     if (onlyNew && !product.is_new_arrival) return false;
     return true;
   });
@@ -183,17 +175,9 @@ export async function getProductsByIds(ids: string[]) {
 export async function getFacets() {
   const all = await getAllProducts();
 
-  // `Math.min()` of an empty list is Infinity, which would render as a broken
-  // price filter on a shop with nothing in it yet.
-  const prices = all.map((p) => p.price);
-
   return {
     materials: Array.from(new Set(all.map((p) => p.material).filter(Boolean) as string[])).sort(),
     colors: Array.from(new Set(all.flatMap((p) => p.colors))).sort(),
-    priceRange: {
-      min: prices.length ? Math.min(...prices) : 0,
-      max: prices.length ? Math.max(...prices) : 0,
-    },
   };
 }
 

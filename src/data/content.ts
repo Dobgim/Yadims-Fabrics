@@ -39,7 +39,7 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "Can I order a swatch before committing?",
-        a: "Yes, and we would rather you did. Swatches are 10cm × 10cm and cost 1,500 XAF for up to five, refunded against any order over 20,000 XAF. Photographs cannot show you weight, hand or how a colour behaves under your light.",
+        a: "Yes, and we would rather you did. Swatches are 10cm × 10cm. There is a small charge for a set of them, refunded against your order — ask us when you enquire. Photographs cannot show you weight, hand or how a colour behaves under your light.",
       },
       {
         q: "Do you hold stock while I decide?",
@@ -60,11 +60,11 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         q: "How much is delivery?",
-        a: "Free within Yaoundé on orders over 50,000 XAF. Otherwise 2,500 XAF within Yaoundé, 4,500 XAF elsewhere in Cameroon. International is quoted at checkout or by WhatsApp.",
+        a: "Same-day within Yaoundé, next-day in Douala, two to four days elsewhere in Cameroon. We confirm any delivery charge when you enquire on WhatsApp — it depends on where you are and how much you are taking.",
       },
       {
         q: "Can I collect from the shop?",
-        a: "Yes, and there is no charge. Choose collection at checkout and we will message you when your cut is ready — usually within two hours during opening times.",
+        a: "Yes, and there is no charge. Tell us you would like to collect when you enquire, and we will message you when your cut is ready — usually within two hours during opening times.",
       },
     ],
   },

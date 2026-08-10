@@ -73,14 +73,14 @@ export const footerNav = {
  *
  * Deliberately short. This shop is run by one person whose job here is to put
  * fabric on the website, so Fabrics comes first and `/admin` opens on it.
- * Orders and Messages stay because customers arrive through them — hiding
- * either would mean a sale or an enquiry landing where nobody looks.
+ * There is no Orders screen: the shop sells by enquiry over WhatsApp, so
+ * orders never pass through the site. Messages stays — the contact form lands
+ * there.
  */
 export const adminNav = [
   { title: "Fabrics", href: "/admin/products", icon: "Package" },
   { title: "Categories", href: "/admin/categories", icon: "Tags" },
   { title: "Collections", href: "/admin/collections", icon: "Layers" },
   { title: "Gallery", href: "/admin/gallery", icon: "Images" },
-  { title: "Orders", href: "/admin/orders", icon: "ShoppingBag" },
   { title: "Messages", href: "/admin/messages", icon: "MessageSquare" },
 ] as const;

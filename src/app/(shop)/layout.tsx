@@ -1,7 +1,6 @@
 import { getSearchIndex } from "@/lib/queries/products";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { CartDrawer } from "@/components/layout/cart-drawer";
 import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { WhatsAppFab } from "@/components/shared/whatsapp-fab";
 
@@ -18,7 +17,6 @@ export default async function StorefrontLayout({ children }: { children: React.R
         {children}
       </main>
       <Footer />
-      <CartDrawer />
       <WhatsAppFab />
     </div>
   );

@@ -148,6 +148,13 @@ const imageList = z.preprocess((v) => {
   return [];
 }, z.array(z.string().min(1)).max(12));
 
+/** Same shape as `imageList`, for the product's uploaded video clips. */
+const videoList = z.preprocess((v) => {
+  if (Array.isArray(v)) return v.filter(Boolean);
+  if (typeof v === "string" && v) return [v];
+  return [];
+}, z.array(z.string().min(1)).max(6));
+
 /** HTML form checkboxes submit "on" when ticked and nothing at all when not. */
 const checkbox = z.preprocess((v) => v === "on" || v === "true" || v === true, z.boolean());
 
@@ -173,7 +180,10 @@ export const productSchema = z.object({
   sku: optionalText(40),
   short_description: optionalText(200),
   description: optionalText(6000),
-  price: z.coerce.number({ invalid_type_error: "Price must be a number" }).min(0, "Price cannot be negative"),
+  // Prices are agreed with the customer over WhatsApp and are not shown on the
+  // site, so the editor no longer asks for one. The column stays (NOT NULL) and
+  // defaults to 0 for any row the form does not set.
+  price: z.coerce.number().min(0).default(0),
   compare_at_price: optionalNumber,
   currency: z.string().trim().min(3).max(3).default("XAF"),
   unit: z.string().trim().min(1).max(20).default("yard"),
@@ -185,6 +195,7 @@ export const productSchema = z.object({
   colors: textList,
   tags: textList,
   images: imageList,
+  videos: videoList,
   stock_quantity: z.coerce.number().int().min(0, "Stock cannot be negative").default(0),
   min_order_quantity: z.coerce.number().int().min(1, "Minimum order is at least 1").default(1),
   category_id: z.preprocess((v) => (v ? v : null), z.string().uuid().nullable()),

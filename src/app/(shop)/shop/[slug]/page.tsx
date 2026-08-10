@@ -15,6 +15,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { ProductGallery } from "@/components/shop/product-gallery";
 import { ProductGrid } from "@/components/shop/product-grid";
 import { ProductPurchasePanel } from "@/components/shop/product-purchase-panel";
+import { ProductVideos } from "@/components/shop/product-videos";
 import { ProductJsonLd } from "@/components/seo/json-ld";
 
 export const revalidate = 3600;
@@ -105,6 +106,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </div>
         </div>
       </section>
+
+      <ProductVideos videos={product.videos} name={product.name} />
 
       <section className="container pb-16 md:pb-24">
         <Tabs defaultValue="description">

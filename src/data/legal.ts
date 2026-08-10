@@ -26,7 +26,7 @@ export const legalDocuments: Record<string, LegalDocument> = {
       {
         heading: "What we collect",
         body: [
-          "When you place an order we collect your name, email address, telephone number and delivery address. We need all four to cut, confirm and deliver an order, and we do not ask for anything beyond them.",
+          "When you enquire about a fabric or place an order — over WhatsApp, by phone or in the shop — we collect your name, telephone number and, for delivery, your address. We need these to quote, cut, confirm and deliver, and we do not ask for anything beyond them.",
           "The shop does not offer customer accounts, so there is no password of yours for us to store. If you subscribe to the newsletter, we store your email address and the page you subscribed from.",
           "We collect basic, aggregated analytics about how the site is used: which pages are visited and roughly where visitors are. This is not tied to your name or your orders.",
         ],
@@ -68,7 +68,7 @@ export const legalDocuments: Record<string, LegalDocument> = {
       {
         heading: "Cookies",
         body: [
-          "We use a session cookie to keep you signed in and local storage to remember your cart and wishlist on your own device. Neither is shared with anyone.",
+          "We use a session cookie to keep the shop owner signed in to the dashboard, and local storage to remember the fabrics you have saved on your own device. Neither is shared with anyone.",
           "We do not use advertising cookies or third-party trackers.",
         ],
       },
@@ -93,8 +93,8 @@ export const legalDocuments: Record<string, LegalDocument> = {
       {
         heading: "What it costs",
         body: [
-          "Free within Yaoundé on orders over 50,000 XAF. Otherwise 2,500 XAF within Yaoundé and 4,500 XAF elsewhere in Cameroon.",
-          "Collection from the shop is always free. Choose collection at checkout and we will message you when your cut is ready — usually within two hours during opening times.",
+          "Delivery within Yaoundé is same-day; elsewhere in Cameroon two to four days. Any delivery charge depends on where you are and how much you are taking, and is confirmed when you enquire.",
+          "Collection from the shop is always free. Tell us you would like to collect when you enquire, and we will message you when your cut is ready — usually within two hours during opening times.",
         ],
       },
       {
@@ -158,7 +158,7 @@ export const legalDocuments: Record<string, LegalDocument> = {
         heading: "Colour",
         body: [
           "Screens vary, and a colour that looked right online may not look right in your hand. This is not a fault, and it is not covered by returns.",
-          "Order a swatch first whenever colour matters. Five swatches cost 1,500 XAF and the fee is refunded against any order over 20,000 XAF.",
+          "Order a swatch first whenever colour matters. There is a small charge for a set, refunded against your order — we confirm it when you enquire.",
         ],
       },
       {
@@ -194,7 +194,7 @@ export const legalDocuments: Record<string, LegalDocument> = {
       {
         heading: "Prices",
         body: [
-          "Prices are shown in XAF and are per yard unless the listing states otherwise. Delivery is calculated separately at checkout.",
+          "Prices are not published on the website. Each is agreed with you over WhatsApp, by phone or in the shop before you commit — usually below what you would pay to import the same cloth yourself. Any delivery charge is confirmed at the same time.",
           "We reserve the right to change prices, but never after an order has been confirmed. If a listed price is obviously wrong, we will tell you before we cut rather than silently charging the higher amount.",
         ],
       },

@@ -3,9 +3,10 @@
 import * as React from "react";
 import { SafeImage as Image } from "@/components/shared/safe-image";
 import Link from "next/link";
-import { ArrowRight, ShoppingBag } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 
-import { formatPrice } from "@/lib/utils";
+import { fabricEnquiryLink } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,7 +15,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useStore } from "@/components/providers/store-provider";
 import { ColorPicker } from "@/components/shop/color-picker";
 import { QuantityStepper } from "@/components/shop/quantity-stepper";
 import type { ProductRow } from "@/types/database";
@@ -26,7 +26,6 @@ interface QuickViewDialogProps {
 }
 
 export function QuickViewDialog({ product, open, onOpenChange }: QuickViewDialogProps) {
-  const { addToCart } = useStore();
   const [color, setColor] = React.useState(product.colors[0] ?? null);
   const [quantity, setQuantity] = React.useState(product.min_order_quantity);
 
@@ -69,13 +68,6 @@ export function QuickViewDialog({ product, open, onOpenChange }: QuickViewDialog
               </DialogDescription>
             </DialogHeader>
 
-            <p className="flex items-baseline gap-2">
-              <span className="font-display text-2xl">
-                {formatPrice(product.price, product.currency)}
-              </span>
-              <span className="text-sm text-muted-foreground">per {product.unit}</span>
-            </p>
-
             <dl className="grid grid-cols-2 gap-x-4 gap-y-2 border-y border-border/60 py-4 text-sm">
               <dt className="text-muted-foreground">Width</dt>
               <dd>{product.width_cm ? `${product.width_cm} cm` : "-"}</dd>
@@ -102,26 +94,22 @@ export function QuickViewDialog({ product, open, onOpenChange }: QuickViewDialog
                   onChange={setQuantity}
                   unit={product.unit}
                 />
-                <Button
-                  variant="luxe"
-                  className="flex-1"
-                  disabled={product.stock_quantity === 0}
-                  onClick={() => {
-                    addToCart({
-                      productId: product.id,
-                      slug: product.slug,
+                <Button asChild variant="luxe" className="flex-1">
+                  <a
+                    href={fabricEnquiryLink({
+                      number: siteConfig.contact.whatsapp,
+                      siteUrl: siteConfig.url,
                       name: product.name,
-                      image: product.images[0] ?? null,
+                      slug: product.slug,
                       color,
-                      unitPrice: product.price,
-                      currency: product.currency,
-                      unit: product.unit,
                       quantity,
-                    });
-                    onOpenChange(false);
-                  }}
-                >
-                  <ShoppingBag /> Add to cart
+                      unit: product.unit,
+                    })}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    <MessageCircle /> Enquire
+                  </a>
                 </Button>
               </div>
 

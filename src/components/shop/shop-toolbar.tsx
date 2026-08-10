@@ -16,8 +16,6 @@ import {
 
 const sortOptions = [
   { value: "newest", label: "Newest first" },
-  { value: "price-asc", label: "Price: low to high" },
-  { value: "price-desc", label: "Price: high to low" },
   { value: "name-asc", label: "Name: A to Z" },
 ] as const;
 
