@@ -162,10 +162,10 @@ export function ProductForm({
       </FormSection>
 
       <FormSection
-        title="Stock"
-        description="Prices are agreed with each customer on WhatsApp, so there is no price here. Keep the stock figure honest — it is what the storefront calls sold out."
+        title="Stock & origin"
+        description="Prices are agreed with each customer on WhatsApp, so there is none here. Just set how the cloth is sold, how much is on the bolt, and where it comes from."
       >
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 sm:grid-cols-3">
           <Field label="Sold by" htmlFor="unit" error={err("unit")}>
             <SelectField id="unit" name="unit" defaultValue={product?.unit ?? "yard"}>
               {UNITS.map((unit) => (
@@ -176,7 +176,12 @@ export function ProductForm({
             </SelectField>
           </Field>
 
-          <Field label="Stock on hand" htmlFor="stock_quantity" error={err("stock_quantity")}>
+          <Field
+            label="Stock on hand"
+            htmlFor="stock_quantity"
+            error={err("stock_quantity")}
+            hint="How many are on the bolt. Zero shows as sold out."
+          >
             <Input
               id="stock_quantity"
               name="stock_quantity"
@@ -188,113 +193,12 @@ export function ProductForm({
             />
           </Field>
 
-          <Field
-            label="Minimum order"
-            htmlFor="min_order_quantity"
-            error={err("min_order_quantity")}
-            hint="Lace is often sold in fives."
-          >
-            <Input
-              id="min_order_quantity"
-              name="min_order_quantity"
-              type="number"
-              min={1}
-              step={1}
-              defaultValue={product?.min_order_quantity ?? 1}
-              inputMode="numeric"
-            />
-          </Field>
-
-          <Field label="SKU" htmlFor="sku" error={err("sku")} hint="Your own reference code.">
-            <Input id="sku" name="sku" defaultValue={product?.sku ?? ""} placeholder="YF-SLK-014" />
-          </Field>
-        </div>
-      </FormSection>
-
-      <FormSection
-        title="Specification"
-        description="Dressmakers buy on weight and width. If you are unsure of a figure, leave it blank rather than guessing — a wrong number comes back as a return."
-      >
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <Field label="Material" htmlFor="material" error={err("material")}>
-            <Input
-              id="material"
-              name="material"
-              defaultValue={product?.material ?? ""}
-              placeholder="100% silk"
-            />
-          </Field>
-
-          <Field label="Width (cm)" htmlFor="width_cm" error={err("width_cm")}>
-            <Input
-              id="width_cm"
-              name="width_cm"
-              type="number"
-              min={0}
-              step="0.1"
-              defaultValue={product?.width_cm ?? ""}
-              inputMode="decimal"
-            />
-          </Field>
-
-          <Field label="Weight (gsm)" htmlFor="weight_gsm" error={err("weight_gsm")}>
-            <Input
-              id="weight_gsm"
-              name="weight_gsm"
-              type="number"
-              min={0}
-              step="0.1"
-              defaultValue={product?.weight_gsm ?? ""}
-              inputMode="decimal"
-            />
-          </Field>
-
           <Field label="Origin" htmlFor="origin" error={err("origin")}>
             <Input
               id="origin"
               name="origin"
               defaultValue={product?.origin ?? ""}
               placeholder="Italy"
-            />
-          </Field>
-        </div>
-
-        <Field label="Care" htmlFor="care_instructions" error={err("care_instructions")}>
-          <Textarea
-            id="care_instructions"
-            name="care_instructions"
-            rows={3}
-            defaultValue={product?.care_instructions ?? ""}
-            placeholder="Dry clean only. Press on low heat through a cloth."
-          />
-        </Field>
-
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Field
-            label="Colours"
-            htmlFor="colors"
-            error={err("colors")}
-            hint="Separate with commas. These drive the colour filter in the shop."
-          >
-            <Input
-              id="colors"
-              name="colors"
-              defaultValue={product?.colors.join(", ") ?? ""}
-              placeholder="Emerald, Ivory, Champagne"
-            />
-          </Field>
-
-          <Field
-            label="Tags"
-            htmlFor="tags"
-            error={err("tags")}
-            hint="Separate with commas. Used for search and related fabrics."
-          >
-            <Input
-              id="tags"
-              name="tags"
-              defaultValue={product?.tags.join(", ") ?? ""}
-              placeholder="bridal, evening, heavyweight"
             />
           </Field>
         </div>
