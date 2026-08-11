@@ -184,16 +184,18 @@ export async function deleteProduct(productId: string): Promise<ActionResult> {
 }
 
 /**
- * The storefront pages are cached for an hour, so an edit is invisible until
- * the paths that render this product are invalidated. Every one of them is
- * listed here rather than relying on the hour expiring.
+ * The storefront pages are cached, so an edit is invisible until they are
+ * invalidated. Listing paths one by one missed things — the home page and the
+ * individual `/collections/<slug>` pages in particular, which is why a newly
+ * added fabric did not show up straight away.
+ *
+ * `revalidatePath("/", "layout")` purges every page under the root layout —
+ * the entire storefront — in one call. For a shop this size that is the right
+ * trade: a new or edited fabric appears everywhere immediately, and the pages
+ * simply re-render on their next visit.
  */
 function revalidateProduct(slug?: string | null) {
-  revalidatePath("/admin/products");
-  revalidatePath("/admin");
-  revalidatePath("/shop");
-  revalidatePath("/collections");
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   if (slug) revalidatePath(`/shop/${slug}`);
 }
 
@@ -233,8 +235,7 @@ export async function saveCategory(
   }
 
   revalidatePath("/admin/categories");
-  revalidatePath("/shop");
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   return { ok: true, message: id ? "Category updated." : "Category created.", data: { id: data.id } };
 }
 
@@ -248,8 +249,7 @@ export async function deleteCategory(categoryId: string): Promise<ActionResult> 
   // `category_id` is ON DELETE SET NULL, so the fabrics survive uncategorised.
   revalidatePath("/admin/categories");
   revalidatePath("/admin/products");
-  revalidatePath("/shop");
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   return { ok: true, message: "Category deleted. Its fabrics are now uncategorised." };
 }
 
@@ -289,9 +289,7 @@ export async function saveCollection(
   }
 
   revalidatePath("/admin/collections");
-  revalidatePath("/collections");
-  revalidatePath(`/collections/${data.slug}`);
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   return {
     ok: true,
     message: id ? "Collection updated." : "Collection created.",
@@ -307,8 +305,7 @@ export async function deleteCollection(collectionId: string): Promise<ActionResu
   if (error) return { ok: false, message: "Could not delete that collection." };
 
   revalidatePath("/admin/collections");
-  revalidatePath("/collections");
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   return { ok: true, message: "Collection deleted." };
 }
 

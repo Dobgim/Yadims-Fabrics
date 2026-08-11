@@ -18,7 +18,7 @@ import { ProductPurchasePanel } from "@/components/shop/product-purchase-panel";
 import { ProductVideos } from "@/components/shop/product-videos";
 import { ProductJsonLd } from "@/components/seo/json-ld";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   const products = await getAllProducts();

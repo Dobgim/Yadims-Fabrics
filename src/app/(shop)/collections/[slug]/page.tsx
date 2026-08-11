@@ -10,7 +10,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { ProductGrid } from "@/components/shop/product-grid";
 import { ContactBanner } from "@/components/shared/contact-banner";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export async function generateStaticParams() {
   const collections = await getCollections();

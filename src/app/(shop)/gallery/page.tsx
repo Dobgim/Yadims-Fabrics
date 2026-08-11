@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { MasonryGallery } from "@/components/gallery/masonry-gallery";
 import { ContactBanner } from "@/components/shared/contact-banner";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Gallery",

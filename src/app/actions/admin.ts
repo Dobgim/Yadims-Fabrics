@@ -46,8 +46,10 @@ export async function toggleProductStatus(
   const { error } = await db.from("products").update({ status }).eq("id", productId);
   if (error) return { ok: false, message: "Could not update that product." };
 
-  // Draft or archived takes it off the shop, active puts it back.
+  // Draft or archived takes it off the shop, active puts it back — which
+  // touches the home page, the collections and the shop grid, so purge the
+  // whole storefront rather than one path.
   revalidatePath("/admin/products");
-  revalidatePath("/shop");
+  revalidatePath("/", "layout");
   return { ok: true, message: `Product set to ${status}.` };
 }

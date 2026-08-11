@@ -19,7 +19,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { WhyChooseUs } from "@/components/shared/why-choose-us";
 import { ContactBanner } from "@/components/shared/contact-banner";
 
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export default async function HomePage() {
   const [categories, collections, featured, newArrivals, wedding, lace, premium] =
