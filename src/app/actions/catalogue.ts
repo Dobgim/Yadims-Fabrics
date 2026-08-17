@@ -127,21 +127,27 @@ export async function saveProduct(_prev: SaveResult | null, formData: FormData):
 
   const row = { ...values, slug };
 
-  const write = (payload: typeof row | Omit<typeof row, "videos">) =>
+  const write = (
+    payload: typeof row | Omit<typeof row, "videos" | "is_preorder" | "preorder_deposit_percent">,
+  ) =>
     id
       ? db.from("products").update(payload).eq("id", id).select("id, slug").single()
       : db.from("products").insert(payload).select("id, slug").single();
 
   let { data, error } = await write(row);
 
-  // The `videos` column is added by a separate migration. If a deploy lands
-  // before that migration is run, Postgres rejects the unknown column
-  // (42703 / PostgREST PGRST204). Rather than block the shopkeeper, retry the
-  // save without videos so the rest of the fabric still saves.
+  // `videos` and the pre-order columns are each added by a separate migration.
+  // If a deploy lands before those migrations are run, Postgres rejects the
+  // unknown column (42703 / PostgREST PGRST204). Rather than block the
+  // shopkeeper, retry the save without the newer columns so the rest of the
+  // fabric still saves. Those fields simply take effect once the migration in
+  // `supabase/add-product-videos.sql` / `supabase/add-preorder.sql` is run.
   if (error && (error.code === "42703" || error.code === "PGRST204")) {
-    const { videos: _dropped, ...withoutVideos } = row;
-    void _dropped;
-    ({ data, error } = await write(withoutVideos));
+    const { videos, is_preorder, preorder_deposit_percent, ...withoutNewColumns } = row;
+    void videos;
+    void is_preorder;
+    void preorder_deposit_percent;
+    ({ data, error } = await write(withoutNewColumns));
   }
 
   if (error || !data) {

@@ -203,6 +203,15 @@ export const productSchema = z.object({
   status: z.enum(["draft", "active", "archived"]).default("draft"),
   is_featured: checkbox,
   is_new_arrival: checkbox,
+  // Pre-order: cloth brought in to order, reserved with a deposit. The percent
+  // is bounded to a sane range and defaults to the house's usual 60%.
+  is_preorder: checkbox,
+  preorder_deposit_percent: z.coerce
+    .number()
+    .int()
+    .min(1, "A deposit is at least 1%")
+    .max(100, "A deposit cannot exceed 100%")
+    .default(60),
 });
 export type ProductInput = z.infer<typeof productSchema>;
 

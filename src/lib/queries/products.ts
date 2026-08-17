@@ -144,6 +144,12 @@ export async function getNewArrivals(limit = 8) {
   return (fresh.length ? fresh : all).slice(0, limit);
 }
 
+export async function getPreorderProducts(limit?: number) {
+  const all = await getAllProducts();
+  const preorder = all.filter((p) => p.is_preorder);
+  return limit ? preorder.slice(0, limit) : preorder;
+}
+
 export async function getProductsByCollectionSlug(slug: string, limit?: number) {
   const [all, cols] = await Promise.all([getAllProducts(), getCollections()]);
   const target = cols.find((c) => c.slug === slug);

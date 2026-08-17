@@ -85,6 +85,8 @@ export function fabricEnquiryLink(opts: {
   color?: string | null;
   quantity?: number;
   unit?: string;
+  preorder?: boolean;
+  depositPercent?: number;
 }) {
   const url = `${opts.siteUrl.replace(/\/$/, "")}/shop/${opts.slug}`;
   const wants =
@@ -92,7 +94,11 @@ export function fabricEnquiryLink(opts: {
       ? ` I would like about ${opts.quantity} ${opts.unit}${opts.quantity > 1 ? "s" : ""}.`
       : "";
   const colour = opts.color ? ` in ${opts.color}` : "";
-  const message = `Hello YADIMS, I'm interested in ${opts.name}${colour}.${wants}\n${url}`;
+  const verb = opts.preorder ? "would like to pre-order" : "am interested in";
+  const deposit = opts.preorder
+    ? ` I understand a ${opts.depositPercent ?? 60}% deposit reserves it.`
+    : "";
+  const message = `Hello YADIMS, I ${verb} ${opts.name}${colour}.${wants}${deposit}\n${url}`;
   return whatsappLink(opts.number, message);
 }
 

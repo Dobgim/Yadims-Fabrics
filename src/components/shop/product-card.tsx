@@ -118,8 +118,11 @@ export function ProductCard({ product, view = "grid", priority, className }: Pro
 
           {/* Badges */}
           <div className="pointer-events-none absolute left-4 top-4 z-20 flex flex-col items-start gap-2">
+            {product.is_preorder ? <Badge tone="gold">Pre-order</Badge> : null}
             {product.is_new_arrival ? <Badge>New</Badge> : null}
-            {product.stock_quantity === 0 ? <Badge tone="muted">Out of stock</Badge> : null}
+            {!product.is_preorder && product.stock_quantity === 0 ? (
+              <Badge tone="muted">Out of stock</Badge>
+            ) : null}
           </div>
 
           {/* Wishlist */}

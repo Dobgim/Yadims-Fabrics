@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Heart, MessageCircle, Ruler, Truck } from "lucide-react";
+import { Clock, Heart, MessageCircle, Ruler, Truck } from "lucide-react";
 
 import { cn, fabricEnquiryLink } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
@@ -24,6 +24,8 @@ export function ProductPurchasePanel({ product }: { product: ProductRow }) {
   const [quantity, setQuantity] = React.useState(product.min_order_quantity);
 
   const saved = hydrated && isWishlisted(product.id);
+  const preorder = product.is_preorder;
+  const deposit = product.preorder_deposit_percent ?? 60;
   const inStock = product.stock_quantity > 0;
 
   const enquiry = fabricEnquiryLink({
@@ -34,34 +36,55 @@ export function ProductPurchasePanel({ product }: { product: ProductRow }) {
     color,
     quantity,
     unit: product.unit,
+    preorder,
+    depositPercent: deposit,
   });
 
   return (
     <div className="space-y-7">
-      <p
-        className={cn(
-          "inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-medium",
-          inStock
-            ? "bg-brand-50 text-brand-700 dark:bg-brand-800/50 dark:text-brand-200"
-            : "bg-secondary text-muted-foreground",
-        )}
-      >
-        <span
-          className={cn("h-1.5 w-1.5 rounded-full", inStock ? "bg-brand-500" : "bg-muted-foreground")}
-          aria-hidden
-        />
-        {inStock
-          ? `${product.stock_quantity} ${product.unit}s on the bolt`
-          : "Currently off the shelf — ask us to reorder"}
-      </p>
-
-      <div className="flex items-start gap-3 rounded-2xl bg-secondary/60 p-4 text-sm">
-        <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" aria-hidden />
-        <p className="leading-relaxed text-muted-foreground">
-          Price is agreed on WhatsApp — tell us how much you need and we will quote you, often below
-          what you would pay to import it yourself.
+      {preorder ? (
+        <p className="inline-flex items-center gap-2 rounded-full bg-gold-100 px-3.5 py-1.5 text-xs font-medium text-brand-900 dark:bg-gold-400/20 dark:text-gold-200">
+          <Clock className="h-3.5 w-3.5" aria-hidden />
+          Pre-order — reserve with a {deposit}% deposit
         </p>
-      </div>
+      ) : (
+        <p
+          className={cn(
+            "inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-medium",
+            inStock
+              ? "bg-brand-50 text-brand-700 dark:bg-brand-800/50 dark:text-brand-200"
+              : "bg-secondary text-muted-foreground",
+          )}
+        >
+          <span
+            className={cn("h-1.5 w-1.5 rounded-full", inStock ? "bg-brand-500" : "bg-muted-foreground")}
+            aria-hidden
+          />
+          {inStock
+            ? `${product.stock_quantity} ${product.unit}s on the bolt`
+            : "Currently off the shelf — ask us to reorder"}
+        </p>
+      )}
+
+      {preorder ? (
+        <div className="flex items-start gap-3 rounded-2xl border border-gold-300/60 bg-gold-50/70 p-4 text-sm dark:border-gold-400/25 dark:bg-gold-400/10">
+          <Clock className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" aria-hidden />
+          <p className="leading-relaxed text-muted-foreground">
+            This fabric is brought in to order. To reserve it you pay{" "}
+            <span className="font-medium text-foreground">{deposit}% upfront</span>, with the balance
+            settled when it arrives. Message us on WhatsApp and we will confirm the price, the
+            deposit and how long it takes.
+          </p>
+        </div>
+      ) : (
+        <div className="flex items-start gap-3 rounded-2xl bg-secondary/60 p-4 text-sm">
+          <MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" aria-hidden />
+          <p className="leading-relaxed text-muted-foreground">
+            Price is agreed on WhatsApp — tell us how much you need and we will quote you, often below
+            what you would pay to import it yourself.
+          </p>
+        </div>
+      )}
 
       <Separator />
 
@@ -85,7 +108,7 @@ export function ProductPurchasePanel({ product }: { product: ProductRow }) {
 
         <Button asChild variant="luxe" size="xl" className="w-full">
           <a href={enquiry} target="_blank" rel="noreferrer noopener">
-            <MessageCircle /> Enquire on WhatsApp
+            <MessageCircle /> {preorder ? "Pre-order on WhatsApp" : "Enquire on WhatsApp"}
           </a>
         </Button>
 

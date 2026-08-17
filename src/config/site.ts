@@ -38,6 +38,7 @@ export const siteConfig = {
 
 export const mainNav = [
   { title: "Shop", href: "/shop" },
+  { title: "Pre-Order", href: "/preorder" },
   { title: "Collections", href: "/collections" },
   { title: "Gallery", href: "/gallery" },
   { title: "Services", href: "/services" },
@@ -48,6 +49,7 @@ export const mainNav = [
 export const footerNav = {
   shop: [
     { title: "All Fabrics", href: "/shop" },
+    { title: "Pre-Order", href: "/preorder" },
     { title: "New Arrivals", href: "/collections/new-arrivals" },
     { title: "Stone & Beaded Lace", href: "/collections/stone-lace" },
     { title: "Wedding Collection", href: "/collections/wedding" },

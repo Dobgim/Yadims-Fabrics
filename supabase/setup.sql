@@ -180,6 +180,8 @@ create table if not exists public.products (
   status product_status not null default 'draft',
   is_featured boolean not null default false,
   is_new_arrival boolean not null default false,
+  is_preorder boolean not null default false,
+  preorder_deposit_percent integer not null default 60 check (preorder_deposit_percent between 1 and 100),
   rating_average numeric(3,2) not null default 0,
   rating_count int not null default 0,
   created_at timestamptz not null default now(),

@@ -33,8 +33,13 @@ export function ProductsTable({ products }: { products: ProductRow[] }) {
             ) : null}
           </span>
           <span className="min-w-0">
-            <span className="block max-w-[16rem] truncate font-medium group-hover:text-brand-600">
-              {p.name}
+            <span className="flex max-w-[16rem] items-center gap-1.5 truncate font-medium group-hover:text-brand-600">
+              <span className="truncate">{p.name}</span>
+              {p.is_preorder ? (
+                <span className="shrink-0 rounded-full bg-gold-100 px-1.5 py-0.5 text-[0.6rem] font-medium uppercase tracking-wide text-gold-700 dark:bg-gold-700/25 dark:text-gold-200">
+                  Pre-order
+                </span>
+              ) : null}
             </span>
             <span className="block text-xs text-muted-foreground">{p.sku ?? "No SKU"}</span>
           </span>

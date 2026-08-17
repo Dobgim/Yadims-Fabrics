@@ -73,11 +73,15 @@ export function QuickViewDialog({ product, open, onOpenChange }: QuickViewDialog
               <dd>{product.width_cm ? `${product.width_cm} cm` : "-"}</dd>
               <dt className="text-muted-foreground">Weight</dt>
               <dd>{product.weight_gsm ? `${product.weight_gsm} gsm` : "-"}</dd>
-              <dt className="text-muted-foreground">In stock</dt>
+              <dt className="text-muted-foreground">
+                {product.is_preorder ? "Availability" : "In stock"}
+              </dt>
               <dd>
-                {product.stock_quantity > 0
-                  ? `${product.stock_quantity} ${product.unit}s`
-                  : "Out of stock"}
+                {product.is_preorder
+                  ? `Pre-order · ${product.preorder_deposit_percent ?? 60}% deposit`
+                  : product.stock_quantity > 0
+                    ? `${product.stock_quantity} ${product.unit}s`
+                    : "Out of stock"}
               </dd>
             </dl>
 
@@ -104,11 +108,13 @@ export function QuickViewDialog({ product, open, onOpenChange }: QuickViewDialog
                       color,
                       quantity,
                       unit: product.unit,
+                      preorder: product.is_preorder,
+                      depositPercent: product.preorder_deposit_percent,
                     })}
                     target="_blank"
                     rel="noreferrer noopener"
                   >
-                    <MessageCircle /> Enquire
+                    <MessageCircle /> {product.is_preorder ? "Pre-order" : "Enquire"}
                   </a>
                 </Button>
               </div>

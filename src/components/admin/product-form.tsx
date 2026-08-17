@@ -205,6 +205,38 @@ export function ProductForm({
       </FormSection>
 
       <FormSection
+        title="Pre-order"
+        description="For cloth you bring in to order. Turn this on and the fabric carries a Pre-order badge, shows in the Pre-Order section, and tells the customer the deposit that reserves it. The rest is agreed on WhatsApp, as always."
+      >
+        <div className="grid gap-5 sm:grid-cols-2">
+          <ToggleField
+            name="is_preorder"
+            label="Sold on pre-order"
+            description="Reserve to order rather than off the shelf."
+            defaultChecked={product?.is_preorder ?? false}
+          />
+
+          <Field
+            label="Deposit to reserve (%)"
+            htmlFor="preorder_deposit_percent"
+            error={err("preorder_deposit_percent")}
+            hint="Share of the price paid upfront to reserve. Used only when pre-order is on."
+          >
+            <Input
+              id="preorder_deposit_percent"
+              name="preorder_deposit_percent"
+              type="number"
+              min={1}
+              max={100}
+              step={1}
+              defaultValue={product?.preorder_deposit_percent ?? 60}
+              inputMode="numeric"
+            />
+          </Field>
+        </div>
+      </FormSection>
+
+      <FormSection
         title="Where it appears"
         description="A draft is invisible to customers. Archive rather than delete anything that has ever been ordered."
       >

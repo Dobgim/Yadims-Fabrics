@@ -85,6 +85,8 @@ export type ProductRow = {
   status: ProductStatus;
   is_featured: boolean;
   is_new_arrival: boolean;
+  is_preorder: boolean;
+  preorder_deposit_percent: number;
   rating_average: number;
   rating_count: number;
   created_at: string;
