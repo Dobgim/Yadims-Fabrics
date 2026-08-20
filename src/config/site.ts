@@ -39,8 +39,6 @@ export const siteConfig = {
 export const mainNav = [
   { title: "Shop", href: "/shop" },
   { title: "Pre-Order", href: "/preorder" },
-  { title: "Collections", href: "/collections" },
-  { title: "Gallery", href: "/gallery" },
   { title: "Services", href: "/services" },
   { title: "About", href: "/about" },
   { title: "Contact", href: "/contact" },
